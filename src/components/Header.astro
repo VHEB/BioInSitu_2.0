@@ -1,0 +1,122 @@
+---
+const nav = [
+  { label: 'Podcast', href: '/podcast/' },
+  { label: 'Revista', href: '/revista/' },
+  { label: 'Equipe', href: '/equipe/' },
+  { label: 'Contato', href: '/contato/' },
+];
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a href="/" class="brand" aria-label="Bio in Situ — página inicial">
+      <img src="/logo.png" alt="Bio in Situ" width="120" height="52" />
+    </a>
+
+    <nav class="nav" aria-label="Navegação principal">
+      {nav.map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
+    </nav>
+
+    <a href="/apoio/" class="btn btn-primary support-btn">Apoie o projeto</a>
+
+    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileNav" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <nav id="mobileNav" class="mobile-nav" aria-label="Navegação móvel">
+    {nav.map((item) => (
+      <a href={item.href}>{item.label}</a>
+    ))}
+    <a href="/apoio/" class="btn btn-primary">Apoie o projeto</a>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--green);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 14px 24px;
+  }
+  .brand img {
+    filter: brightness(0) invert(1);
+    height: 40px;
+    width: auto;
+  }
+  .nav {
+    display: flex;
+    gap: 24px;
+    margin-left: 12px;
+    flex: 1;
+  }
+  .nav a {
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 14.5px;
+    font-weight: 500;
+    padding: 6px 2px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .nav a:hover { color: #fff; border-color: var(--coral); }
+
+  .support-btn { flex-shrink: 0; }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 34px;
+    height: 34px;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .menu-toggle span {
+    display: block;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+  }
+
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--green-deep);
+    padding: 8px 24px 18px;
+  }
+  .mobile-nav a {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .mobile-nav .btn { margin-top: 12px; align-self: flex-start; }
+
+  @media (max-width: 760px) {
+    .nav { display: none; }
+    .support-btn { display: none; }
+    .menu-toggle { display: flex; }
+    .mobile-nav.open { display: flex; }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const mobileNav = document.getElementById('mobileNav');
+  toggle?.addEventListener('click', () => {
+    const isOpen = mobileNav?.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
+  });
+</script>

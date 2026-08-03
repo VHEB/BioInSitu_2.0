@@ -1,0 +1,71 @@
+---
+const social = [
+  { label: 'Instagram', href: 'https://www.instagram.com/biologiainsitu/', icon: 'instagram' },
+  { label: 'Facebook', href: 'https://www.facebook.com/biologiainsitu/', icon: 'facebook' },
+  { label: 'X', href: 'https://twitter.com/bioinsitu', icon: 'x' },
+];
+---
+
+<footer class="site-footer">
+  <div class="wrap grid">
+    <div class="col-brand">
+      <img src="/logo.png" alt="Bio in Situ" width="110" height="48" />
+      <p>Divulgação científica em biologia, a partir de assuntos do seu dia a dia.</p>
+    </div>
+
+    <div class="col">
+      <p class="col-title">Navegue</p>
+      <a href="/podcast/">Podcast</a>
+      <a href="/revista/">Revista</a>
+      <a href="/equipe/">Equipe</a>
+      <a href="/contato/">Contato</a>
+      <a href="/apoio/">Apoio</a>
+    </div>
+
+    <div class="col">
+      <p class="col-title">Siga</p>
+      {social.map((s) => <a href={s.href} target="_blank" rel="noopener">{s.label}</a>)}
+    </div>
+  </div>
+
+  <div class="wrap credits">
+    <p>© {new Date().getFullYear()} Bio in Situ. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--green-deep);
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: 64px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 32px;
+    padding: 48px 24px 32px;
+  }
+  .col-brand img { filter: brightness(0) invert(1); margin-bottom: 14px; }
+  .col-brand p { font-size: 14px; max-width: 260px; line-height: 1.6; color: rgba(255, 255, 255, 0.7); }
+  .col { display: flex; flex-direction: column; gap: 10px; }
+  .col-title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 4px;
+  }
+  .col a { font-size: 14.5px; color: rgba(255, 255, 255, 0.85); }
+  .col a:hover { color: var(--coral); }
+  .credits {
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    padding: 18px 24px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .col-brand { grid-column: 1 / -1; }
+  }
+</style>

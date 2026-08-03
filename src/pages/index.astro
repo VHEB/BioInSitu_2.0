@@ -1,0 +1,150 @@
+---
+import Layout from '../layouts/Layout.astro';
+import EpisodeCard from '../components/EpisodeCard.astro';
+import posts from '../data/posts.json';
+
+const latest = posts.slice(0, 6);
+
+const platforms = [
+  { label: 'Spotify', href: 'https://open.spotify.com/show/54oIQQRjSKDTYhsOceuYgS' },
+  { label: 'Apple Podcasts', href: 'https://podcasts.apple.com/br/podcast/biologia-in-situ/id1524323017' },
+  { label: 'Deezer', href: 'https://www.deezer.com/br/show/1539162' },
+  { label: 'Android', href: 'https://subscribeonandroid.com/biologiainsitu.libsyn.com/rss' },
+  { label: 'RSS', href: 'https://biologiainsitu.libsyn.com/rss' },
+];
+---
+
+<Layout title="Início">
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <p class="eyebrow">Podcast de divulgação científica em biologia</p>
+      <h1>A biologia no seu <span class="accent">habitat preferido</span></h1>
+      <p class="lede">
+        Ciência explicada a partir de assuntos do dia a dia — em episódios semanais de
+        podcast e nas edições da revista Bio in Situ.
+      </p>
+      <div class="cta-row">
+        <a href="/podcast/" class="btn btn-primary">Ouvir os episódios</a>
+        <a href="/revista/" class="btn btn-ghost-onlight">Ler a revista</a>
+      </div>
+    </div>
+
+    <svg class="wave" viewBox="0 0 1120 32" preserveAspectRatio="none" role="presentation" aria-hidden="true">
+      <path d="M0 16 Q 20 2, 40 16 T 80 16 T 120 16 T 160 16 T 200 16 T 240 16 T 280 16 T 320 16 T 360 16 T 400 16 T 440 16 T 480 16 T 520 16 T 560 16 T 600 16 T 640 16 T 680 16 T 720 16 T 760 16 T 800 16 T 840 16 T 880 16 T 920 16 T 960 16 T 1000 16 T 1040 16 T 1080 16 T 1120 16"
+        fill="none" stroke="var(--coral)" stroke-width="3" stroke-linecap="round" />
+    </svg>
+  </section>
+
+  <section class="wrap section">
+    <div class="section-head">
+      <h2>Episódios e edições recentes</h2>
+      <a href="/podcast/" class="see-all">Ver tudo →</a>
+    </div>
+    <div class="grid">
+      {latest.map((post) => <EpisodeCard post={post} />)}
+    </div>
+  </section>
+
+  <section class="subscribe">
+    <div class="wrap subscribe-inner">
+      <div>
+        <h2>Assine o podcast</h2>
+        <p>Escute em qualquer plataforma, toda semana.</p>
+      </div>
+      <div class="platforms">
+        {platforms.map((p) => (
+          <a href={p.href} target="_blank" rel="noopener" class="btn btn-ghost-ondark">{p.label}</a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap support">
+    <div class="support-card">
+      <div>
+        <h2>Ajude a manter esse projeto no ar</h2>
+        <p>O Bio in Situ é feito de forma independente. Seu apoio sustenta a produção de novos episódios e edições.</p>
+      </div>
+      <a href="/apoio/" class="btn btn-primary">Conhecer o apoio</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    position: relative;
+    background: var(--paper);
+    overflow: hidden;
+  }
+  .hero-inner {
+    padding: 72px 24px 56px;
+    max-width: 680px;
+  }
+  h1 {
+    font-size: clamp(32px, 4.6vw, 48px);
+    line-height: 1.12;
+    margin-top: 10px;
+  }
+  h1 .accent { color: var(--coral); }
+  .lede {
+    font-size: 16.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin-top: 18px;
+    max-width: 480px;
+  }
+  .cta-row { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+  .wave { display: block; width: 100%; height: 32px; }
+
+  .section { padding: 56px 24px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .section-head h2 { font-size: 24px; }
+  .see-all { font-size: 14px; font-weight: 600; color: var(--green); }
+  .see-all:hover { color: var(--coral); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .subscribe { background: var(--ink); color: #fff; }
+  .subscribe-inner {
+    padding: 48px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .subscribe h2 { color: #fff; font-size: 22px; }
+  .subscribe p { color: rgba(255, 255, 255, 0.65); margin-top: 6px; font-size: 14.5px; }
+  .platforms { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .support { padding: 56px 24px 72px; }
+  .support-card {
+    background: var(--green-pale);
+    border-radius: var(--radius);
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .support-card h2 { font-size: 22px; }
+  .support-card p { color: var(--ink-soft); margin-top: 8px; max-width: 460px; font-size: 14.5px; }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .support-card { flex-direction: column; align-items: flex-start; }
+  }
+</style>

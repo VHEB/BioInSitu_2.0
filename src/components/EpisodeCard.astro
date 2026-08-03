@@ -1,0 +1,95 @@
+---
+interface Post {
+  title: string;
+  slug: string;
+  date: string;
+  category: string;
+  image: string | null;
+  excerpt: string;
+}
+
+interface Props { post: Post }
+const { post } = Astro.props;
+
+const match = post.title.match(/^(\d+)\s*-\s*(.*)$/);
+const number = match ? match[1] : null;
+const displayTitle = match ? match[2] : post.title;
+
+const dateLabel = new Date(post.date.replace(' ', 'T')).toLocaleDateString('pt-BR', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+});
+
+const isRevista = post.category === 'Revista';
+---
+
+<a class="card" href={`/${post.slug}/`}>
+  <div class="thumb">
+    {post.image ? (
+      <img src={post.image} alt={displayTitle} loading="lazy" />
+    ) : (
+      <div class="thumb-fallback" aria-hidden="true"></div>
+    )}
+    <span class="badge" data-kind={isRevista ? 'revista' : 'podcast'}>
+      {isRevista ? 'Revista' : 'Podcast'}
+    </span>
+  </div>
+  <div class="body">
+    <p class="meta">{number ? `Ep. ${number} · ` : ''}{dateLabel}</p>
+    <h3>{displayTitle}</h3>
+    <p class="excerpt">{post.excerpt}</p>
+  </div>
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .card:hover { border-color: var(--ink-faint); transform: translateY(-2px); }
+
+  .thumb { position: relative; aspect-ratio: 4 / 3; background: var(--paper-dim); }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .thumb-fallback { width: 100%; height: 100%; background: var(--green-pale); }
+
+  .badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 4px 9px;
+    border-radius: 20px;
+    background: rgba(16, 35, 26, 0.55);
+    color: #fff;
+    backdrop-filter: blur(2px);
+  }
+  .badge[data-kind='revista'] { background: rgba(232, 89, 46, 0.85); }
+
+  .body { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  h3 { font-size: 16.5px; line-height: 1.35; font-weight: 600; }
+  .excerpt {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
