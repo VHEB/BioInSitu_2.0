@@ -1,0 +1,117 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import posts from '../../data/posts.json';
+
+export function getStaticPaths() {
+  return posts
+    .filter((p) => p.slug)
+    .map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+
+const match = post.title.match(/^(\d+)\s*-\s*(.*)$/);
+const number = match ? match[1] : null;
+const displayTitle = match ? match[2] : post.title;
+const isRevista = post.category === 'Revista';
+
+const dateLabel = new Date(post.date.replace(' ', 'T')).toLocaleDateString('pt-BR', {
+  day: '2-digit',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<Layout title={displayTitle} description={post.excerpt}>
+  <article class="wrap article">
+    <a href={isRevista ? '/revista/' : '/podcast/'} class="back">← {isRevista ? 'Revista' : 'Podcast'}</a>
+
+    <p class="meta">
+      <span class="badge" data-kind={isRevista ? 'revista' : 'podcast'}>{isRevista ? 'Revista' : 'Podcast'}</span>
+      {number && <span>Ep. {number} · </span>}
+      <span>{dateLabel}</span>
+    </p>
+
+    <h1>{displayTitle}</h1>
+
+    {post.image && (
+      <img class="cover" src={post.image} alt={displayTitle} />
+    )}
+
+    {post.audio_url && (
+      <audio controls preload="none" class="player">
+        <source src={post.audio_url} />
+      </audio>
+    )}
+
+    <div class="body" set:html={post.content_html} />
+
+    <p class="author">Por {post.creator}</p>
+  </article>
+</Layout>
+
+<style>
+  .article { padding: 48px 24px 72px; max-width: 720px; }
+  .back {
+    display: inline-block;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--green);
+    margin-bottom: 20px;
+  }
+  .back:hover { color: var(--coral); }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 14px;
+  }
+  .badge {
+    background: var(--green-pale);
+    color: var(--green-deep);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .badge[data-kind='revista'] { background: #fbe8e1; color: var(--coral-deep); }
+
+  h1 { font-size: clamp(26px, 4vw, 36px); line-height: 1.2; margin-bottom: 24px; }
+
+  .cover { width: 100%; border-radius: var(--radius); margin-bottom: 24px; aspect-ratio: 16/9; object-fit: cover; }
+
+  .player { width: 100%; margin-bottom: 32px; }
+
+  .body {
+    font-size: 16.5px;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+  .body :global(p) { margin-bottom: 18px; }
+  .body :global(h2),
+  .body :global(h3) { margin: 32px 0 14px; }
+  .body :global(a) { color: var(--green); text-decoration: underline; text-underline-offset: 2px; }
+  .body :global(img) { border-radius: var(--radius-sm); margin: 8px 0 20px; }
+  .body :global(blockquote) {
+    border-left: 3px solid var(--coral);
+    padding-left: 16px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 20px 0;
+  }
+  .body :global(ul),
+  .body :global(ol) { padding-left: 22px; margin-bottom: 18px; }
+
+  .author {
+    margin-top: 36px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 13.5px;
+    color: var(--ink-faint);
+  }
+</style>

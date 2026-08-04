@@ -1,0 +1,99 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import EpisodeCard from '../../components/EpisodeCard.astro';
+import posts from '../../data/posts.json';
+
+const episodes = posts
+  .filter((p) => p.category === 'Podcast')
+  .sort((a, b) => (a.date < b.date ? 1 : -1));
+
+const grouped = episodes.reduce((acc, ep) => {
+  const year = ep.date.slice(0, 4);
+  (acc[year] ||= []).push(ep);
+  return acc;
+}, {});
+const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
+---
+
+<Layout
+  title="Podcast"
+  description="Todos os episódios do podcast Bio in Situ, do mais recente ao primeiro."
+>
+  <section class="wrap page-head">
+    <p class="eyebrow">{episodes.length} episódios</p>
+    <h1>Podcast</h1>
+    <p class="lede">
+      Um assunto cotidiano, uma ponte com a biologia. Do episódio mais recente até o primeiro, em {years.length} anos de programa.
+    </p>
+  </section>
+
+  <section class="wrap archive" id="archive">
+    {years.map((year, yi) => (
+      <div class="year-block" data-year-block data-index-start={yi < 1 ? 0 : undefined}>
+        <p class="year-label">{year}</p>
+        <div class="grid">
+          {grouped[year].map((ep) => <EpisodeCard post={ep} />)}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <div class="wrap load-more-wrap">
+    <button id="loadMoreBtn" class="btn btn-ghost-onlight">Carregar mais episódios</button>
+  </div>
+</Layout>
+
+<style>
+  .page-head { padding: 56px 24px 24px; max-width: 640px; }
+  .page-head h1 { font-size: clamp(28px, 4vw, 38px); margin-top: 8px; }
+  .lede { color: var(--ink-soft); margin-top: 14px; font-size: 15.5px; line-height: 1.6; }
+
+  .archive { padding: 8px 24px 8px; }
+  .year-block { margin-bottom: 40px; }
+  .year-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .load-more-wrap { display: flex; justify-content: center; padding: 8px 24px 64px; }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  // Progressive reveal: mostra os 2 primeiros blocos de ano, revela o resto aos poucos.
+  const blocks = Array.from(document.querySelectorAll('[data-year-block]')) as HTMLElement[];
+  const btn = document.getElementById('loadMoreBtn');
+  const initiallyVisible = 2;
+
+  blocks.forEach((block, i) => {
+    if (i >= initiallyVisible) block.style.display = 'none';
+  });
+
+  if (blocks.length <= initiallyVisible && btn) {
+    btn.style.display = 'none';
+  }
+
+  let shown = initiallyVisible;
+  btn?.addEventListener('click', () => {
+    const next = blocks.slice(shown, shown + 2);
+    next.forEach((b) => (b.style.display = ''));
+    shown += 2;
+    if (shown >= blocks.length && btn) btn.style.display = 'none';
+  });
+</script>

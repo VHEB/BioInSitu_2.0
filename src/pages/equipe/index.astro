@@ -1,0 +1,61 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TeamCard from '../../components/TeamCard.astro';
+import team from '../../data/team.json';
+---
+
+<Layout title="Equipe" description="Conheça quem faz o Bio in Situ acontecer.">
+  <section class="wrap page-head">
+    <p class="eyebrow">Quem faz</p>
+    <h1>Equipe</h1>
+    <p class="lede">As pessoas por trás do podcast e da revista Bio in Situ.</p>
+  </section>
+
+  <section class="wrap">
+    <div class="grid">
+      {team.map((member) => <TeamCard member={member} />)}
+    </div>
+
+    <p class="note">
+      Esta seção está com dados de exemplo — assim que vocês me passarem nome, formação,
+      cargo e links de LinkedIn/Lattes de cada integrante, eu troco pelos dados reais em
+      <code>src/data/team.json</code>.
+    </p>
+  </section>
+</Layout>
+
+<style>
+  .page-head { padding: 56px 24px 32px; max-width: 640px; }
+  .page-head h1 { font-size: clamp(28px, 4vw, 38px); margin-top: 8px; }
+  .lede { color: var(--ink-soft); margin-top: 14px; font-size: 15.5px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 0 24px;
+  }
+
+  .note {
+    margin: 32px 24px 72px;
+    font-size: 13px;
+    color: var(--ink-faint);
+    background: var(--paper-dim);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    line-height: 1.6;
+  }
+  .note code {
+    font-family: var(--font-mono);
+    background: rgba(16, 35, 26, 0.06);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
