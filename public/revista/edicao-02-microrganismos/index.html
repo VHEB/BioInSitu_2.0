@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edição sobre Microrganismos — Bio In Situ, Ed. Vol. 1 · Nº 2 · 2024 · Edição 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --paper: #F6F4EE;
+    --paper-dim: #EFECE3;
+    --ink: #14231C;
+    --ink-soft: #3A473F;
+    --green: #1E7A46;
+    --green-deep: #123D25;
+    --teal: #0E8E8A;
+    --slate: #4B4B4B;
+    --magenta: #D6116C;
+    --sand: #DCD2B8;
+    --gold: #9C8A4E;
+    --rule: rgba(20,35,28,0.14);
+    --maxw: 760px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ===== Skip / focus ===== */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--green);
+    outline-offset:3px;
+  }
+
+  /* ===== Top bar ===== */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,244,238,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:700; font-size:18px;
+    text-decoration:none;
+  }
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--green);}
+  .topbar nav{display:flex; gap:22px;}
+  .topbar nav a{
+    font-size:13px; text-decoration:none; color:var(--ink-soft);
+    letter-spacing:0.03em; text-transform:uppercase;
+  }
+  .topbar nav a:hover{color:var(--green);}
+  #toc-toggle{display:none;}
+
+  /* ===== Hero ===== */
+  .hero{
+    max-width:980px; margin:0 auto; padding:64px 28px 40px;
+    text-align:left;
+  }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--green-deep);
+    display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .hero .eyebrow::before{content:"";width:28px;height:1px;background:var(--green-deep);display:inline-block;}
+  .hero h1{
+    font-size:clamp(38px, 6vw, 68px);
+    font-weight:600; line-height:1.02; margin:0 0 22px;
+    max-width:850px;
+  }
+  .hero h1 em{font-style:italic; font-weight:500; color:var(--green);}
+  .hero p.lede{
+    max-width:560px; color:var(--ink-soft); font-size:18px; margin:0 0 34px;
+  }
+  .hero .meta-row{
+    display:flex; flex-wrap:wrap; gap:28px; font-size:13.5px; color:var(--ink-soft);
+    border-top:1px solid var(--rule); padding-top:18px;
+  }
+  .hero .meta-row strong{color:var(--ink); display:block; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px; font-weight:600;}
+
+  /* signature motif: circuit-root divider */
+  .motif{
+    display:block; width:100%; height:34px; margin:6px 0 0;
+    opacity:0.9;
+  }
+
+  /* ===== Layout: TOC + content ===== */
+  .layout{
+    max-width:1180px; margin:0 auto; padding:0 28px 40px;
+    display:grid; grid-template-columns:230px 1fr; gap:56px;
+  }
+  .toc{
+    position:sticky; top:70px; align-self:start;
+    padding:22px 0 40px;
+    max-height:calc(100vh - 90px); overflow-y:auto;
+  }
+  .toc-title{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--ink-soft); margin-bottom:14px; font-weight:600;
+  }
+  .toc ol{list-style:none; margin:0; padding:0; counter-reset:art;}
+  .toc li{counter-increment:art; margin-bottom:2px;}
+  .toc a{
+    display:flex; gap:10px; padding:8px 6px; text-decoration:none;
+    font-size:13.5px; color:var(--ink-soft); border-radius:6px;
+    line-height:1.3;
+  }
+  .toc a:hover{background:var(--paper-dim); color:var(--ink);}
+  .toc a::before{
+    content:counter(art, decimal-leading-zero);
+    font-family:'IBM Plex Mono', monospace; font-size:11px;
+    color:var(--green); flex-shrink:0; padding-top:1px;
+  }
+
+  main{min-width:0;}
+
+  /* ===== Article card ===== */
+  article.piece{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:14px;
+    margin-bottom:26px;
+    overflow:hidden;
+    scroll-margin-top:80px;
+  }
+  .piece-head{
+    padding:34px 40px 26px;
+    border-bottom:1px solid var(--rule);
+    position:relative;
+  }
+  .piece-head::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:6px;
+    background:var(--accent, var(--green));
+  }
+  .piece-kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--accent, var(--green));
+    margin-bottom:10px; font-weight:500;
+  }
+  .piece-head h2{
+    font-size:clamp(24px, 3.4vw, 32px); font-weight:600; line-height:1.12; margin:0 0 16px;
+  }
+  .piece-head h2 .sub{
+    display:block; font-family:'IBM Plex Sans', sans-serif; font-style:normal;
+    font-weight:400; font-size:0.55em; color:var(--ink-soft); margin-top:6px; letter-spacing:0;
+  }
+  .byline{
+    display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-soft);
+  }
+  .byline .avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--accent, var(--green)); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:13px;
+  }
+  .piece-body{padding:8px 40px 38px;}
+  .piece-body p{margin:0 0 18px; color:var(--ink);}
+  .piece-body h3{font-size:17px; margin:26px 0 12px; font-weight:600; color:var(--accent, var(--green-deep));}
+  .piece-body .drop::first-letter{
+    float:left; font-family:'Fraunces', serif; font-weight:700; font-size:3.6em;
+    line-height:0.82; padding-right:10px; padding-top:4px; color:var(--accent, var(--green));
+  }
+  .cols{columns:1; column-gap:36px;}
+  @media(min-width:640px){ .cols.two{columns:2;} }
+
+  .callout{
+    background:var(--paper-dim);
+    border-left:3px solid var(--accent, var(--green));
+    border-radius:0 10px 10px 0;
+    padding:16px 20px;
+    margin:8px 0 22px;
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+  .quote{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:20px; line-height:1.45; color:var(--ink);
+    padding:4px 0 4px 20px; border-left:3px solid var(--accent, var(--green));
+    margin:22px 0;
+  }
+  .binary{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em;
+    color:var(--accent, var(--green)); opacity:0.75; margin:-6px 0 20px;
+  }
+  ul.tidy{margin:0 0 18px; padding-left:20px;}
+  ul.tidy li{margin-bottom:8px;}
+  .refs{
+    font-size:13.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:8px; padding-top:18px;
+  }
+  .refs p{margin-bottom:8px;}
+  .caption{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:-8px;}
+
+  .prompt-strip{
+    margin-top:24px; padding:14px 20px; border-radius:10px;
+    background:var(--green-deep); color:#EFEDE3;
+    font-size:13.5px; display:flex; align-items:center; gap:12px;
+  }
+  .prompt-strip .mic{
+    width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+
+  /* reading tips */
+  .book{
+    display:grid; grid-template-columns:64px 1fr; gap:16px; margin-bottom:22px;
+  }
+  .book .spine{
+    width:64px; height:88px; border-radius:4px;
+    background:linear-gradient(160deg, var(--accent, var(--green)), var(--green-deep));
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    font-family:'Fraunces',serif; font-weight:700; font-size:22px;
+  }
+  .book h4{margin:0 0 2px; font-size:16px; font-family:'Fraunces',serif; font-weight:600;}
+  .book .by{font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;}
+  .book p{font-size:14px; margin:0; color:var(--ink-soft);}
+
+  /* footer / support */
+  footer{
+    background:var(--green-deep); color:#EDEAE0; margin-top:40px;
+    padding:56px 28px 40px;
+  }
+  .foot-inner{max-width:980px; margin:0 auto; display:grid; grid-template-columns:1.3fr 1fr; gap:48px;}
+  footer h3{color:#fff; font-size:24px; margin:0 0 14px;}
+  footer p{color:#C9D2C7; max-width:420px; margin:0 0 10px;}
+  footer a.link{color:#9FE3B8; text-decoration:none; border-bottom:1px solid rgba(159,227,184,0.35);}
+  .foot-col .row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.1); font-size:14px;}
+  .foot-col .row span:first-child{color:#9FB0A4;}
+  .credits{max-width:980px; margin:34px auto 0; padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); font-size:12.5px; color:#8AA091; display:flex; flex-wrap:wrap; gap:6px 18px;}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .toc{position:static; max-height:none; padding-bottom:10px;}
+    .foot-inner{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .piece-head, .piece-body{padding-left:22px; padding-right:22px;}
+    .topbar nav{display:none;}
+    .cols.two{columns:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+
+  /* imagem opcional de capa da matéria (não usada nas edições sem gerador de imagem) */
+  .piece-media{width:100%; aspect-ratio:16/9; overflow:hidden;}
+  .piece-media img{width:100%; height:100%; object-fit:cover; display:block;}
+
+  /* link opcional para o PDF/fonte original da matéria */
+  .source-link{
+    font-size:12.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:20px; padding-top:14px;
+  }
+  .source-link a{color:var(--green); text-decoration:underline; text-underline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="#topo"><span class="dot"></span>BIO IN SITU</a>
+  <nav>
+    <a href="#sumario">Sumário</a>
+    <a href="#apoie">Apoie</a>
+    <a href="https://biologiainsitu.com.br" target="_blank" rel="noopener">Site</a>
+  </nav>
+</div>
+
+<div id="topo" class="hero">
+  <div class="eyebrow">Vol. 1 · Nº 2 · 2024 · Edição 2</div>
+  <h1>Edição sobre <em>Microrganismos</em></h1>
+  <p class="lede">Do podcast à revista, fazendo divulgação científica: uma viagem pelo universo dos micro-organismos, da bioarte aos extremófilos.</p>
+  <div class="meta-row">
+    <div><strong>Organizadores</strong>Cristianne Santana Santos, Ricardo da Silva Gomes, Heloá Caramuru Carlos, Bruna Garcia da Cruz Canellas, Vitor Estanislau de Almeida Souza Lopes, Luiza de Freitas Ferreira, Melissa dos Santos Cabral, Raquel Ribeiro da Rosa, Luana Campos Leal</div>
+    <div><strong>ISSN</strong>2965-923X</div>
+    <div><strong>Publicação</strong>Rio de Janeiro, RJ</div>
+  </div>
+</div>
+
+<svg class="motif" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 17 H120 M170 17 H1200" stroke="#1E7A46" stroke-width="1" opacity="0.35"/>
+  <circle cx="145" cy="17" r="4" fill="#1E7A46"/>
+  <path d="M145 17 q10 -14 24 -14 M145 17 q10 14 24 -14" stroke="#1E7A46" stroke-width="1.2" fill="none" opacity="0.6"/>
+</svg>
+
+<div class="layout">
+  <aside class="toc" id="sumario">
+    <div class="toc-title">Nesta edição</div>
+    <ol>
+      <li><a href="#art1">Quando a arte e a ciência se encontram</a></li>
+      <li><a href="#art2">Zumbis e micro-organismos</a></li>
+      <li><a href="#art3">No (bio)limite: desafios extremos</a></li>
+      <li><a href="#art4">Aquecimento global e novas pandemias</a></li>
+      <li><a href="#art5">A morte vem em partículas</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+    <article class="piece" id="art1" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Arte &amp; Ciência</div>
+        <h2>Quando a arte e a ciência se encontram</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">K</span> Karina</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Você já ouviu falar sobre artistas que pintam quadros utilizando colônias de bactérias e fungos? Acho que todo mundo, em algum momento da vida, já ouviu alguém dizer que os humanos estão tentando brincar de ser Deus, alterando e modificando a natureza. O artista Eduardo Kac, que desde a década de 90 se encaixa como exemplo nesse assunto um tanto polêmico, é o criador da bioarte.</p>
+        <p>Outra referência do gênero foi um artista na Dinamarca que fez uma exposição na qual parte da obra consistia em 8 liquidificadores cheios de água, cada um com um peixinho dourado dentro. Parte da proposta era deixar para as pessoas que estivessem vendo apertar ou não o botão. A obra teve uma repercussão tão grande que pessoas que se consideravam protetoras dos animais queriam levar o assunto para o tribunal.</p>
+        <h3>Quem é Eduardo Kac?</h3>
+        <p>Eduardo Kac é um artista contemporâneo e pioneiro da arte digital, holográfica, de telepresença e bioarte. No entanto, apesar de se utilizar da biologia, ele não é biólogo — é formado em Comunicação Social pela PUC e começou a carreira fazendo poesia usando o próprio corpo como elemento poético nos anos 90, antes de migrar para a holopoesia, que utiliza recursos tecnológicos e holografia para expressão poética.</p>
+        <p>Uma de suas primeiras obras foi a &quot;Time Capsule&quot;, que misturava biologia, tecnologia e arte através de memórias conectadas a um chip implantado em sua própria cabeça. Outra obra muito famosa do artista — que talvez você não soubesse ser brasileiro — é a &quot;GFP Bunny&quot; (&quot;Green Fluorescent Protein&quot;, proteína fluorescente verde): uma modificação genética de uma coelha que emitia luz verde quando iluminada por luz azul.</p>
+        <div class="callout">A GFP é uma proteína encontrada na alga viva <em>Aequorea victoria</em>, muito utilizada em pesquisa científica porque funciona literalmente como um marca-texto: ao ser inserida em um organismo, marca as células alteradas, já que faz com que elas brilhem — facilitando identificar qual célula foi editada corretamente.</div>
+        <p>Foi exatamente isso que Kac fez: inseriu uma versão melhorada da proteína GFP em células embrionárias, que deram origem à coelhinha albina Alba. Ele chegou a querer levá-la para casa depois da exposição e criá-la como pet, mas as regras rigorosas para animais usados em pesquisa não permitiram — o que gerou uma nova comoção e tornou a obra inspiração até hoje para livros, estampas, gravuras, fotografias e esculturas.</p>
+        <p>Lembra da frase polêmica &quot;brincar de Deus&quot;? Kac também criou a obra &quot;Gênesis&quot;, que usa código morse traduzido nas bases nitrogenadas ATCG (adenina, timina, citosina e guanina) que compõem o nosso código genético. Ele desenvolveu um gene sintético — um conjunto de bases que não existe na natureza — e o inseriu em bactérias, que ficaram expostas à luz ultravioleta e passaram a ser controladas pelo público através da internet.</p>
+        <p>Só que essa exposição causa mutações no código genético das bactérias. Conforme essas mutações ocorriam, as frases do &quot;livro&quot; também mudavam — a ideia do artista era justamente refletir sobre os limites da alteração e da modificação da natureza pelos humanos, e sobre como nem sempre aceitamos o significado das coisas tal como são, e vamos alterando. A arte de Eduardo Kac é o tipo de arte que provoca questionamento de valores, ideias, e nos faz mergulhar numa reflexão profunda.</p>
+        <h3>A importância dos estudos científicos</h3>
+        <p>Em 2015, a Sociedade Americana de Microbiologia lançou o concurso de arte em Ágar — um material gelatinoso utilizado na microbiologia para tornar os meios de cultura sólidos (e que também pode ser usado como substituto de gelatina na cozinha). Nesse concurso, as obras são pintadas em placas de Petri usando uma mistura de Ágar, na qual se espalham bactérias e fungos que, ao crescerem, formam uma imagem. A ideia surgiu com a pesquisadora búlgara Rositsa Taskova.</p>
+        <p>O concurso já teve até uma releitura da &quot;Noite Estrelada&quot;, de Van Gogh. A cada ano mais obras são submetidas: em 2021, foram mais de 300 submissões vindas de 31 países diferentes, um movimento que já alcançou cientistas e até crianças.</p>
+        <p>E não é só para criar arte: existem formas de usar micro-organismos para preservar e restaurar obras de arte também. Existem micro-organismos capazes de consumir e transformar diferentes tipos de substância — até metais pesados tóxicos para outras espécies. É aí que entram as cientistas, selecionando os micro-organismos certos para remover sujeiras que se acumulam nas obras com o tempo e afetam sua visibilidade. Por isso, pesquisas focadas em conhecer e descrever esses organismos são tão importantes.</p>
+        <div class="prompt-strip" style="background:var(--accent);"><span class="mic">🎙</span> Quer ouvir a entrevista completa sobre essa ideia? Escute o episódio no seu tocador de podcast favorito.</div>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art2" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Cultura pop &amp; Biologia</div>
+        <h2>Um passeio pelo universo pop dos zumbis</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">K</span> Karina</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">O que você considera um zumbi? Por que eles agem de forma tão estranha? Como uma pessoa se infecta e vira um zumbi? Esse é o assunto deste episódio. Tenho certeza que você já assistiu a algum filme sobre apocalipse zumbi — quem nunca viu &quot;A Noite dos Mortos-Vivos&quot;, um clássico do gênero? E se você tem medo desse tipo de filme, &quot;Frankenweenie&quot;, animação do Tim Burton, também entra no assunto de um jeito mais leve.</p>
+        <h3>O que é um zumbi?</h3>
+        <p>Há diversas especulações que poderiam responder a essa pergunta: pessoas que já morreram e voltam à vida por algum motivo, pessoas que perderam totalmente sua consciência e mesmo assim continuam andando e fazendo coisas. São tantas possibilidades no mundo geek que é impossível escolher apenas uma resposta oficial.</p>
+        <div class="callout">Curiosidade: segundo tradições africanas, o termo &quot;zumbi&quot; (ou &quot;zambi&quot;) significa corpo sem alma, espírito maligno noturno, espírito sem corpo ou fantasma — há vários significados para o mesmo termo.</div>
+        <p>Em filmes de ficção científica é comum ver a origem do zumbi associada a esporos de algum micro-organismo — terrestre ou espacial — ou a um vírus criado em laboratório por humanos. A série &quot;The Walking Dead&quot;, por exemplo, insinua bastante essa origem laboratorial, mesmo sem afirmar diretamente ao longo dos episódios. Some a isso o estereótipo clássico do zumbi: pele em decomposição, muito sangue e sensibilidade a som.</p>
+        <p>Dois filmes deram o que falar no meio científico: &quot;Guerra Mundial Z&quot;, que mostra a possibilidade de pessoas imunes aos ataques zumbis, e &quot;Eu Sou a Lenda&quot;, com um personagem interpretado por Will Smith que busca a cura através do próprio sangue, imune ao vírus. Será que seria possível criar uma vacina contra infecção zumbi?</p>
+        <h3>O que a ciência diz sobre isso?</h3>
+        <p>Quando a série &quot;The Last of Us&quot; foi lançada, viralizaram vídeos de insetos se comportando como zumbis, com fungos saindo de seus corpos — e, por mais assustador que pareça, os vídeos eram reais. O fungo Cordyceps faz parte de uma família com diversas espécies que infectam o corpo de seus hospedeiros, controlando suas funções motoras e transformando o inseto em um veículo de condução para um ponto mais alto, de onde o fungo consegue se desenvolver e espalhar seus esporos.</p>
+        <p>Outro vírus que poderia ser comparado a cenas de filmes de zumbi é o vírus da raiva (Lyssavirus), cujo sintoma de infecção inclui alta agressividade, e que pode ser transmitido principalmente por mordidas, lambidas ou arranhões. Outro exemplo é a encefalopatia espongiforme bovina (EEB), a &quot;doença da vaca louca&quot;, causada por proteínas anormais que levam à perda de coordenação motora, distúrbios de movimento, degeneração cerebral e tremores.</p>
+        <p>No mundo dos insetos e invertebrados existem casos ainda mais curiosos: a vespa-joia possui um veneno neurotóxico que causa perda de funções motoras, paralisia e controle total do corpo do hospedeiro. Já o verme Paragordius tricuspidatus atua diretamente no sistema nervoso, manipulando o comportamento de quem o hospeda.</p>
+        <ul class="tidy"><li><strong>Massospora cicadina</strong> — fungo conhecido por parasitar cigarras.</li><li><strong>Ophiocordyceps</strong> — gênero com mais de 150 espécies descritas, parasita diferentes grupos de insetos como besouros, moscas, borboletas, abelhas e formigas.</li><li><strong>Cordyceps</strong> — gênero com centenas de espécies; ao menos 35 delas são parasitas capazes de alterar o comportamento de hospedeiros como besouros, borboletas, percevejos e vespas.</li></ul>
+        <p>Esses grupos de fungos costumam causar decomposição dos tecidos internos, controle do sistema nervoso, alteração de comportamento, crescimento de filamentos no corpo do hospedeiro e disseminação através de esporos — mas fique tranquilo, eles só afetam algumas espécies de artrópodes.</p>
+        <ul class="tidy"><li>The Last of Us</li><li>Eu Sou a Lenda</li><li>The Walking Dead</li><li>Invasão Zumbi</li><li>Cargo</li><li>Kingdom</li><li>Cidade dos Mortos</li><li>Castores Zumbis</li><li>REC</li><li>Crossed</li><li>Extermínio</li><li>Meu Namorado é um Zumbi</li><li>Army of the Dead</li><li>Guerra Mundial Z</li><li>Resident Evil</li><li>Zombie Army</li></ul>
+        <div class="prompt-strip" style="background:var(--accent);"><span class="mic">🎙</span> Quer saber mais sobre como esses vírus e fungos agem no corpo, com exemplos mais detalhados? Escute o episódio completo no podcast.</div>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art3" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Extremófilos</div>
+        <h2>No (bio)limite: desafios extremos</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">K</span> Karina</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Você já ouviu falar dos seres extremófilos? São organismos capazes de viver em condições físico-geo-químicas extremas para a maioria dos outros seres vivos do planeta Terra. Vamos conhecer alguns deles?</p>
+        <div class="callout">No grupo dos extremófilos podemos incluir os halófitos (organismos que vivem em ambientes ricos em sal) e os termófilos extremos (organismos que vivem em ambientes extremamente quentes). Muitas archaea são consideradas organismos extremófilos.</div>
+        <ul class="tidy"><li><strong>Cladosporium sphaerospermum</strong> — fungo isolado pela primeira vez de amostras de fontes termais ácidas e solo quente e seco em Hokkaido, no Japão. Prefere temperaturas entre 45°C e 65°C, com ótimo em torno de 60°C.</li><li><strong>Picrophilus</strong> — gênero de archaea extremamente acidófilo, capaz de sobreviver a temperaturas que variam de pouco mais que o zero absoluto (-273,15°C) até 150°C, a pressões de 6 mil atmosferas e 5.000 Gy de radiação.</li><li><strong>Tardígrados</strong> — famosos por sobreviver a condições extremas de temperatura, pressão e radiação, inclusive no vácuo do espaço.</li></ul>
+        <div class="prompt-strip" style="background:var(--accent);"><span class="mic">🎙</span> Quer conhecer mais sobre esses seres que desafiam os limites da vida? O episódio completo está no podcast.</div>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art4" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Mudanças climáticas</div>
+        <h2>Aquecimento global e seus problemas futuros</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">K</span> Karina</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Você sabia que o aquecimento global pode ser responsável diretamente por novas pandemias? Isso pode acontecer por várias razões, mas o enfoque aqui é o permafrost — aquela camada de gelo &quot;permanente&quot; no solo, que pode ter alguns centímetros ou até 1,5 km de profundidade.</p>
+        <p>Segundo os cientistas, o permafrost permanece desde o final da era Mesozoica (época dos dinossauros), o que significa que todo o solo — e qualquer evidência de vida desde a evolução dos humanos — permanece congelado, incluindo seres extremófilos. Não é segredo que a Terra já está 1°C mais quente: pode parecer pouco, mas para muitos organismos isso pode ser o fim, e para outros, um começo ou recomeço.</p>
+        <p>Quando trazemos esse descongelamento para o reino dos vírus, o problema fica maior: existem vírus capazes de fazer criptobiose, ou seja, capazes de &quot;dormir&quot; por muitos anos se a temperatura do ambiente estiver abaixo ou acima de sua faixa ideal de sobrevivência — o que também vale para ambientes sem oxigênio ou água — até o dia em que tudo se normaliza e eles voltam a acordar.</p>
+        <div class="callout">Pesquisas recentes comprovam que vírus de 7 mil anos atrás estão &quot;acordando&quot; à medida que o permafrost degela.</div>
+        <div class="prompt-strip" style="background:var(--accent);"><span class="mic">🎙</span> Quer saber mais sobre essa história? O episódio completo está disponível no podcast.</div>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art5" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">História da ciência</div>
+        <h2>A morte vem em partículas<span class="sub">SARS-CoV-2, Covid-19 e a história do microscópio</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">K</span> Karina</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Há pouco mais de dois anos, a humanidade vem enfrentando uma crise desencadeada por um organismo tão pequeno que nem sequer pode ser visto num microscópio convencional, mas com um poder de contaminação e devastação tão grande que é possivelmente a maior crise dos últimos dois séculos.</p>
+        <p>O SARS-CoV-2 é um vírus da família dos coronavírus que, ao infectar humanos, causa a doença chamada Covid-19. Esse mesmo vírus foi responsável por uma pandemia que devastou o mundo todo, matando mais de 6 milhões de pessoas. Mesmo após as vacinações, não podemos fechar os olhos para esse vírus, que possui grande potencial de mutação — por isso é tão importante manter os hábitos de higiene e limpeza.</p>
+        <h3>Uma descoberta revolucionária</h3>
+        <p>Durante muitos anos, não entendíamos como as doenças aconteciam e sequer sabíamos da existência de vida microscópica. Hoje temos histórias que nos fazem refletir sobre o quanto o ser humano evoluiu — e, junto com ele, a ciência. O primeiro microscópio foi inventado no final do século XVI por dois fabricantes de óculos holandeses, Hans e Zacharias Janssen. Já o alemão Antony van Leeuwenhoek foi o primeiro a aperfeiçoar o microscópio para uso em microbiologia, em 1674.</p>
+        <p>Por muitos séculos, as mulheres pariam seus filhos em casa, com ajuda de parteiras que usavam utensílios domésticos no parto: tesoura, bacia, pano, água, cachaça e azeite. Só na passagem do século XVIII para o XIX os cirurgiões passaram a se interessar pela atividade do parto — mas, naquela época, os hospitais eram conhecidos como &quot;casas de morte&quot;, já que muitos que entravam não saíam com vida, geralmente por causa da aglomeração, falta de ventilação e falta de acesso a água limpa.</p>
+        <p>A maternidade do Hospital Geral de Viena era a maior da Europa e também treinava novos médicos e parteiras. Foi lá que o Dr. Ignaz Philipp Semmelweis, nascido na Hungria em 1818 e formado em medicina em 1844, se deparou com um cenário assustador: muitas mulheres morriam após o parto com sintomas parecidos — febre, delírios e dores muito fortes — sem causa conhecida. A fama da clínica era tão ruim que muitas mulheres preferiam dar à luz em casa, ou até na rua.</p>
+        <p>Depois de anos de estudo sobre essa &quot;febre puerperal&quot;, o Dr. Ignaz experimentou lavar as mãos antes de fazer o parto — e observou que a taxa de mortalidade caiu 12%. Hoje sabemos que a febre puerperal é uma infecção causada por diferentes micro-organismos, como Streptococcus pyogenes, Escherichia coli e Clostridium perfringens. A assepsia em ambiente hospitalar segue como um dos fatores mais importantes até hoje, com médicos treinados na higienização correta das mãos e braços antes de qualquer cirurgia.</p>
+        <div class="prompt-strip" style="background:var(--accent);"><span class="mic">🎙</span> No podcast você encontra essa história completa, em detalhes. Vale a pena escutar.</div>
+        
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<footer id="apoie">
+  <div class="foot-inner">
+    <div>
+      <h3>Apoie o projeto</h3>
+      <p>O Canal Bio In Situ é uma iniciativa independente de divulgação científica em biologia. Os episódios são publicados semanalmente no site e nos principais agregadores de podcast.</p>
+      <p>Tem alguma sugestão de tema para a próxima edição? Escreva para <a class="link" href="mailto:cartinhas@biologiainsitu.com.br">cartinhas@biologiainsitu.com.br</a>.</p>
+    </div>
+    <div class="foot-col">
+      <div class="row"><span>Apoia.se</span><span>apoia.se/biologiainsitu</span></div>
+      <div class="row"><span>PicPay</span><span>@biologiainsitu</span></div>
+      <div class="row"><span>Pix</span><span>cartinhas@biologiainsitu.com.br</span></div>
+    </div>
+  </div>
+  <div class="credits">
+    <span>ISSN 2965-923X</span>
+    <span>·</span>
+    <span>Organizadores: C. Santana Santos, R. Silva Gomes, H. Caramuru Carlos</span>
+    <span>·</span>
+    <span>Autoras/es: Melissa dos Santos Cabral (texto), Raquel Ribeiro da Rosa e Luana Campos Leal (formatação)</span>
+    <span>·</span>
+    <span>Design web: equipe voluntária Bio In Situ</span>
+  </div>
+</footer>
+
+</body>
+</html>

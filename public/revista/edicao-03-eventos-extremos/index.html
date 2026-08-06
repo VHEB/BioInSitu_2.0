@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eventos climáticos extremos — Bio In Situ, Ed. Vol. 1 · Nº 3 · 2024 · Edição 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --paper: #F6F4EE;
+    --paper-dim: #EFECE3;
+    --ink: #14231C;
+    --ink-soft: #3A473F;
+    --green: #1E7A46;
+    --green-deep: #123D25;
+    --teal: #0E8E8A;
+    --slate: #4B4B4B;
+    --magenta: #D6116C;
+    --sand: #DCD2B8;
+    --gold: #9C8A4E;
+    --rule: rgba(20,35,28,0.14);
+    --maxw: 760px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ===== Skip / focus ===== */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--green);
+    outline-offset:3px;
+  }
+
+  /* ===== Top bar ===== */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,244,238,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:700; font-size:18px;
+    text-decoration:none;
+  }
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--green);}
+  .topbar nav{display:flex; gap:22px;}
+  .topbar nav a{
+    font-size:13px; text-decoration:none; color:var(--ink-soft);
+    letter-spacing:0.03em; text-transform:uppercase;
+  }
+  .topbar nav a:hover{color:var(--green);}
+  #toc-toggle{display:none;}
+
+  /* ===== Hero ===== */
+  .hero{
+    max-width:980px; margin:0 auto; padding:64px 28px 40px;
+    text-align:left;
+  }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--green-deep);
+    display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .hero .eyebrow::before{content:"";width:28px;height:1px;background:var(--green-deep);display:inline-block;}
+  .hero h1{
+    font-size:clamp(38px, 6vw, 68px);
+    font-weight:600; line-height:1.02; margin:0 0 22px;
+    max-width:850px;
+  }
+  .hero h1 em{font-style:italic; font-weight:500; color:var(--green);}
+  .hero p.lede{
+    max-width:560px; color:var(--ink-soft); font-size:18px; margin:0 0 34px;
+  }
+  .hero .meta-row{
+    display:flex; flex-wrap:wrap; gap:28px; font-size:13.5px; color:var(--ink-soft);
+    border-top:1px solid var(--rule); padding-top:18px;
+  }
+  .hero .meta-row strong{color:var(--ink); display:block; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px; font-weight:600;}
+
+  /* signature motif: circuit-root divider */
+  .motif{
+    display:block; width:100%; height:34px; margin:6px 0 0;
+    opacity:0.9;
+  }
+
+  /* ===== Layout: TOC + content ===== */
+  .layout{
+    max-width:1180px; margin:0 auto; padding:0 28px 40px;
+    display:grid; grid-template-columns:230px 1fr; gap:56px;
+  }
+  .toc{
+    position:sticky; top:70px; align-self:start;
+    padding:22px 0 40px;
+    max-height:calc(100vh - 90px); overflow-y:auto;
+  }
+  .toc-title{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--ink-soft); margin-bottom:14px; font-weight:600;
+  }
+  .toc ol{list-style:none; margin:0; padding:0; counter-reset:art;}
+  .toc li{counter-increment:art; margin-bottom:2px;}
+  .toc a{
+    display:flex; gap:10px; padding:8px 6px; text-decoration:none;
+    font-size:13.5px; color:var(--ink-soft); border-radius:6px;
+    line-height:1.3;
+  }
+  .toc a:hover{background:var(--paper-dim); color:var(--ink);}
+  .toc a::before{
+    content:counter(art, decimal-leading-zero);
+    font-family:'IBM Plex Mono', monospace; font-size:11px;
+    color:var(--green); flex-shrink:0; padding-top:1px;
+  }
+
+  main{min-width:0;}
+
+  /* ===== Article card ===== */
+  article.piece{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:14px;
+    margin-bottom:26px;
+    overflow:hidden;
+    scroll-margin-top:80px;
+  }
+  .piece-head{
+    padding:34px 40px 26px;
+    border-bottom:1px solid var(--rule);
+    position:relative;
+  }
+  .piece-head::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:6px;
+    background:var(--accent, var(--green));
+  }
+  .piece-kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--accent, var(--green));
+    margin-bottom:10px; font-weight:500;
+  }
+  .piece-head h2{
+    font-size:clamp(24px, 3.4vw, 32px); font-weight:600; line-height:1.12; margin:0 0 16px;
+  }
+  .piece-head h2 .sub{
+    display:block; font-family:'IBM Plex Sans', sans-serif; font-style:normal;
+    font-weight:400; font-size:0.55em; color:var(--ink-soft); margin-top:6px; letter-spacing:0;
+  }
+  .byline{
+    display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-soft);
+  }
+  .byline .avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--accent, var(--green)); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:13px;
+  }
+  .piece-body{padding:8px 40px 38px;}
+  .piece-body p{margin:0 0 18px; color:var(--ink);}
+  .piece-body h3{font-size:17px; margin:26px 0 12px; font-weight:600; color:var(--accent, var(--green-deep));}
+  .piece-body .drop::first-letter{
+    float:left; font-family:'Fraunces', serif; font-weight:700; font-size:3.6em;
+    line-height:0.82; padding-right:10px; padding-top:4px; color:var(--accent, var(--green));
+  }
+  .cols{columns:1; column-gap:36px;}
+  @media(min-width:640px){ .cols.two{columns:2;} }
+
+  .callout{
+    background:var(--paper-dim);
+    border-left:3px solid var(--accent, var(--green));
+    border-radius:0 10px 10px 0;
+    padding:16px 20px;
+    margin:8px 0 22px;
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+  .quote{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:20px; line-height:1.45; color:var(--ink);
+    padding:4px 0 4px 20px; border-left:3px solid var(--accent, var(--green));
+    margin:22px 0;
+  }
+  .binary{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em;
+    color:var(--accent, var(--green)); opacity:0.75; margin:-6px 0 20px;
+  }
+  ul.tidy{margin:0 0 18px; padding-left:20px;}
+  ul.tidy li{margin-bottom:8px;}
+  .refs{
+    font-size:13.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:8px; padding-top:18px;
+  }
+  .refs p{margin-bottom:8px;}
+  .caption{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:-8px;}
+
+  .prompt-strip{
+    margin-top:24px; padding:14px 20px; border-radius:10px;
+    background:var(--green-deep); color:#EFEDE3;
+    font-size:13.5px; display:flex; align-items:center; gap:12px;
+  }
+  .prompt-strip .mic{
+    width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+
+  /* reading tips */
+  .book{
+    display:grid; grid-template-columns:64px 1fr; gap:16px; margin-bottom:22px;
+  }
+  .book .spine{
+    width:64px; height:88px; border-radius:4px;
+    background:linear-gradient(160deg, var(--accent, var(--green)), var(--green-deep));
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    font-family:'Fraunces',serif; font-weight:700; font-size:22px;
+  }
+  .book h4{margin:0 0 2px; font-size:16px; font-family:'Fraunces',serif; font-weight:600;}
+  .book .by{font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;}
+  .book p{font-size:14px; margin:0; color:var(--ink-soft);}
+
+  /* footer / support */
+  footer{
+    background:var(--green-deep); color:#EDEAE0; margin-top:40px;
+    padding:56px 28px 40px;
+  }
+  .foot-inner{max-width:980px; margin:0 auto; display:grid; grid-template-columns:1.3fr 1fr; gap:48px;}
+  footer h3{color:#fff; font-size:24px; margin:0 0 14px;}
+  footer p{color:#C9D2C7; max-width:420px; margin:0 0 10px;}
+  footer a.link{color:#9FE3B8; text-decoration:none; border-bottom:1px solid rgba(159,227,184,0.35);}
+  .foot-col .row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.1); font-size:14px;}
+  .foot-col .row span:first-child{color:#9FB0A4;}
+  .credits{max-width:980px; margin:34px auto 0; padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); font-size:12.5px; color:#8AA091; display:flex; flex-wrap:wrap; gap:6px 18px;}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .toc{position:static; max-height:none; padding-bottom:10px;}
+    .foot-inner{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .piece-head, .piece-body{padding-left:22px; padding-right:22px;}
+    .topbar nav{display:none;}
+    .cols.two{columns:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+
+  /* imagem opcional de capa da matéria (não usada nas edições sem gerador de imagem) */
+  .piece-media{width:100%; aspect-ratio:16/9; overflow:hidden;}
+  .piece-media img{width:100%; height:100%; object-fit:cover; display:block;}
+
+  /* link opcional para o PDF/fonte original da matéria */
+  .source-link{
+    font-size:12.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:20px; padding-top:14px;
+  }
+  .source-link a{color:var(--green); text-decoration:underline; text-underline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="#topo"><span class="dot"></span>BIO IN SITU</a>
+  <nav>
+    <a href="#sumario">Sumário</a>
+    <a href="#apoie">Apoie</a>
+    <a href="https://biologiainsitu.com.br" target="_blank" rel="noopener">Site</a>
+  </nav>
+</div>
+
+<div id="topo" class="hero">
+  <div class="eyebrow">Vol. 1 · Nº 3 · 2024 · Edição 3</div>
+  <h1>Eventos climáticos <em>extremos</em></h1>
+  <p class="lede">Desastres, deslocamento de populações e os efeitos das mudanças climáticas na saúde, na agricultura e na biodiversidade — a segunda parte da nossa série especial sobre o clima.</p>
+  <div class="meta-row">
+    <div><strong>Organizadores</strong>Cristianne Santana Santos, Ricardo da Silva Gomes, Heloá Caramuru Carlos, Bruna Garcia da Cruz Canellas, Vitor Estanislau de Almeida Souza, Amanda Honório Lopes, Dávylla Ribeiro Lopes, Leonardo Vicente Souza, Luiza de Freitas Ferreira, Melissa dos Santos Cabral e Rayane Ribeiro Rodrigues</div>
+    <div><strong>ISSN</strong>2965-923X</div>
+    <div><strong>Publicação</strong>Rio de Janeiro, RJ</div>
+  </div>
+</div>
+
+<svg class="motif" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 17 H120 M170 17 H1200" stroke="#1E7A46" stroke-width="1" opacity="0.35"/>
+  <circle cx="145" cy="17" r="4" fill="#1E7A46"/>
+  <path d="M145 17 q10 -14 24 -14 M145 17 q10 14 24 -14" stroke="#1E7A46" stroke-width="1.2" fill="none" opacity="0.6"/>
+</svg>
+
+<div class="layout">
+  <aside class="toc" id="sumario">
+    <div class="toc-title">Nesta edição</div>
+    <ol>
+      <li><a href="#art1">Poluição atmosférica</a></li>
+      <li><a href="#art2">As 5 extinções em massa</a></li>
+      <li><a href="#art3">Planos de controle para desastres ambientais</a></li>
+      <li><a href="#art4">Mudanças climáticas e a agricultura</a></li>
+      <li><a href="#art5">Ondas de calor e como se proteger</a></li>
+      <li><a href="#art6">Sua saúde e o aquecimento global</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+    <article class="piece" id="art1" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Poluição Ambiental</div>
+        <h2>Poluição atmosférica e seus efeitos nocivos</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">MC</span> Melissa Cabral</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Há cerca de 10 mil anos, a humanidade criou a agricultura e, desde então, vem crescendo e evoluindo seu modo de vida de forma cada vez mais rápida para facilitar o dia a dia. Alguns exemplos disso são os meios de locomoção, que precisaram se ajustar conforme a demanda do crescimento populacional, o número de construções para garantir moradia e emprego, ou até uma simples peça de roupa no seu guarda-roupa. Para vivermos, nós geramos um impacto na natureza — é possível viver em harmonia com os outros seres vivos mesmo assim, mas quando quebramos esse equilíbrio geramos o que podemos chamar de impacto ambiental.</p>
+        <p>Desde a Revolução Industrial, vimos explorando os recursos da natureza de forma exagerada, e os problemas ambientais estão presentes no nosso cotidiano de forma clara e evidente — como a poluição do ar, que causa diversas doenças respiratórias e outros problemas na natureza.</p>
+        <ul class="tidy"><li>Asma brônquica</li><li>Doença Pulmonar Obstrutiva Crônica (DPOC)</li><li>Infecções respiratórias agudas</li><li>Câncer de pulmão</li></ul>
+        <h3>Poluição atmosférica x meio ambiente</h3>
+        <p>A exposição a certos poluentes, como partículas finas (MP) e substâncias químicas tóxicas suspensas no ar, pode aumentar o nível de doenças e o risco de desenvolver câncer de pulmão é grande. Entre os impactos negativos da poluição do ar no planeta estão o impacto na camada de ozônio, a degradação do ecossistema, as chuvas ácidas e a deterioração da qualidade do ar em geral.</p>
+        <div class="callout">Segundo dados da página &quot;State of Global Air&quot;, em um gráfico que compara os níveis de poluentes entre países, o Brasil já ultrapassou os Estados Unidos nesse quesito. Apesar de partículas finas e carbono serem diferentes entre si, estão na mesma categoria de poluentes — e o Brasil tem grande potencial de se tornar um novo protagonista do aumento do índice de poluição atmosférica, se nada for feito. (Fonte: Health Effects Institute, State of Global Air 2020; Global Burden of Disease Study 2019, IHME 2020 — stateofglobalair.org)</div>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art2" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Biodiversidade</div>
+        <h2>As 5 extinções em massa</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">MC</span> Melissa Cabral</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Você sabia que já houve cinco grandes extinções na Terra? Primeiro, vamos entender o que significa a palavra extinção na biologia e na ecologia: é o desaparecimento total de uma espécie ou grupo de espécies, considerada a morte do último indivíduo daquela espécie. Um exemplo super famoso é o T. rex, espécie de dinossauro que não existe mais — imagina a gente convivendo com essa espécie? Com certeza seríamos seu lanchinho favorito.</p>
+        <p>Atualmente, o homem também é responsável pela extinção de várias espécies ao longo dos anos, devido à exploração incansável de recursos — mas nem sempre foi assim. O mundo já passou por muitas mudanças climáticas que resultaram em catástrofes. Vamos catalogar os períodos em que ocorreram extinções em massa:</p>
+        <ul class="tidy"><li><strong>Ordoviciano-Siluriano</strong> — há 440 milhões de anos. Causas prováveis: atividades vulcânicas intensas, queda de temperatura, formação glacial e queda no nível do mar. Cerca de 85% das espécies desapareceram, especialmente pequenos seres marinhos invertebrados.</li><li><strong>Devoniano</strong> — há 370-360 milhões de anos. Causa desconhecida: mudanças climáticas intensas e falta de oxigênio detectada nos oceanos. Entre 70% e 80% de todas as espécies foram extintas.</li><li><strong>Permiano-Triássico</strong> — há 252 milhões de anos. Causas prováveis: impacto de asteroide, mudanças climáticas extremas, erupções vulcânicas massivas. Cerca de 95% dos seres foram extintos neste período — a maior extinção da história.</li><li><strong>Triássico-Jurássico</strong> — há 201 milhões de anos. Causas prováveis: mudanças climáticas extremas, erupções vulcânicas massivas, aumento dos níveis de dióxido de carbono. Estudos calculam que 3/4 das espécies desapareceram nessa época.</li><li><strong>Cretáceo-Paleogeno</strong> — há 66 milhões de anos. Causas prováveis: mudanças climáticas extremas, erupções vulcânicas massivas, impacto de um grande asteroide. Estima-se que cerca de 80% das espécies sumiram nesse momento.</li></ul>
+        <div class="callout">E agora? Alguns cientistas acreditam que já estamos vivenciando a sexta extinção em massa — o &quot;Período Quaternário&quot; — atribuída principalmente às atividades humanas: mudanças climáticas extremas, poluição em geral, perda de habitat e mau uso dos recursos naturais.</div>
+        <p>É essencial que tomemos medidas para proteger toda a biodiversidade do nosso planeta, incluindo nós mesmos. Mas como podemos fazer isso? É necessário que haja consciência sobre nossas ações, a exploração de recursos, a forma como nos alimentamos e como o sistema de consumo pode provocar tudo isso. O tempo está cada vez mais curto. A pergunta que não quer calar: quanto tempo nos resta?</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art3" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Políticas Públicas</div>
+        <h2>Planos de controle para desastres ambientais no Brasil<span class="sub">Protegendo o nosso lar</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">CS</span> Cristianne Santos</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">O Brasil, um país com rica diversidade de ecossistemas, enfrenta desafios constantes relacionados à proteção do meio ambiente e à prevenção de desastres naturais. Com uma vasta extensão territorial que abrange florestas, áreas costeiras e diversos biomas, torna-se essencial desenvolver e implementar planos de controle para desastres ambientais eficazes — que visam não apenas amenizar os impactos dos desastres, mas também proteger vidas humanas, a biodiversidade e recursos naturais preciosos.</p>
+        <h3>Qual é a estrutura dos planos?</h3>
+        <p>O Brasil possui uma estrutura institucional e legislativa sólida para lidar com desastres ambientais. O Sistema Nacional de Proteção e Defesa Civil (SINPDEC), criado pela Lei nº 12.608/2012, é responsável por coordenar as ações de prevenção, preparação, resposta e reconstrução em caso de desastres. Além disso, o país conta com órgãos específicos, como o Instituto Brasileiro do Meio Ambiente e dos Recursos Naturais Renováveis (Ibama) e o Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio), que desempenham papéis fundamentais na gestão ambiental e na proteção de áreas protegidas.</p>
+        <h3>Planos de contingência e resposta</h3>
+        <p>Os planos de contingência são instrumentos essenciais para a preparação e resposta a desastres ambientais. No Brasil, cada estado e município deve elaborar seus próprios planos, adaptados às características locais e aos riscos específicos — incluindo medidas para lidar com enchentes, deslizamentos de terra, incêndios florestais e derramamentos de óleo.</p>
+        <p>Na região amazônica, onde os incêndios florestais são uma ameaça recorrente, os planos de contingência incluem a mobilização de equipes de combate a incêndios, o monitoramento por satélite e a educação ambiental para prevenir queimadas ilegais. Já nas áreas costeiras, os planos para derramamentos de óleo envolvem a rápida mobilização de barreiras de contenção, equipes de limpeza e o uso de tecnologias de resposta rápida.</p>
+        <h3>Monitoramento e alerta</h3>
+        <p>O monitoramento constante das condições ambientais e dos riscos de desastres é fundamental para uma resposta eficaz. No Brasil, instituições como o Instituto Nacional de Pesquisas Espaciais (Inpe) e o Centro Nacional de Monitoramento e Alertas de Desastres Naturais (Cemaden) utilizam tecnologias avançadas — satélites e radares meteorológicos — para monitorar o clima, os recursos hídricos e as áreas vulneráveis a desastres.</p>
+        <div class="callout">Um exemplo notável é o Sistema de Alerta de Deslizamentos de Terra (SAD), implantado em áreas de risco de algumas cidades brasileiras, que utiliza sensores para detectar movimentos de solo e emitir alertas às comunidades vulneráveis, permitindo evacuação e adoção de medidas de precaução.</div>
+        <h3>Educação, conservação e manejo sustentável</h3>
+        <p>A educação e a conscientização da população desempenham papel crucial na prevenção de desastres ambientais. Programas de educação ambiental são desenvolvidos em escolas, comunidades e meios de comunicação para informar as pessoas sobre os riscos naturais, ensinar práticas sustentáveis e promover uma cultura de prevenção e resiliência. O envolvimento das comunidades locais na elaboração e implementação dos planos também é fundamental: a participação ativa das pessoas na identificação de riscos, no planejamento de ações e na resposta a desastres fortalece a capacidade de adaptação e reduz a vulnerabilidade das comunidades.</p>
+        <p>A conservação dos ecossistemas naturais e o manejo sustentável dos recursos naturais são fundamentais para reduzir a ocorrência e a gravidade dos desastres. No Brasil, a proteção de áreas protegidas — como parques nacionais e reservas ambientais — desempenha papel vital na preservação da biodiversidade e na mitigação de desastres como deslizamentos e enchentes. Práticas de manejo sustentável, como reflorestamento, controle de erosão e gestão integrada de bacias hidrográficas, contribuem para a estabilidade dos ecossistemas e a redução do impacto de eventos extremos.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art4" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Agricultura</div>
+        <h2>Mudanças climáticas e a agricultura</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">BG</span> Barbara Grusag</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">As evidências do aquecimento global estão sendo cada vez mais presenciadas por todas as pessoas ao redor do globo. Calores desproporcionais fora de época, frios extremos ou chuvas intensas que atingem cidades e zonas rurais mostram que o futuro que os cientistas tanto alertaram sobre as mudanças climáticas está acontecendo hoje. Em 2023, chegamos à marca do ano mais quente em 125 milhões de anos — acontecimentos que afetam, direta e indiretamente, áreas como energia, mobilidade, recursos hídricos, saúde, infraestrutura e agricultura.</p>
+        <p>Em relação à agricultura, podemos analisar em diferentes perspectivas: ela ocupa dois lugares quando falamos sobre o tema. É uma atividade que contribui para as mudanças climáticas, emitindo gases de efeito estufa promovidos pelo uso da terra e pela conversão de florestas em terras agrícolas, e, ao mesmo tempo, é altamente sensível às mudanças climáticas, afetando a produção, o acesso e a disponibilidade de alimentos.</p>
+        <h3>Desenvolvimento da agricultura</h3>
+        <p>A agricultura passou e passa por diversos momentos. Iniciou com alta dependência de mão de obra, tração animal e pouca tecnologia. Em seguida, a Revolução Verde trouxe a tecnologia dos insumos (fertilizantes, pesticidas e herbicidas) — vale lembrar que os agrotóxicos foram criados na Primeira Guerra Mundial como armas químicas, e só depois foram incorporados na agricultura e na produção em grande escala.</p>
+        <p>A partir de 1990, as tecnologias digitais começaram a ser utilizadas no setor, iniciando a chamada Agricultura 3.0, marcada por sistemas integrados de gestão agrícola e pecuária, monitoramento remoto e agricultura de precisão. Recentemente — ainda pouco adotada no Brasil — a Agricultura 4.0 vem sendo desenvolvida em direção às tecnologias inteligentes (inteligência artificial, internet das coisas e big data), aumentando muito os níveis de complexidade e sofisticação das ferramentas.</p>
+        <div class="callout">76,8% dos estabelecimentos rurais brasileiros se enquadram como agricultura familiar, segundo o IBGE. Esse setor, com potencial significativo para adotar sistemas agroflorestais (mais resistentes às mudanças climáticas), é justamente o que tem menor acesso a tecnologias e incentivos para práticas mais sustentáveis e de baixo carbono. Já o agronegócio conservador — cujas práticas vão na contramão das necessidades ecológicas — é o segmento com mais recursos, incentivos e capital, e o que mais tem acesso à Agricultura 4.0, majoritariamente para aumentar a produtividade.</div>
+        <h3>Impactos das mudanças climáticas na agricultura</h3>
+        <p>Como mencionado, a alta concentração de gases de efeito estufa, o aumento da temperatura do planeta e a alteração no ciclo de chuvas afetam diretamente a agricultura que conhecemos. As consequências serão inúmeras, em diversas regiões do país: existem estudos que mencionam a perda tanto na qualidade quanto na redução da produção de culturas agrícolas como trigo, milho, algodão e soja. Algumas áreas hoje aptas para receber um tipo de cultura vão precisar migrar para outras regiões, e o ciclo das produções também tende a mudar, com espécies florescendo antes da hora ou com duração menor para o desenvolvimento da planta.</p>
+        <p>Todos esses aspectos trazem risco à segurança alimentar, afetam a economia e ainda prejudicam a permanência dos agricultores no campo. Realizar esforços e promover uma agricultura resiliente às mudanças climáticas deve fazer parte de uma série de políticas públicas. Incluir e tornar acessíveis as tecnologias disponíveis é essencial para buscar sistemas com práticas sustentáveis, que diminuam a emissão de gases de efeito estufa e, como consequência, os efeitos das mudanças climáticas.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art5" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Saúde</div>
+        <h2>Ondas de calor e dicas para se proteger</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">LF</span> Luiza Ferreira</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Mas o que seriam as ondas de calor? Daria para surfar nelas? Segundo a Organização Meteorológica Mundial, podemos considerar uma onda de calor quando a temperatura máxima diária está 5°C acima do valor médio esperado para aqueles mesmos dias do ano — e essa temperatura precisa continuar elevada por pelo menos 6 dias consecutivos.</p>
+        <div class="callout">Podem existir picos de temperatura mais elevados que os 5°C acima da média, por um período menor que 6 dias — nesse caso, não são classificados como ondas de calor, mas ainda assim podem impactar a saúde pública, às vezes até mais do que uma onda de calor &quot;oficial&quot;. A Organização Meteorológica Mundial (OMM) foi fundada em 1950 e é a agência especializada das Nações Unidas para meteorologia, hidrologia operacional e ciências geofísicas.</div>
+        <p>Essas ondas de calor podem ocorrer em qualquer estação do ano, mas é no verão (dezembro, janeiro e fevereiro) que seus impactos são mais intensos. Elas sempre existiram, mas por causa das mudanças climáticas a temperatura média do planeta já está cerca de 1,2°C mais alta do que no período pré-industrial — então as ondas de calor se somam às mudanças climáticas, e essas alterações de temperatura aumentam ainda mais.</p>
+        <h3>Dicas para se proteger nesses momentos de tanto calor</h3>
+        <p>É muito importante ingerir uma quantidade adequada de água — essa quantidade varia de acordo com o peso corporal da pessoa, geralmente calculando-se de 35 a 40 mL vezes o peso corporal (lembrando que esse cálculo é uma estimativa, já que depende de fatores como atividade física e clima). É muito importante prevenir a desidratação nesses momentos, além de ajudar na prevenção da formação de cálculos renais (pedras nos rins).</p>
+        <p>Naturalmente, com o calor, ocorre a dilatação dos vasos sanguíneos. Essa vasodilatação aumenta o espaço para o sangue circular e, consequentemente, a pressão arterial diminui — é importante prestar atenção para evitar quedas de pressão nesses períodos, cujos sintomas incluem tontura, visão embaçada e, em casos mais intensos, desmaios. A melhor forma de prevenção também é a ingestão de líquidos: água, chás, sucos, água de coco e isotônicos podem ajudar.</p>
+        <p>Alguns problemas de pele podem surgir devido à combinação de altas temperaturas e transpiração. Herpes e brotoejas são problemas comuns que podem se intensificar em períodos de calor extremo. Na herpes labial, o estresse fisiológico causado pelas altas temperaturas pode provocar o reaparecimento de lesões nos lábios — lembrando que essa é uma infecção altamente transmissível, principalmente por contato direto com a ferida (como no beijo), mas também por talheres e copos compartilhados. O uso de protetor labial com FPS mínimo de 30 ajuda a diminuir a reincidência.</p>
+        <p>As brotoejas surgem devido a obstruções nas glândulas sudoríparas, que impedem a saída do suor. Aparecem como bolinhas de &quot;água&quot;, ou até espinhas, nas dobras do corpo — braços, pernas, tronco e pescoço. São muito comuns em crianças, mas também podem aparecer em adultos. Para evitá-las, é interessante usar roupas com tecidos mais respiráveis e mais largas, evitando que certas áreas fiquem muito tempo abafadas.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art6" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Saúde Pública</div>
+        <h2>Sua saúde e o aquecimento global</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">DR</span> Dávylla Ribeiro</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">O clima tropical, característico de muitas regiões do Brasil e de outros países próximos à linha do Equador, está intrinsecamente ligado à saúde humana. Com a intensificação do aquecimento global, essa relação torna-se ainda mais relevante e complexa, exigindo uma abordagem holística e proativa para enfrentar os desafios que surgem dessa interação.</p>
+        <p>A tropicalidade do clima, marcada por altas temperaturas, elevada umidade e variações sazonais distintas, influencia diretamente a saúde das populações que vivem nessas áreas. A exposição prolongada a altas temperaturas pode desencadear uma série de impactos na saúde, como o aumento da incidência de doenças relacionadas ao calor — insolação, desidratação e exaustão térmica.</p>
+        <div class="callout">Temperatura, pressão e umidade atmosféricas, e seus fenômenos derivados (calor, frio, ventos, chuva, neve etc.), compõem o conjunto de elementos formadores do clima.</div>
+        <p>O Brasil é um país de grande complexidade social, cultural, ecológica e climática. Estabelecer limiares climáticos para o país e suas várias regiões — a partir dos quais podem ocorrer alterações drásticas e/ou irreversíveis na ocorrência de algumas doenças, principalmente as vetoriais — é um desafio para a ciência brasileira. Efeitos climáticos como aumento da temperatura, chuvas intensas e incêndios impactam a sociedade diretamente através do aumento de vetores de doenças.</p>
+        <p>Diante desse contexto, é fundamental adotar medidas de prevenção e controle eficazes. Isso inclui investimentos em saneamento básico, gestão integrada de resíduos sólidos, controle de vetores, educação em saúde, e pesquisa e desenvolvimento de vacinas e tratamentos. Além disso, políticas públicas voltadas para a mitigação das mudanças climáticas e a adaptação aos seus efeitos são essenciais para enfrentar esse desafio de forma abrangente e sustentável.</p>
+        
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<footer id="apoie">
+  <div class="foot-inner">
+    <div>
+      <h3>Apoie o projeto</h3>
+      <p>O Canal Bio In Situ é uma iniciativa independente de divulgação científica em biologia. Os episódios são publicados semanalmente no site e nos principais agregadores de podcast.</p>
+      <p>Tem alguma sugestão de tema para a próxima edição? Escreva para <a class="link" href="mailto:cartinhas@biologiainsitu.com.br">cartinhas@biologiainsitu.com.br</a>.</p>
+    </div>
+    <div class="foot-col">
+      <div class="row"><span>Apoia.se</span><span>apoia.se/biologiainsitu</span></div>
+      <div class="row"><span>PicPay</span><span>@biologiainsitu</span></div>
+      <div class="row"><span>Pix</span><span>cartinhas@biologiainsitu.com.br</span></div>
+    </div>
+  </div>
+  <div class="credits">
+    <span>ISSN 2965-923X</span>
+    <span>·</span>
+    <span>Organizadores: C. Santana Santos, R. Silva Gomes, H. Caramuru Carlos</span>
+    <span>·</span>
+    <span>Autoras/es: Bárbara Grusag, Cristianne Santana Santos, Dávylla Ribeiro Lopes, Luiza de Freitas Ferreira, Melissa dos Santos Cabral</span>
+    <span>·</span>
+    <span>Design web: equipe voluntária Bio In Situ</span>
+  </div>
+</footer>
+
+</body>
+</html>

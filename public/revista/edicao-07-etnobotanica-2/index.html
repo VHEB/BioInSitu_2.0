@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etnobotânica: raízes de um saber vivo — Bio In Situ, Ed. Vol. 2 · Nº 7 · 2025 · Edição 7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --paper: #F6F4EE;
+    --paper-dim: #EFECE3;
+    --ink: #14231C;
+    --ink-soft: #3A473F;
+    --green: #1E7A46;
+    --green-deep: #123D25;
+    --teal: #0E8E8A;
+    --slate: #4B4B4B;
+    --magenta: #D6116C;
+    --sand: #DCD2B8;
+    --gold: #9C8A4E;
+    --rule: rgba(20,35,28,0.14);
+    --maxw: 760px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ===== Skip / focus ===== */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--green);
+    outline-offset:3px;
+  }
+
+  /* ===== Top bar ===== */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,244,238,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:700; font-size:18px;
+    text-decoration:none;
+  }
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--green);}
+  .topbar nav{display:flex; gap:22px;}
+  .topbar nav a{
+    font-size:13px; text-decoration:none; color:var(--ink-soft);
+    letter-spacing:0.03em; text-transform:uppercase;
+  }
+  .topbar nav a:hover{color:var(--green);}
+  #toc-toggle{display:none;}
+
+  /* ===== Hero ===== */
+  .hero{
+    max-width:980px; margin:0 auto; padding:64px 28px 40px;
+    text-align:left;
+  }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--green-deep);
+    display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .hero .eyebrow::before{content:"";width:28px;height:1px;background:var(--green-deep);display:inline-block;}
+  .hero h1{
+    font-size:clamp(38px, 6vw, 68px);
+    font-weight:600; line-height:1.02; margin:0 0 22px;
+    max-width:850px;
+  }
+  .hero h1 em{font-style:italic; font-weight:500; color:var(--green);}
+  .hero p.lede{
+    max-width:560px; color:var(--ink-soft); font-size:18px; margin:0 0 34px;
+  }
+  .hero .meta-row{
+    display:flex; flex-wrap:wrap; gap:28px; font-size:13.5px; color:var(--ink-soft);
+    border-top:1px solid var(--rule); padding-top:18px;
+  }
+  .hero .meta-row strong{color:var(--ink); display:block; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px; font-weight:600;}
+
+  /* signature motif: circuit-root divider */
+  .motif{
+    display:block; width:100%; height:34px; margin:6px 0 0;
+    opacity:0.9;
+  }
+
+  /* ===== Layout: TOC + content ===== */
+  .layout{
+    max-width:1180px; margin:0 auto; padding:0 28px 40px;
+    display:grid; grid-template-columns:230px 1fr; gap:56px;
+  }
+  .toc{
+    position:sticky; top:70px; align-self:start;
+    padding:22px 0 40px;
+    max-height:calc(100vh - 90px); overflow-y:auto;
+  }
+  .toc-title{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--ink-soft); margin-bottom:14px; font-weight:600;
+  }
+  .toc ol{list-style:none; margin:0; padding:0; counter-reset:art;}
+  .toc li{counter-increment:art; margin-bottom:2px;}
+  .toc a{
+    display:flex; gap:10px; padding:8px 6px; text-decoration:none;
+    font-size:13.5px; color:var(--ink-soft); border-radius:6px;
+    line-height:1.3;
+  }
+  .toc a:hover{background:var(--paper-dim); color:var(--ink);}
+  .toc a::before{
+    content:counter(art, decimal-leading-zero);
+    font-family:'IBM Plex Mono', monospace; font-size:11px;
+    color:var(--green); flex-shrink:0; padding-top:1px;
+  }
+
+  main{min-width:0;}
+
+  /* ===== Article card ===== */
+  article.piece{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:14px;
+    margin-bottom:26px;
+    overflow:hidden;
+    scroll-margin-top:80px;
+  }
+  .piece-head{
+    padding:34px 40px 26px;
+    border-bottom:1px solid var(--rule);
+    position:relative;
+  }
+  .piece-head::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:6px;
+    background:var(--accent, var(--green));
+  }
+  .piece-kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--accent, var(--green));
+    margin-bottom:10px; font-weight:500;
+  }
+  .piece-head h2{
+    font-size:clamp(24px, 3.4vw, 32px); font-weight:600; line-height:1.12; margin:0 0 16px;
+  }
+  .piece-head h2 .sub{
+    display:block; font-family:'IBM Plex Sans', sans-serif; font-style:normal;
+    font-weight:400; font-size:0.55em; color:var(--ink-soft); margin-top:6px; letter-spacing:0;
+  }
+  .byline{
+    display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-soft);
+  }
+  .byline .avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--accent, var(--green)); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:13px;
+  }
+  .piece-body{padding:8px 40px 38px;}
+  .piece-body p{margin:0 0 18px; color:var(--ink);}
+  .piece-body h3{font-size:17px; margin:26px 0 12px; font-weight:600; color:var(--accent, var(--green-deep));}
+  .piece-body .drop::first-letter{
+    float:left; font-family:'Fraunces', serif; font-weight:700; font-size:3.6em;
+    line-height:0.82; padding-right:10px; padding-top:4px; color:var(--accent, var(--green));
+  }
+  .cols{columns:1; column-gap:36px;}
+  @media(min-width:640px){ .cols.two{columns:2;} }
+
+  .callout{
+    background:var(--paper-dim);
+    border-left:3px solid var(--accent, var(--green));
+    border-radius:0 10px 10px 0;
+    padding:16px 20px;
+    margin:8px 0 22px;
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+  .quote{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:20px; line-height:1.45; color:var(--ink);
+    padding:4px 0 4px 20px; border-left:3px solid var(--accent, var(--green));
+    margin:22px 0;
+  }
+  .binary{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em;
+    color:var(--accent, var(--green)); opacity:0.75; margin:-6px 0 20px;
+  }
+  ul.tidy{margin:0 0 18px; padding-left:20px;}
+  ul.tidy li{margin-bottom:8px;}
+  .refs{
+    font-size:13.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:8px; padding-top:18px;
+  }
+  .refs p{margin-bottom:8px;}
+  .caption{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:-8px;}
+
+  .prompt-strip{
+    margin-top:24px; padding:14px 20px; border-radius:10px;
+    background:var(--green-deep); color:#EFEDE3;
+    font-size:13.5px; display:flex; align-items:center; gap:12px;
+  }
+  .prompt-strip .mic{
+    width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+
+  /* reading tips */
+  .book{
+    display:grid; grid-template-columns:64px 1fr; gap:16px; margin-bottom:22px;
+  }
+  .book .spine{
+    width:64px; height:88px; border-radius:4px;
+    background:linear-gradient(160deg, var(--accent, var(--green)), var(--green-deep));
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    font-family:'Fraunces',serif; font-weight:700; font-size:22px;
+  }
+  .book h4{margin:0 0 2px; font-size:16px; font-family:'Fraunces',serif; font-weight:600;}
+  .book .by{font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;}
+  .book p{font-size:14px; margin:0; color:var(--ink-soft);}
+
+  /* footer / support */
+  footer{
+    background:var(--green-deep); color:#EDEAE0; margin-top:40px;
+    padding:56px 28px 40px;
+  }
+  .foot-inner{max-width:980px; margin:0 auto; display:grid; grid-template-columns:1.3fr 1fr; gap:48px;}
+  footer h3{color:#fff; font-size:24px; margin:0 0 14px;}
+  footer p{color:#C9D2C7; max-width:420px; margin:0 0 10px;}
+  footer a.link{color:#9FE3B8; text-decoration:none; border-bottom:1px solid rgba(159,227,184,0.35);}
+  .foot-col .row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.1); font-size:14px;}
+  .foot-col .row span:first-child{color:#9FB0A4;}
+  .credits{max-width:980px; margin:34px auto 0; padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); font-size:12.5px; color:#8AA091; display:flex; flex-wrap:wrap; gap:6px 18px;}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .toc{position:static; max-height:none; padding-bottom:10px;}
+    .foot-inner{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .piece-head, .piece-body{padding-left:22px; padding-right:22px;}
+    .topbar nav{display:none;}
+    .cols.two{columns:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+
+  /* imagem opcional de capa da matéria (não usada nas edições sem gerador de imagem) */
+  .piece-media{width:100%; aspect-ratio:16/9; overflow:hidden;}
+  .piece-media img{width:100%; height:100%; object-fit:cover; display:block;}
+
+  /* link opcional para o PDF/fonte original da matéria */
+  .source-link{
+    font-size:12.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:20px; padding-top:14px;
+  }
+  .source-link a{color:var(--green); text-decoration:underline; text-underline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="#topo"><span class="dot"></span>BIO IN SITU</a>
+  <nav>
+    <a href="#sumario">Sumário</a>
+    <a href="#apoie">Apoie</a>
+    <a href="https://biologiainsitu.com.br" target="_blank" rel="noopener">Site</a>
+  </nav>
+</div>
+
+<div id="topo" class="hero">
+  <div class="eyebrow">Vol. 2 · Nº 7 · 2025 · Edição 7</div>
+  <h1>Etnobotânica: <em>raízes de um saber vivo</em></h1>
+  <p class="lede">Uma edição dedicada à etnobotânica em suas muitas formas: da ayahuasca aos orixás caçadores, do mandacaru nordestino à odontologia, das sementes crioulas às hortas comunitárias e ao mangá Os Diários da Boticária.</p>
+  <div class="meta-row">
+    <div><strong>Organizadores</strong>Cristianne Santana Santos, Ricardo da Silva Gomes, Heloá Caramuru Carlos, Bruna Garcia da Cruz Canellas, Vitor Estanislau de Almeida Souza</div>
+    <div><strong>ISSN</strong>2965-923X</div>
+    <div><strong>Publicação</strong>Rio de Janeiro, RJ</div>
+  </div>
+</div>
+
+<svg class="motif" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 17 H120 M170 17 H1200" stroke="#1E7A46" stroke-width="1" opacity="0.35"/>
+  <circle cx="145" cy="17" r="4" fill="#1E7A46"/>
+  <path d="M145 17 q10 -14 24 -14 M145 17 q10 14 24 -14" stroke="#1E7A46" stroke-width="1.2" fill="none" opacity="0.6"/>
+</svg>
+
+<div class="layout">
+  <aside class="toc" id="sumario">
+    <div class="toc-title">Nesta edição</div>
+    <ol>
+      <li><a href="#art1">Etnobotânica: a ciência que sempre esteve em nossa vida</a></li>
+      <li><a href="#art2">Ayahuasca</a></li>
+      <li><a href="#art3">A natureza e a cultura em sala de aula</a></li>
+      <li><a href="#art4">Você já viu um alienígena hoje?</a></li>
+      <li><a href="#art5">O uso do Mandacaru na produção de remédio natural</a></li>
+      <li><a href="#art6">Etnobotânica na odontologia</a></li>
+      <li><a href="#art7">Etnobotânica e conservação de sementes</a></li>
+      <li><a href="#art8">Dicas de leitura</a></li>
+      <li><a href="#art9">Conhecimento etnobotânico no mangá: Os Diários da Boticária</a></li>
+      <li><a href="#art10">Horta medicinal comunitária</a></li>
+      <li><a href="#art11">Caminhos ancestrais para a preservação</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+    <article class="piece" id="art1" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Etnobotânica</div>
+        <h2>Etnobotânica: a ciência que sempre esteve em nossa vida</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">LV</span> Leonardo Vicente</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Desde pequenos, muitos de nós aprendemos a lidar com a natureza de maneiras que, embora parecessem simples, estavam repletas de significado. Quem nunca ouviu da avó ou de um parente mais velho que o chá de boldo ajuda na digestão ou que uma folha de erva-cidreira pode acalmar os nervos? Esses ensinamentos, passados de geração em geração, fazem parte de algo muito maior: a etnobotânica.</p>
+        <h3>Praticando sem saber</h3>
+        <p>Muitas vezes, utilizamos plantas de forma intuitiva, com base no que aprendemos com os mais velhos. No entanto, por desconhecimento ou mesmo por preconceito, não reconhecemos esses saberes como legítimos. Existe até certo acanhamento em admitir que recorremos a um chá de ervas ou a um banho de folhas para resolver problemas cotidianos — resistência que pode ser fruto de uma desconexão crescente com nossas raízes culturais e com a natureza.</p>
+        <h3>De &quot;sabedoria popular&quot; a ciência reconhecida</h3>
+        <p>Quando aprendemos sobre a etnobotânica, percebemos que esses conhecimentos tradicionais são valiosos e profundamente ligados à ciência. Eles são resultado de séculos de observação e interação com o ambiente. Por exemplo, a eficácia do boldo para problemas estomacais é, hoje, respaldada por estudos científicos, mas foi reconhecida primeiro pelos povos que conviviam diretamente com a planta.</p>
+        <h3>Resgate e valorização</h3>
+        <div class="callout">A etnobotânica nos convida a olhar para essas práticas com outros olhos, reconhecendo a sabedoria que elas carregam, e nos incentiva a preservar e valorizar esses conhecimentos antes que se percam.</div>
+        <h3>Redescobrindo nossas raízes</h3>
+        <p>Ao entender o que é etnobotânica, percebemos que ela sempre esteve presente em nossas vidas, muitas vezes disfarçada de &quot;dica de vó&quot; ou &quot;remédio caseiro&quot;. Resgatar e valorizar esse conhecimento é um ato de respeito às nossas origens e uma forma de nos reconectarmos com o que realmente somos: parte da natureza. Então, da próxima vez que alguém recomendar um chá para uma dor de estômago, lembre-se: é mais do que um conselho. É ciência, cultura e tradição.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art2" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Etnobotânica &amp; Espiritualidade</div>
+        <h2>Ayahuasca</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">MC</span> Melissa Cabral</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">A ayahuasca ou santo daime é um chá de origem indígena feito através de duas plantas: a chacrona (Psychotria viridis Ruiz &amp; Pav.), da família Rubiaceae, e a jagube [Banisteriopsis caapi (Spruce ex Griseb.) Morton], da família Malpighiaceae. A bebida facilita o autoconhecimento, a conexão com o universo e tudo o que nele habita, além de trazer felicidade para quem busca esse propósito. Estima-se que seu uso teve início no Brasil, Peru e Bolívia no século XV, mas essa afirmação é questionável.</p>
+        <p>O chá é feito através das folhas da chacrona e das raízes da jagube. A jagube, também conhecida popularmente como mariri, é um cipó pertencente à família Malpighiaceae, nativo das zonas tropicais da América do Sul e das Antilhas. Já a chacrona possui substâncias naturais que atuam no cérebro, podendo alterar a percepção e os sentidos.</p>
+        <h3>A história do mariri</h3>
+        <p>Mariri é uma tradição ligada aos povos indígenas da Amazônia, parte central dos rituais e cerimônias espirituais, muitas vezes envolvendo o uso de plantas sagradas como a ayahuasca. Durante as cerimônias, canções e danças são usadas para facilitar estados alterados de consciência, visando a cura espiritual e a conexão com o mundo natural e o espiritual. Essa história é profundamente enraizada nas culturas indígenas e transmitida de geração em geração.</p>
+        <p>O curta-metragem &quot;Mistérios do Nixipae&quot; aborda o surgimento da bebida sagrada Nixipae (mais conhecida como ayahuasca) sob a ótica do povo Huni Kuî. Segundo essa tradição, a história surge de um índio caçador chamado Dua Busã, conhecido por sua força e coragem, mas cuja ambição o levou a desrespeitar os ensinamentos dos mais velhos sobre os encantados, seres espirituais da floresta. Durante uma caçada, ele adentrou uma área sagrada e desobedeceu às restrições que a protegiam, onde encontrou um encanto na forma de uma mulher.</p>
+        <p>Essa mulher, na verdade, era um espírito da floresta que colocou Dua Busã em transe com sua beleza e sua voz hipnotizante. Ele foi enfeitiçado por ela e perdeu a noção do tempo e do espaço. Quando finalmente despertou, percebeu que havia rompido os laços com sua comunidade e que o equilíbrio entre ele e a natureza havia sido quebrado.</p>
+        <div class="callout">O feitiço de Dua Busã é contado como um alerta: mostra as consequências de desrespeitar a harmonia entre o homem, a floresta e os encantados, ilustrando a necessidade de humildade e reverência às forças espirituais que habitam o mundo natural.</div>
+        <p>O conto é também um marco na compreensão do poder do Nixipae, usado pelos Huni Kuî para reconectar indivíduos com a espiritualidade e curar desequilíbrios causados por erros ou transgressões. Essa prática ritualística, realizada também na cidade grande, permite que o homem branco tenha contato com a medicina sagrada da ayahuasca, ajudando-o a restabelecer sua conexão com a natureza e consigo mesmo.</p>
+        <h3>Ayahuasca e seus princípios ativos</h3>
+        <p>A ayahuasca é composta por dois principais ingredientes: o cipó Banisteriopsis caapi e as folhas da Psychotria viridis. A Dimetiltriptamina (DMT) é o principal composto psicoativo, uma substância que induz estados alterados de consciência, como visões e experiências místicas.</p>
+        <p>As betacarbolinas — compostas por harmina, harmalina e tetrahidroharmina — atuam no sistema nervoso e podem influenciar o funcionamento do cérebro. A harmina e a harmalina podem ter efeitos calmantes e estão associadas ao relaxamento e à alteração da percepção; a tetrahidroharmina pode ajudar na modulação dos neurotransmissores, influenciando o humor e a memória.</p>
+        <p>A DMT é solúvel em gorduras, o que facilita sua absorção pela corrente sanguínea. Normalmente, a MAO — enzima presente no estômago — decompõe o DMT antes que ele chegue ao cérebro; porém, devido às betacarbolinas presentes na jagube, o DMT não é degradado e pode ser absorvido pela corrente sanguínea, chegando ao sistema nervoso central.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art3" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Educação &amp; Etnobotânica</div>
+        <h2>A natureza e a cultura em sala de aula<span class="sub">Etnobotânica no ensino em Sergipe</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">JD</span> Joyce da Costa</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">O contato das crianças com a natureza é uma oportunidade para elas verem, tocarem e entenderem como o mundo natural funciona. No entanto, com as cidades crescendo cada vez mais, esses espaços estão diminuindo, e as crianças estão perdendo a chance de ter essas experiências — o que pode ser preocupante, pois, se não convivem com a natureza, como vão aprender a cuidar do meio ambiente?</p>
+        <p>Por isso, o ensino de etnobotânica nas escolas é tão importante. Em tempos de mudanças climáticas e crises ambientais, a educação precisa formar jovens capazes de entender e cuidar do meio ambiente. Como já cantava Jorge Ben Jor em &quot;País Tropical&quot;, o Brasil é &quot;abençoado por Deus e bonito por natureza&quot; — rico em biodiversidade e cultura local, oferecendo uma oportunidade única de conectar os alunos com seu patrimônio.</p>
+        <p>O estado de Sergipe apresenta o bioma da Caatinga e proximidade ao litoral, com uma vasta diversidade de plantas que carregam profundo valor cultural e medicinal. Incorporar a etnobotânica no currículo pode ajudar os alunos a compreenderem a rica biodiversidade local e o conhecimento tradicional das comunidades, especialmente as indígenas e quilombolas.</p>
+        <p>Apesar disso, na realidade atual das salas de aula sergipanas, o ensino de etnobotânica ainda não é amplamente incluído ao currículo de forma sistemática — não faz parte do planejamento oficial das aulas, acontecendo apenas em projetos isolados. Nos documentos que servem de base para os currículos escolares estaduais, o ensino de botânica não é sequer mencionado, muito menos os conteúdos sobre etnobotânica.</p>
+        <p>O ensino de etnobotânica na educação básica enfrenta desafios, pois os alunos geralmente se sentem distantes do conteúdo e faltam atividades práticas que despertem sua curiosidade — o que não deveria ocorrer, uma vez que a etnobotânica une o conhecimento empírico dos alunos, professores e da comunidade local com os saberes científicos.</p>
+        <p>Ensinar em um ambiente natural, com plantas reais, faz o aprendizado ser mais direto e menos teórico, permitindo que os alunos compreendam melhor o conteúdo e desenvolvam suas próprias ideias enquanto aprendem de maneira prática e conectada ao mundo real.</p>
+        <div class="callout">O ensino de etnobotânica atua não apenas como um meio de enriquecer o currículo escolar, mas também como uma forma acessível de preservar e difundir saberes ancestrais para as futuras gerações.</div>
+        <p>Uma das principais características do ensino de etnobotânica é a sua diversidade: trabalhar esse assunto na escola pode começar com atividades simples e evoluir para abordagens mais complexas.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art4" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Biodiversidade</div>
+        <h2>Você já viu um alienígena hoje?<span class="sub">Espécies exóticas invasoras</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">RD</span> Rony dos Santos</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Caro bioleitor, eu acredito que você não tenha visto um alienígena, mas, se viu, é melhor ligar para a NASA! Brincadeiras à parte, hoje vamos falar sobre algo que, até certo ponto, ainda tem a ver com alienígenas — mas talvez não da maneira que você esteja acostumado a ver.</p>
+        <p>Quando pensamos em alienígenas, é automático imaginarmos seres de outro planeta, com pele verde, olhos enormes e cabeças grandes. Porém, não temos nenhuma prova concreta da existência desses seres. Mas, e se eu disser que temos alienígenas entre nós? Não estou falando de visitantes do espaço, mas sim de algo bem mais comum e próximo: as espécies exóticas invasoras.</p>
+        <p>Essas espécies são organismos que, por ação humana, acabam sendo introduzidos em novos habitats — conceito que serve tanto para plantas, animais quanto microrganismos que não pertencem naturalmente a uma determinada região, mas que conseguem se adaptar, crescer, reproduzir e se espalhar para além da área onde foram introduzidos, causando enormes impactos ecológicos, econômicos e até na saúde humana.</p>
+        <div class="callout">Sabia que as invasões biológicas são hoje a segunda maior causa de perda de biodiversidade no mundo? Elas só ficam atrás da destruição de habitats naturais.</div>
+        <p>As espécies exóticas invasoras têm atributos notáveis para desequilibrar os ecossistemas, competindo diretamente com as espécies nativas por alimento, água e espaço — e muitas vezes trazem doenças, parasitas ou fungos para os quais as espécies locais não têm defesas naturais.</p>
+        <p>Desde o início da civilização, sempre tivemos o costume de mover espécies de um lugar para outro — de forma intencional, como plantando uma árvore frutífera em uma nova região, ou acidentalmente, como insetos e sementes que pegam carona em navios, aviões e até em nossas roupas. Hoje, com a globalização e a facilidade de transporte, essas invasões estão mais frequentes e perigosas do que nunca.</p>
+        <h3>Nativa, exótica ou naturalizada?</h3>
+        <ul class="tidy"><li><strong>Espécies nativas</strong> — pertencem a uma determinada região naturalmente, evoluindo ao longo de milhares ou milhões de anos, adaptadas ao clima, solo e outros organismos daquele ambiente (como o cajueiro, no Brasil).</li><li><strong>Espécies exóticas</strong> — trazidas de fora pelo homem, intencionalmente (como plantas ornamentais) ou acidentalmente (como pragas em cargas de alimentos).</li><li><strong>Espécies naturalizadas</strong> — um caso especial de exóticas: também vêm de fora, mas só conseguem se reproduzir no local com o auxílio do ser humano.</li></ul>
+        <p>Muitas espécies são introduzidas para fins produtivos (agricultura e pecuária), ornamentais ou recreativos (como peixes para pesca). O problema é que, quando escapam do controle ambiental, podem eliminar espécies nativas, modificar o solo, alterar o regime de águas e mudar completamente a estrutura de um ecossistema — como o javali, introduzido na América do Sul para criação e que, depois de escapar, se tornou uma praga em várias regiões.</p>
+        <div class="callout">Como saber se uma espécie ao seu redor é nativa ou exótica? Existe um site chamado REFLORA, que reúne informações sobre a flora do Brasil — basta buscar o nome da espécie para saber sua origem, distribuição e ecologia.</div>
+        <p>O conhecimento é a nossa melhor arma para proteger o meio ambiente. Ao entendermos mais sobre as espécies que habitam o nosso planeta, conseguiremos fazer escolhas mais conscientes e evitar que mais &quot;alienígenas&quot; causem danos aos nossos ecossistemas.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art5" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Etnobotânica &amp; Saúde</div>
+        <h2>O uso do Mandacaru na produção de remédio natural</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">CN</span> Crislaine Nascimento Sousa, Valéria de Aniz Santos e Wislan de Oliveira Santos</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">O mandacaru pode ser usado na medicina popular desde os galhos até suas raízes. Seu caule pode ser utilizado no preparo de chás com ação anti-hipertensiva, antirreumática, anticonstipante e antiemética, além de ajudar no controle de diabetes e amenizar problemas respiratórios, como tosse e bronquite.</p>
+        <p>Sua polpa, no estado natural, pode ser utilizada no combate ao escorbuto (deficiência de vitamina C), infecções no fígado e úlceras, e para o tratamento de hemorroidas. Suas flores também podem ser usadas em forma de chá ou de forma natural para tratamento de verminoses, abcessos, furúnculos e para amenizar febre.</p>
+        <div class="callout">Além de possuir grande importância medicinal, o mandacaru é economicamente mais acessível, especialmente para a população do Nordeste, região em que é muito comum o uso de plantas medicinais de forma tradicional.</div>
+        <h3>Como produzir uma pomada a partir do mandacaru?</h3>
+        <p>A produção de pomadas passa por várias etapas para garantir a eficiência do remédio. Na extração dos compostos bioativos, utiliza-se geralmente a polpa do caule da planta, que concentra as substâncias responsáveis pelas propriedades antioxidantes, anti-inflamatórias e cicatrizantes.</p>
+        <p>No processo de extração, utiliza-se álcool para isolar essas substâncias. O extrato obtido é então incorporado a uma gordura animal ou vegetal, o que proporciona textura e consistência adequadas — processo que inclui mistura, aquecimento, filtragem e resfriamento. Conservantes naturais, como óleos essenciais, podem ser adicionados para aumentar a durabilidade sem comprometer as propriedades terapêuticas.</p>
+        <p>A produção de pomada a partir do mandacaru e de outras plantas de uso convencional tem grande potencial econômico e científico. Por se tratar de uma planta abundante em regiões semiáridas, como a Caatinga, sua utilização pode fomentar projetos de desenvolvimento sustentável, aproveitando os recursos naturais dessas áreas.</p>
+        <p>Entender a aplicabilidade nutricional, econômica, ambiental e medicinal do mandacaru é essencial: devido às suas propriedades químicas, esse cacto pode ser utilizado na produção de remédios naturais, contribuindo no tratamento de diversas doenças graças às suas propriedades antioxidantes, anti-inflamatórias e cicatrizantes.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art6" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Etnobotânica &amp; Saúde</div>
+        <h2>Etnobotânica na odontologia</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">VN</span> Valéria Noia</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Você sabia que, antes da odontologia moderna, as pessoas já usavam plantas para cuidar de doenças bucais e sobreviviam? Essa é uma realidade que continua a existir, especialmente em países mais pobres, além de ser uma forma alternativa mais barata para uma parcela da população brasileira e para os adeptos do natural.</p>
+        <p>Outra curiosidade é sobre a legalização do uso de plantas medicinais e/ou fitoterápicos no serviço público, que aconteceu por meio da Portaria nº 971, Decreto nº 5.813, em 22 de junho de 2006, aprovando a Política Nacional de Práticas Integrativas e Complementares (PNPIC) no SUS.</p>
+        <p>Em suas visitas odontológicas, algum profissional já lhe receitou chás ou bochechos feitos com plantas, ou prescreveu fitoterápicos? Se não, saiba que você não é o único: um levantamento revelou que usuários do serviço público também relatam a dificuldade dos dentistas em receitar remédios feitos com esses compostos — obstáculo ligado à pouca abordagem nos cursos de formação e à insegurança dos profissionais, mesmo tendo sido aprovada a utilização pelo Conselho Federal de Odontologia (CFO) desde 2008, pela Resolução CFO-82.</p>
+        <p>Estudos científicos têm revelado que a aplicação de produtos naturais na saúde tem se mostrado um tratamento alternativo importante, com propriedades como maior aceitação pelo organismo, efeito farmacológico parecido com o de remédios de farmácia e menores reações adversas.</p>
+        <p>Em 2009, o Ministério da Saúde lançou o RENISUS (Relação Nacional de Plantas Medicinais de Interesse ao SUS), com 71 nomes de plantas de interesse do serviço público. Entre elas, algumas indicadas para problemas odontológicos: Allium sativum L. (alho), Anacardium occidentale L. (cajueiro), Stryphnodendron adstringens (barbatimão), Punica granatum L. (romã) e Schinus terebinthifolia Raddi (aroeira).</p>
+        <p>Entre as formas de preparo mais empregadas pelos pacientes está o chá, feito por infusão — folhas e/ou flores secas cobertas por alguns minutos em água fervida — ou por decocção, na qual raízes e/ou caules são fervidos em água. Em pesquisas, as folhas foram a parte da planta mais citada pelos pacientes do SUS.</p>
+        <div class="callout">&quot;A diferença entre o remédio e o veneno é a dose.&quot; Mesmo sabendo das qualidades das plantas medicinais, devemos utilizá-las com cautela e responsabilidade.</div>
+        <p>A fitoterapia na odontologia ainda tem um longo caminho a seguir, pois precisa ser mais divulgada — mas os extratos naturais vêm sendo lentamente inseridos como terapia adjuvante, somando-se aos tratamentos já bem conceituados da odontologia. É preciso também mudar a grade curricular dos dentistas e oferecer cursos que os capacitem a prescrever plantas medicinais e/ou fitoterápicos de forma segura.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art7" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Etnobotânica &amp; Conservação</div>
+        <h2>Etnobotânica e conservação de sementes</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">RF</span> Riclécia Fraga e Paulo Cunha</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">A degradação ambiental é resultante de diversos fatores e implica a perda ou redução da qualidade e da capacidade produtiva dos recursos naturais. Entre as atividades mais recorrentes, destacam-se as ações antrópicas, por meio do desmatamento e das queimadas, para uso das terras em cultivo, criação de animais ou construções. Essas atividades aceleram a perda dos recursos naturais e da biodiversidade local, além de contribuir para o aumento das temperaturas globais.</p>
+        <p>A semente é uma estrutura formada após o processo de polinização: o óvulo fecundado que se desenvolve dentro do ovário passa por divisões mitóticas, resultando no crescimento do embrião e do endosperma, que juntos formam a semente — estrutura fundamental para a reprodução e dispersão da espécie. No processo reprodutivo, é fundamental ocorrer cruzamento genético entre indivíduos da mesma espécie, promovendo diversidade genética, essencial para a resposta das plantas a mudanças climáticas.</p>
+        <h3>Sementes ortodoxas e recalcitrantes</h3>
+        <p>As sementes são classificadas de acordo com o teor de água armazenada em seus tecidos. As ortodoxas são dispersas com baixo teor de umidade (5 a 10% do peso fresco) e têm longa viabilidade, tolerando a dessecação. Já as recalcitrantes são dispersas com alto teor de umidade (60 a 70% do peso fresco) e permanecem viáveis por um período curto, germinando assim que encontram condições ideais. Por isso, as ortodoxas são mais fáceis de conservar.</p>
+        <div class="callout">Conservar todas as espécies de sementes é um processo difícil, principalmente as &quot;crioulas&quot; ou tradicionais. A ascensão da agricultura de grande escala facilita a perda da genética originária — processo chamado de erosão genética.</div>
+        <h3>Formas de conservação</h3>
+        <p>A conservação ex situ ocorre fora do local de origem da semente, em bancos de germoplasma ou bancos locais, onde ficam protegidas para uso futuro. Já a conservação in situ ocorre dentro do próprio ambiente de origem, dependendo de áreas protegidas e do manejo sustentável — indicada especialmente para espécies recalcitrantes, permitindo que sigam seu ciclo natural.</p>
+        <p>A conservação in situ pode ser combinada com a conservação on farm, que utiliza conhecimentos e saberes locais para manter as variedades e a genética local. As pessoas que utilizam esse método são chamadas de &quot;guardiões das sementes&quot; — um fenômeno regional e histórico de um país cheio de culturas e saberes locais.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art8" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Recomendações</div>
+        <h2>Dicas de leitura</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">EB</span> Equipe Bio in Situ</div>
+      </div>
+      <div class="piece-body">
+        <div class="book"><div class="spine" style="background:linear-gradient(160deg,var(--accent),var(--green-deep));">I</div><div><h4>Introdução à Etnobotânica</h4><div class="by">Ulysses Paulino de Albuquerque</div><p>Os autores trazem a necessidade de reflexão sobre um aspecto crucial da etnobotânica: o trabalho dos próprios etnobotânicos. De que falamos? O que fazemos? Qual é o nosso trabalho? Essas questões compõem uma base epistemológica que convida à reflexão sobre a teoria e a prática, e suas interações.</p></div></div>
+        <div class="book"><div class="spine" style="background:linear-gradient(160deg,var(--accent),var(--green-deep));">M</div><div><h4>Mbaé Kaá: o que tem na mata — a botânica na nomenclatura indígena</h4><div class="by">João Barbosa Rodrigues</div><p>Falante do tupi antigo, do nheengatu e do guarani, João Barbosa Rodrigues publicou, em 1905, essa contundente defesa do conhecimento nativo diante do meio científico. Mesmo dentro do vocabulário da época, é um livro fundamental para apoiar o reconhecimento da sabedoria indígena no Brasil e no mundo.</p></div></div>
+        <div class="prompt-strip" style="background:var(--accent);"><span class="mic">🎙</span> Dica de podcast: Caatingueira, um podcast de ciência sobre biomas, mulheres e saberes populares.</div>
+        <div class="prompt-strip" style="background:var(--accent);"><span class="mic">🎙</span> Saia do celular. Leia um livro!</div>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art9" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Cultura Pop &amp; Etnobotânica</div>
+        <h2>Conhecimento etnobotânico no mangá<span class="sub">Explorando Os Diários da Boticária como portal para o conhecimento de plantas medicinais</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">K</span> Kawany</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Observando que o ambiente da sala de aula no ensino de Ciências ainda se manifesta de uma maneira homogênea, é necessário criar debates que facilitem o processo de ensino-aprendizagem de forma mais interativa. Nesse sentido, o mangá The Apothecary Diaries (Os Diários da Boticária), escrito por Natsu Hyūga e ilustrado por Touko Shino, explora o conhecimento etnobotânico das plantas e sua aplicação medicinal através das experiências de Maomao, uma jovem boticária sequestrada para trabalhar em um reino imperial.</p>
+        <p>A obra apresenta uma protagonista feminina inteligente, cujo conhecimento sobre as propriedades medicinais das plantas a destaca entre todos que trabalham no império. Logo no início, Maomao observa que o pó de arroz, amplamente usado como cosmético pelas mulheres da corte, causa reações alérgicas — ao expor as propriedades desse cosmético e sugerir alternativas, ela atrai atenção e é convidada a trabalhar diretamente para uma das consortes do imperador.</p>
+        <p>Inicialmente, sua função é degustar as refeições destinadas à consorte, verificando se estão envenenadas. Contudo, Maomao vai além: utiliza suas habilidades para examinar a cor, o cheiro e outros aspectos dos alimentos, através de seu conhecimento sobre a potencialidade farmacêutica das plantas. A personagem também revela resistência a venenos, resultado de experiências induzidas em si mesma por sua sede de conhecimento farmacológico.</p>
+        <p>À medida que a história avança, Maomao demonstra entusiasmo por trabalhar com ervas e atender a pedidos inusitados, como a produção de um afrodisíaco a partir da semente de cacau. Ao longo da leitura, ela demonstra grande habilidade em reconhecer ervas medicinais apenas observando suas estruturas morfológicas, e afirma que determinadas plantas não cresceriam naturalmente no ambiente do palácio, sendo necessário que fossem cultivadas por algum boticário habilidoso.</p>
+        <div class="callout">No final do capítulo dezesseis, o mangá apresenta uma página de notas que esclarece palavras e simbologias, introduzindo uma flor venenosa e explicando suas propriedades — um detalhe que transforma a leitura em um momento enriquecedor de aprendizado.</div>
+        <p>The Apothecary Diaries é uma obra que combina ciência, intrigas palacianas e críticas sociais, convidando os leitores a mergulharem em um mundo vasto e cativante, que tem conquistado cada vez mais popularidade ao redor do mundo.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art10" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Educação Ambiental</div>
+        <h2>Horta medicinal comunitária<span class="sub">Conhecimento popular, saúde e educação ambiental</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">TD</span> Tatiana Dias</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">As práticas de Educação Ambiental (EA) nas escolas fundamentam-se na construção de sociedades mais justas e sustentáveis, alicerçadas em valores como liberdade, igualdade, solidariedade, democracia e justiça social. Com base nesses princípios, surgiu a ideia de estudar e implementar o projeto Horta Medicinal Comunitária.</p>
+        <p>Mas por que comunitária? Durante o ano anterior, observou-se que o canteiro da escola possuía boldo, e a comunidade externa frequentemente o utilizava para preparar chás tradicionais. Decidiu-se então transformar o espaço em uma horta comunitária, ampliando seu propósito e promovendo maior envolvimento entre escola e comunidade.</p>
+        <p>O projeto objetiva promover o conhecimento sobre o cultivo e o uso responsável das plantas medicinais, além de sensibilizar os alunos para os problemas ambientais e incentivar hábitos saudáveis e sustentáveis entre estudantes, professores e toda a comunidade.</p>
+        <h3>Caminhos para o sucesso: metodologia de desenvolvimento</h3>
+        <ul class="tidy"><li><strong>Planejamento e estruturação</strong> — identificação de um espaço adequado na escola, com boa iluminação solar, e formação de um grupo de trabalho com alunos, professores e voluntários da comunidade.</li><li><strong>Seleção e plantio</strong> — pesquisa sobre plantas medicinais adequadas à região, aquisição de mudas ou sementes e plantio conforme o planejamento.</li><li><strong>Cuidados e manutenção</strong> — cronograma de rega, poda, adubação e controle de pragas, com oficinas práticas de jardinagem e mutirões de limpeza.</li><li><strong>Colheita e transformação</strong> — colheita no momento adequado e transformação das folhas em folhas secas, acondicionadas em saquinhos para distribuição à comunidade.</li><li><strong>Educação e capacitação</strong> — palestras, workshops e cursos, além de materiais educativos como cartilhas e guias.</li><li><strong>Integração com a comunidade</strong> — parcerias com profissionais de saúde e participação em feiras e eventos comunitários.</li><li><strong>Avaliação e monitoramento</strong> — acompanhamento periódico do crescimento das plantas e coleta de feedback dos participantes.</li></ul>
+        <div class="callout">Entre as espécies plantadas estão a Melissa officinalis (erva-cidreira), com propriedades antivirais, antioxidantes e anti-inflamatórias, e o Cymbopogon citratus (capim-limão), com propriedades calmantes, antibacterianas e diuréticas — que, por conter óleo essencial de citronela, também é um excelente repelente de insetos.</div>
+        <h3>Por que desenvolver esse projeto nas escolas?</h3>
+        <p>O projeto promove a educação ambiental, favorecendo o entendimento sobre a preservação da biodiversidade e o uso sustentável dos recursos naturais. Além disso, resgata e valoriza saberes dos nossos antepassados, fortalecendo os laços entre a identidade cultural e o respeito pelas tradições locais, e ensina hábitos mais saudáveis, mostrando opções naturais para o cuidado com a saúde.</p>
+        <ul class="tidy"><li>A conscientização ambiental.</li><li>Incentivo a hábitos saudáveis e sustentáveis.</li><li>Fortalecimento dos vínculos entre comunidade escolar e local.</li><li>Resgate e preservação de saberes tradicionais.</li><li>Aplicação da interdisciplinaridade no ensino.</li><li>Sensibilização para o uso racional e responsável das plantas medicinais.</li></ul>
+        <p>É necessário enfrentar a impercepção botânica — a dificuldade de reconhecer e entender a importância da flora em nossas vidas. Preencher essa lacuna contribui para a formação de cidadãos mais conscientes, capazes de compreender que a biodiversidade é parte integrante de nossas vidas.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art11" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Cultura &amp; Meio Ambiente</div>
+        <h2>Caminhos ancestrais para a preservação<span class="sub">A sabedoria dos orixás caçadores</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">JE</span> José Eduardo</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Na mitologia dos orixás, os alodés, ou orixás caçadores, desempenham um papel central na interação entre os humanos e o ambiente natural. O grupo composto por Oxóssi, Obá, Otim, Ogum, Odé Erinlé e Logun Edé representa a relação direta entre a sobrevivência humana e o uso consciente dos recursos da natureza. Através dos itãs (narrativas mitológicas), esses orixás ensinam lições sobre preservação ambiental, sustentabilidade e respeito aos ciclos naturais da vida.</p>
+        <h3>Oxóssi</h3>
+        <p>Oxóssi ensina que a superexploração dos recursos naturais pode resultar em deficiência e desequilíbrio ambiental, destacando a importância de manter a estabilidade entre consumo e preservação. Sua sabedoria pode ser aplicada no dia a dia em práticas de manejo sustentável da fauna e em políticas de conservação da biodiversidade.</p>
+        <h3>Obá</h3>
+        <p>Obá, poderosa orixá guerreira e caçadora, traz lições sobre o papel das mulheres na preservação da natureza. Nos itãs, é associada ao rio e à correnteza, simbolizando o fluxo da vida e a importância da preservação dos recursos hídricos, e é conhecida por sua sabedoria em gerenciar e cuidar da vida doméstica e da terra.</p>
+        <div class="callout">A figura de Obá ensina que a preservação ambiental requer força, coragem e ação. Ela simboliza o poder feminino na proteção do meio ambiente, lembrando que a sustentabilidade é uma responsabilidade coletiva, profundamente ligada à sabedoria ancestral feminina.</div>
+        <h3>Otim</h3>
+        <p>Otim, conhecida como uma grande caçadora, aprendeu a arte da caça com Oxóssi e é descrita nos itãs como uma caçadora habilidosa que utiliza seu conhecimento da natureza para agir de maneira sustentável, sem caçar de forma predatória. Seu exemplo reforça a ideia de que a caça, quando realizada de forma responsável, pode ser uma prática sustentável que respeita o equilíbrio ecológico — mensagem relevante no contexto atual da caça predatória e da sobrepesca.</p>
+        <h3>Erinlé e Logun Edé</h3>
+        <p>Erinlé, que se transforma em um rio em um de seus itãs, é o orixá das águas doces, dos rios e da caça, simbolizando a conexão entre a terra e a água e alertando para a importância de proteger as fontes de água e os habitats aquáticos. Logun Edé, filho de Erinlé e Oxum, representa a dualidade entre a caça e a pesca, reforçando a necessidade de preservar tanto as florestas quanto os rios e as marés.</p>
+        <h3>Ogum</h3>
+        <p>Embora Ogum seja conhecido principalmente como o orixá do ferro e da guerra, ele também está profundamente ligado à terra e à agricultura, e é ele quem ensina a arte da caça a Oxóssi. Em um de seus itãs, ensina aos humanos a importância de respeitar a terra, lembrando que ela é generosa, mas precisa ser cuidada e gerenciada de forma sustentável — a agricultura excessiva e a destruição do solo são formas de desrespeitar esse ensinamento.</p>
+        <p>Esses ensinamentos se conectam diretamente à etnobotânica, ao destacar o conhecimento tradicional sobre o uso de plantas e recursos naturais. A etnobotânica dos povos de matriz africana, especialmente dentro do Candomblé, é um verdadeiro guia para a sustentabilidade, pois combina o uso das plantas com o respeito ao seu ciclo de vida e à sua regeneração.</p>
+        <p>Através dos itãs, somos lembrados de que a exploração dos recursos naturais deve ser feita com sabedoria e moderação. Em tempos de crise climática e destruição ambiental, os ensinamentos desses orixás são mais relevantes do que nunca, oferecidos como um guia para a construção de um futuro mais equilibrado e sustentável.</p>
+        
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<footer id="apoie">
+  <div class="foot-inner">
+    <div>
+      <h3>Apoie o projeto</h3>
+      <p>O Biologia In Situ é uma iniciativa de divulgação científica em biologia criada por um grupo independente. Os programas de podcast, revista e canais de divulgação se encontram no site biologiainsitu.com.br e nos agregadores de podcasts como Spotify, Deezer e Apple Podcasts.</p>
+      <p>O nosso projeto pode ser apoiado através das plataformas Orelo e Apoia.se e no PIX pela chave: <a href="mailto:cartinhas@biologiainsitu.com.br">cartinhas@biologiainsitu.com.br</a></p>
+    </div>
+    <div class="foot-col">
+      <div class="row"><span>Apoia.se</span><span>apoia.se/biologiainsitu</span></div>
+      <div class="row"><span>Picpay</span><span>@biologiainsitu</span></div>
+      <div class="row"><span>Pix</span><span>cartinhas@biologiainsitu.com.br</span></div>
+    </div>
+  </div>
+  <div class="credits">
+    <span>ISSN 2965-923X</span>
+    <span>·</span>
+    <span>Organizadores: Cristianne Santana Santos, Ricardo da Silva Gomes, Heloá Caramuru Carlos, Bruna Garcia da Cruz Canellas, Vitor Estanislau de A. Souza Lopes</span>
+    <span>·</span>
+    <span>Autoras/es: Bárbara Grusag, Cristianne Santana Santos, Dávylla Ribeiro Lopes, Luiza de Freitas Ferreira, Melissa dos Santos Cabral (Revisão de Texto); Crislaine Nascimento Souza, Kawany Vitoria Silva Alves, Joyce da Costa Santos Oliveira, José Eduardo Andrade Neto, Leonardo Vicente Souza, Paulo Henrique de Jesus da Cunha, Rayane Ribeiro Rodrigues, Riclécia Fraga Santos, Rony dos Santos Nascimento, Valéria de Aniz Santos, Valéria Noia Ribeiro, Wislan de Oliveira Santos (Autoria)</span>
+    <span>·</span>
+    <span>Design web: Leonardo Vicente Souza, Rayane Ribeiro Rodrigues</span>
+  </div>
+</footer>
+
+</body>
+</html>

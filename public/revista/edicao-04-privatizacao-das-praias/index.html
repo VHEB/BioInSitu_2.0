@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nossas praias, nosso direito — Bio In Situ, Ed. Vol. 1 · Nº 4 · 2024 · Edição 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --paper: #F6F4EE;
+    --paper-dim: #EFECE3;
+    --ink: #14231C;
+    --ink-soft: #3A473F;
+    --green: #1E7A46;
+    --green-deep: #123D25;
+    --teal: #0E8E8A;
+    --slate: #4B4B4B;
+    --magenta: #D6116C;
+    --sand: #DCD2B8;
+    --gold: #9C8A4E;
+    --rule: rgba(20,35,28,0.14);
+    --maxw: 760px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ===== Skip / focus ===== */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--green);
+    outline-offset:3px;
+  }
+
+  /* ===== Top bar ===== */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,244,238,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:700; font-size:18px;
+    text-decoration:none;
+  }
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--green);}
+  .topbar nav{display:flex; gap:22px;}
+  .topbar nav a{
+    font-size:13px; text-decoration:none; color:var(--ink-soft);
+    letter-spacing:0.03em; text-transform:uppercase;
+  }
+  .topbar nav a:hover{color:var(--green);}
+  #toc-toggle{display:none;}
+
+  /* ===== Hero ===== */
+  .hero{
+    max-width:980px; margin:0 auto; padding:64px 28px 40px;
+    text-align:left;
+  }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--green-deep);
+    display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .hero .eyebrow::before{content:"";width:28px;height:1px;background:var(--green-deep);display:inline-block;}
+  .hero h1{
+    font-size:clamp(38px, 6vw, 68px);
+    font-weight:600; line-height:1.02; margin:0 0 22px;
+    max-width:850px;
+  }
+  .hero h1 em{font-style:italic; font-weight:500; color:var(--green);}
+  .hero p.lede{
+    max-width:560px; color:var(--ink-soft); font-size:18px; margin:0 0 34px;
+  }
+  .hero .meta-row{
+    display:flex; flex-wrap:wrap; gap:28px; font-size:13.5px; color:var(--ink-soft);
+    border-top:1px solid var(--rule); padding-top:18px;
+  }
+  .hero .meta-row strong{color:var(--ink); display:block; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px; font-weight:600;}
+
+  /* signature motif: circuit-root divider */
+  .motif{
+    display:block; width:100%; height:34px; margin:6px 0 0;
+    opacity:0.9;
+  }
+
+  /* ===== Layout: TOC + content ===== */
+  .layout{
+    max-width:1180px; margin:0 auto; padding:0 28px 40px;
+    display:grid; grid-template-columns:230px 1fr; gap:56px;
+  }
+  .toc{
+    position:sticky; top:70px; align-self:start;
+    padding:22px 0 40px;
+    max-height:calc(100vh - 90px); overflow-y:auto;
+  }
+  .toc-title{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--ink-soft); margin-bottom:14px; font-weight:600;
+  }
+  .toc ol{list-style:none; margin:0; padding:0; counter-reset:art;}
+  .toc li{counter-increment:art; margin-bottom:2px;}
+  .toc a{
+    display:flex; gap:10px; padding:8px 6px; text-decoration:none;
+    font-size:13.5px; color:var(--ink-soft); border-radius:6px;
+    line-height:1.3;
+  }
+  .toc a:hover{background:var(--paper-dim); color:var(--ink);}
+  .toc a::before{
+    content:counter(art, decimal-leading-zero);
+    font-family:'IBM Plex Mono', monospace; font-size:11px;
+    color:var(--green); flex-shrink:0; padding-top:1px;
+  }
+
+  main{min-width:0;}
+
+  /* ===== Article card ===== */
+  article.piece{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:14px;
+    margin-bottom:26px;
+    overflow:hidden;
+    scroll-margin-top:80px;
+  }
+  .piece-head{
+    padding:34px 40px 26px;
+    border-bottom:1px solid var(--rule);
+    position:relative;
+  }
+  .piece-head::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:6px;
+    background:var(--accent, var(--green));
+  }
+  .piece-kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--accent, var(--green));
+    margin-bottom:10px; font-weight:500;
+  }
+  .piece-head h2{
+    font-size:clamp(24px, 3.4vw, 32px); font-weight:600; line-height:1.12; margin:0 0 16px;
+  }
+  .piece-head h2 .sub{
+    display:block; font-family:'IBM Plex Sans', sans-serif; font-style:normal;
+    font-weight:400; font-size:0.55em; color:var(--ink-soft); margin-top:6px; letter-spacing:0;
+  }
+  .byline{
+    display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-soft);
+  }
+  .byline .avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--accent, var(--green)); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:13px;
+  }
+  .piece-body{padding:8px 40px 38px;}
+  .piece-body p{margin:0 0 18px; color:var(--ink);}
+  .piece-body h3{font-size:17px; margin:26px 0 12px; font-weight:600; color:var(--accent, var(--green-deep));}
+  .piece-body .drop::first-letter{
+    float:left; font-family:'Fraunces', serif; font-weight:700; font-size:3.6em;
+    line-height:0.82; padding-right:10px; padding-top:4px; color:var(--accent, var(--green));
+  }
+  .cols{columns:1; column-gap:36px;}
+  @media(min-width:640px){ .cols.two{columns:2;} }
+
+  .callout{
+    background:var(--paper-dim);
+    border-left:3px solid var(--accent, var(--green));
+    border-radius:0 10px 10px 0;
+    padding:16px 20px;
+    margin:8px 0 22px;
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+  .quote{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:20px; line-height:1.45; color:var(--ink);
+    padding:4px 0 4px 20px; border-left:3px solid var(--accent, var(--green));
+    margin:22px 0;
+  }
+  .binary{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em;
+    color:var(--accent, var(--green)); opacity:0.75; margin:-6px 0 20px;
+  }
+  ul.tidy{margin:0 0 18px; padding-left:20px;}
+  ul.tidy li{margin-bottom:8px;}
+  .refs{
+    font-size:13.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:8px; padding-top:18px;
+  }
+  .refs p{margin-bottom:8px;}
+  .caption{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:-8px;}
+
+  .prompt-strip{
+    margin-top:24px; padding:14px 20px; border-radius:10px;
+    background:var(--green-deep); color:#EFEDE3;
+    font-size:13.5px; display:flex; align-items:center; gap:12px;
+  }
+  .prompt-strip .mic{
+    width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+
+  /* reading tips */
+  .book{
+    display:grid; grid-template-columns:64px 1fr; gap:16px; margin-bottom:22px;
+  }
+  .book .spine{
+    width:64px; height:88px; border-radius:4px;
+    background:linear-gradient(160deg, var(--accent, var(--green)), var(--green-deep));
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    font-family:'Fraunces',serif; font-weight:700; font-size:22px;
+  }
+  .book h4{margin:0 0 2px; font-size:16px; font-family:'Fraunces',serif; font-weight:600;}
+  .book .by{font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;}
+  .book p{font-size:14px; margin:0; color:var(--ink-soft);}
+
+  /* footer / support */
+  footer{
+    background:var(--green-deep); color:#EDEAE0; margin-top:40px;
+    padding:56px 28px 40px;
+  }
+  .foot-inner{max-width:980px; margin:0 auto; display:grid; grid-template-columns:1.3fr 1fr; gap:48px;}
+  footer h3{color:#fff; font-size:24px; margin:0 0 14px;}
+  footer p{color:#C9D2C7; max-width:420px; margin:0 0 10px;}
+  footer a.link{color:#9FE3B8; text-decoration:none; border-bottom:1px solid rgba(159,227,184,0.35);}
+  .foot-col .row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.1); font-size:14px;}
+  .foot-col .row span:first-child{color:#9FB0A4;}
+  .credits{max-width:980px; margin:34px auto 0; padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); font-size:12.5px; color:#8AA091; display:flex; flex-wrap:wrap; gap:6px 18px;}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .toc{position:static; max-height:none; padding-bottom:10px;}
+    .foot-inner{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .piece-head, .piece-body{padding-left:22px; padding-right:22px;}
+    .topbar nav{display:none;}
+    .cols.two{columns:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+
+  /* imagem opcional de capa da matéria (não usada nas edições sem gerador de imagem) */
+  .piece-media{width:100%; aspect-ratio:16/9; overflow:hidden;}
+  .piece-media img{width:100%; height:100%; object-fit:cover; display:block;}
+
+  /* link opcional para o PDF/fonte original da matéria */
+  .source-link{
+    font-size:12.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:20px; padding-top:14px;
+  }
+  .source-link a{color:var(--green); text-decoration:underline; text-underline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="#topo"><span class="dot"></span>BIO IN SITU</a>
+  <nav>
+    <a href="#sumario">Sumário</a>
+    <a href="#apoie">Apoie</a>
+    <a href="https://biologiainsitu.com.br" target="_blank" rel="noopener">Site</a>
+  </nav>
+</div>
+
+<div id="topo" class="hero">
+  <div class="eyebrow">Vol. 1 · Nº 4 · 2024 · Edição 4</div>
+  <h1>Nossas praias, <em>nosso direito</em></h1>
+  <p class="lede">Racismo ambiental, privatização de praias, direitos de acesso à natureza — e um mergulho prático em marketing pessoal e criação de conteúdo para divulgação científica.</p>
+  <div class="meta-row">
+    <div><strong>Organizadores</strong>Cristianne Santana Santos, Ricardo da Silva Gomes, Heloá Caramuru Carlos, Bruna Garcia da Cruz Canellas, Vitor Estanislau de Almeida Souza, Amanda Honório Nunes, Bárbara Grusag, Carolina Negreiros, Dávylla Ribeiro Lopes, Leonardo Vicente Souza, Luiza de Freitas Ferreira, Melissa dos Santos Cabral e Rayane Ribeiro Rodrigues</div>
+    <div><strong>ISSN</strong>2965-923X</div>
+    <div><strong>Publicação</strong>Rio de Janeiro, RJ</div>
+  </div>
+</div>
+
+<svg class="motif" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 17 H120 M170 17 H1200" stroke="#1E7A46" stroke-width="1" opacity="0.35"/>
+  <circle cx="145" cy="17" r="4" fill="#1E7A46"/>
+  <path d="M145 17 q10 -14 24 -14 M145 17 q10 14 24 -14" stroke="#1E7A46" stroke-width="1.2" fill="none" opacity="0.6"/>
+</svg>
+
+<div class="layout">
+  <aside class="toc" id="sumario">
+    <div class="toc-title">Nesta edição</div>
+    <ol>
+      <li><a href="#art1">Racismo ambiental</a></li>
+      <li><a href="#art2">Ocupação das praias pelo turismo</a></li>
+      <li><a href="#art3">Regulação e governança</a></li>
+      <li><a href="#art4">Impacto ambiental (PEC das Praias)</a></li>
+      <li><a href="#art5">Um olhar global sobre direitos e acesso</a></li>
+      <li><a href="#art6">Marketing pessoal</a></li>
+      <li><a href="#art7">Pondo a mão na massa: criação de conteúdo</a></li>
+      <li><a href="#art8">Nossas praias, nosso direito!</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+    <article class="piece" id="art1" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Justiça Social e Econômica</div>
+        <h2>Racismo ambiental</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">MC</span> Melissa Cabral</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Você já ouviu falar em racismo ambiental? Apesar de ser um tema aparentemente novo, o assunto é bem antigo e polêmico. As populações mais vulnerabilizadas, como as populações periféricas, são as principais vítimas da degradação ambiental — um exemplo disso são as populações que precisam viver em favelas e áreas construídas em encostas íngremes, sujeitas a deslizamentos de terra e enchentes, que acabam sendo as mais afetadas. A expressão racismo ambiental denuncia a distribuição do impacto ambiental, que claramente não acontece de forma igualitária entre as classes sociais.</p>
+        <p>Basta passear por uma favela e uma região nobre para observar a diferença nos cuidados com saneamento básico, coleta de lixo, despejo de resíduos nocivos e manutenção de áreas verdes. Isso acontece em regiões marginalizadas e historicamente invisibilizadas pelo governo. Além disso, há a grilagem e a exploração de terras pertencentes a povos locais, como ribeirinhos e tribos indígenas. A falta de políticas públicas que impeçam essa forma de discriminação contribui para a manutenção de um cenário de exclusão que sempre foi evidente na sociedade, mas nunca citado antes com o olhar científico.</p>
+        <div class="callout">&quot;Quanto mais resíduo, quanto mais maltratado for o ambiente e quanto mais você despejar dejetos nesses lugares, mais você consolida essa situação de desigualdade e discriminação absurda&quot; — Marcos Bernardino de Carvalho, professor de Gestão Ambiental da Escola de Artes, Ciências e Humanidades da USP.</div>
+        <p>Carvalho explica que, entre as décadas de 1950 e 60, houve um movimento de direitos civis nos Estados Unidos criado pelo ativista afro-americano Benjamin Franklin Chavis Jr., que chegou a atuar como secretário de Martin Luther King Jr. Benjamin se destacou por denunciar a questão da população mais vulnerabilizada — especificamente a população negra, que era (e ainda é) a mais vitimada pela degradação ambiental.</p>
+        <h3>Racismo ambiental x privatização de praias</h3>
+        <p>Qual a relação entre racismo ambiental e a possível privatização das praias? Um exemplo são os ribeirinhos da região de Beira Mar de Fortaleza, que possuem um espaço para pescadores locais que reduz a cada ano. Uma comunidade inteira pode ser afetada com a nova política de privatização — e quando falamos de comunidades, não estamos falando apenas dos ribeirinhos: povos originários também entram nessa, podendo perder os terrenos onde nasceram e cresceram.</p>
+        <p>Olhando mais amplamente: toda a classe social que não tiver recursos para adquirir um imóvel à beira-mar será afetada. Em outras palavras, só os grandes empresários terão a chance de possuir o local — o que vai acentuar a desigualdade social, especialmente em relação ao acesso equitativo a espaços recreativos e oportunidades de lazer para diferentes grupos socioeconômicos. Você acha isso justo? Conte-nos sobre o assunto nas nossas redes e na caixinha de perguntas do podcast.</p>
+        <p>Uma outra abordagem sobre a privatização é como essas áreas serão administradas. No litoral do Ceará, os municípios não têm sequer um plano municipal de gerenciamento costeiro e nenhuma gestão para garantir que não ocorrerá perda de vegetação e de biodiversidade. Imagine a gestão dessas áreas privatizadas — é muito claro que apenas o lucro será o alvo final dessa barganha política.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art2" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Turismo &amp; Território</div>
+        <h2>A ocupação das praias pelo setor turístico e seus impactos</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">DR</span> Dávylla Ribeiro</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">A ocupação dos espaços públicos pelo setor turístico é uma realidade frequente no Brasil, especialmente nas regiões litorâneas urbanas. Bares, restaurantes, pousadas, resorts, hotéis e outros componentes do setor hoteleiro muitas vezes utilizam as orlas marítimas como se fossem propriedades privadas, embora essas áreas sejam, por lei, de uso comum do povo e pertencentes à União.</p>
+        <p>Nos últimos anos, essa prática tem gerado debates acalorados na sociedade. A questão central é entender como essas ocupações são realizadas e quais são os fundamentos legais — ou a falta deles — que as sustentam. Para o setor hoteleiro, a ocupação de áreas de praia representa um cenário ideal que promove o turismo e gera empregos e renda; no entanto, é crucial que essas ocupações respeitem o direito coletivo ao uso desses espaços.</p>
+        <p>Nas grandes cidades, as orlas marítimas se tornaram locais de disputa entre grupos com alto poder aquisitivo, resultando na criação de condomínios residenciais de luxo e empreendimentos turísticos de alto padrão, como hotéis e resorts. Essa ocupação gera conflitos sociais, pois limita o acesso público e cria tensões entre interesses privados e direitos coletivos.</p>
+        <div class="callout">Um exemplo claro de ocupação indevida pode ser observado em São Luís/MA, na Península da Ponta d'Areia: muitas construções estão em situação irregular, restringindo ou até impossibilitando o livre acesso à orla e ao mar. A legislação vigente não permite essas ocupações, mas a prática persiste devido à pressão econômica e ao potencial lucrativo do setor turístico.</div>
+        <p>Em suma, a ocupação das praias pelo setor turístico é um tema complexo que exige uma abordagem equilibrada, considerando os benefícios econômicos do turismo e os direitos coletivos ao uso e preservação dos espaços públicos. A regulamentação adequada e a fiscalização rigorosa são fundamentais para garantir que o desenvolvimento turístico ocorra de maneira sustentável e justa — as leis brasileiras defendem tanto o direito à propriedade quanto o interesse coletivo, e é essencial encontrar um equilíbrio entre esses interesses, assegurando que a utilização dos espaços públicos respeite os princípios de uso comum e a preservação do meio ambiente.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art3" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Políticas Públicas</div>
+        <h2>Os desafios na regulamentação e governança das praias privatizadas</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">CS</span> Cristianne Santos</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">A privatização de praias no Brasil é um tema que desperta intensos debates e apresenta uma série de desafios para a regulamentação e governança dessas áreas — questões legais, fiscalização, responsabilidade ambiental e participação pública na tomada de decisões.</p>
+        <h3>Questões legais</h3>
+        <p>No Brasil, as praias são consideradas bens públicos de uso comum, conforme estabelecido pela Constituição Federal e pelo Código Civil. No entanto, a privatização de áreas adjacentes e o acesso restrito a determinadas faixas de areia levantam questões jurídicas complexas: é necessário um arcabouço legal claro que defina os limites da propriedade privada e garanta o acesso público, equilibrando o direito à propriedade com o direito ao uso comum.</p>
+        <p>A fiscalização das praias privatizadas enfrenta desafios significativos: a responsabilidade é compartilhada entre as esferas municipal, estadual e federal, e a coordenação entre esses órgãos é fundamental para uma fiscalização eficaz. Recursos limitados e a extensão da costa brasileira complicam ainda mais essa tarefa — e a falta de fiscalização adequada pode resultar em construções irregulares, poluição e degradação ambiental, comprometendo a saúde dos ecossistemas costeiros.</p>
+        <h3>Responsabilidade ambiental</h3>
+        <p>A responsabilidade ambiental é uma preocupação central na gestão das praias privatizadas no Brasil. Os proprietários privados têm a obrigação de preservar os ecossistemas costeiros, que são extremamente sensíveis e vulneráveis às atividades humanas — o que inclui a proteção de habitats naturais, o controle da erosão costeira e a manutenção da qualidade da água. Iniciativas como certificações ambientais e incentivos para práticas sustentáveis podem promover maior responsabilidade entre os proprietários.</p>
+        <h3>Participação pública na tomada de decisões</h3>
+        <p>A participação pública é crucial para a governança democrática e eficaz das praias no Brasil. A população local, turistas e grupos de interesse devem ter voz ativa nas decisões que afetam o uso e a gestão dessas áreas. Mecanismos como consultas públicas, audiências e fóruns de debate são essenciais para assegurar a inclusão da comunidade nos processos decisórios — transparência e prestação de contas são fundamentais para construir confiança e garantir que os interesses da sociedade sejam adequadamente considerados.</p>
+        <div class="callout">A regulamentação e governança das praias privatizadas apresentam desafios complexos que requerem uma abordagem multidisciplinar e colaborativa. Apenas por meio de uma governança inclusiva e eficaz será possível equilibrar os interesses privados e públicos, protegendo esses valiosos recursos naturais para as futuras gerações.</div>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art4" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Legislação &amp; Ecossistemas</div>
+        <h2>Impacto ambiental<span class="sub">A &quot;PEC das Praias&quot; e os manguezais</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">LF</span> Luiza Ferreira</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Até aqui, viemos falando da conhecida PEC das Praias, mas o que significa PEC? A sigla significa Proposta de Emenda Constitucional. Essa proposta pode permitir que terrenos do litoral, atualmente pertencentes à União, sejam transferidos para estados, municípios e proprietários privados.</p>
+        <p>Na legislação atual, existe a possibilidade de pessoas e empresas usarem terras pertencentes à União mediante o pagamento de impostos específicos. Segundo o projeto, seriam autorizadas vendas dos terrenos para empresas e pessoas que já estejam ocupando a área — e assim, os lotes deixariam de ser compartilhados entre o governo e quem os ocupa, para pertencer apenas a um dono, como um hotel ou resort.</p>
+        <div class="callout">A emenda constitucional é uma modificação imposta à Constituição Federal depois da sua promulgação. Esse processo permite que a Constituição do nosso país possa ser modificada em partes, garantindo que existam adaptações no texto de acordo com as mudanças sociais.</div>
+        <p>Com a possibilidade de venda desses terrenos para empreendimentos privados, a tendência é o aumento da degradação ambiental nas regiões próximas ao litoral, como manguezais e restingas. É importante lembrar que essas regiões funcionam como berçários naturais para diversas espécies, além de servirem como estabilizadores da linha da costa. Comunidades tradicionais — caiçaras, quilombolas, ribeirinhas e povos indígenas — dependem de um ecossistema marinho saudável para sobreviver.</p>
+        <h3>Conhecer para conservar: o manguezal</h3>
+        <p>O mangue é uma formação litorânea presente em praticamente todo o litoral brasileiro, do Amapá ao sul do país — um ambiente com mistura de água doce e salgada, onde a salinidade varia conforme a maré sobe e desce. Essa grande variação restringe quais plantas conseguem viver no ambiente: a vegetação do mangue é chamada de halófita, tolerando salinidade de até cerca de 15g de cloreto de sódio por litro.</p>
+        <p>O solo dos manguezais exala um cheiro forte e desagradável — muita gente acha que isso é poluição, mas na verdade é apenas uma característica de ambientes com altas concentrações de matéria orgânica e baixas concentrações de oxigênio. Nesse ecossistema também são encontradas plantas com raízes respiratórias, aéreas ou pneumatóforos: raízes principais que crescem paralelas ao solo, das quais nascem os pneumatóforos, perpendiculares ao solo, que ficam expostos na maré baixa e permitem trocas gasosas — estruturas que ajudam as plantas a viver em ambientes alagados e com pouco oxigênio.</p>
+        <p>O mangue absorve o impacto das ondas através de suas raízes aéreas, o que diminui a erosão marinha e aumenta a disponibilidade de matéria orgânica no sedimento. Essas raízes também impedem a entrada de animais maiores, sendo um local propício para a desova de muitos peixes e crustáceos — a falta de predadores e a grande fartura de alimentos fazem dos mangues verdadeiros berçários marinhos.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art5" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Panorama Internacional</div>
+        <h2>Um olhar global sobre direitos e acesso</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">BG</span> Bárbara Grusag</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">A questão da privatização das praias envolve mais do que apenas uma disputa territorial: é um debate profundo sobre o direito de acesso à natureza e as implicações de uma lógica neoliberal que prioriza o lucro. Vamos explorar essa questão em um contexto global, com exemplos concretos e uma análise das consequências socioeconômicas e ambientais.</p>
+        <h3>Itália: o país das praias concedidas</h3>
+        <p>A Itália possui um extenso litoral, com 8 mil km de costa, e com ele uma história de concessões: desde 1960, o governo italiano passou a conceder suas praias à iniciativa privada. Estima-se que 33% das praias do país estejam sob concessão para exploração econômica, seja pela cobrança de taxas de acesso ou por serviços como aluguel de guarda-sóis e cadeiras.</p>
+        <div class="callout">Em algumas praias italianas, há cobrança até para jogos ou filmagens, e o descumprimento das regras do local pode gerar multa nada barata. Esse cenário cria uma barreira socioeconômica que exclui muitos cidadãos desses espaços públicos: o órgão italiano de defesa do consumidor (Federconsumatori) indica uma diminuição de 37% no número de trabalhadores que frequentavam as praias durante as férias de verão, e 41,9% dos italianos afirmam não conseguir arcar com os custos de uma semana de férias na praia (Istat).</div>
+        <h3>Austrália: o modelo público</h3>
+        <p>Por outro lado, na Austrália, a maioria das praias é mantida como domínio público, com leis rigorosas para assegurar que todos possam acessar o litoral. Esse compromisso com o acesso público é um exemplo positivo de como as políticas governamentais podem equilibrar o desenvolvimento econômico com a justiça social e a preservação ambiental — no entanto, mesmo lá há uma pressão crescente do setor privado para desenvolver áreas costeiras exclusivas, o que pode, no futuro, ameaçar esse modelo inclusivo.</p>
+        <p>A privatização das praias é impulsionada por uma lógica neoliberal que valoriza a maximização de lucros — mas essa abordagem tem um custo social significativo. Ao limitar o acesso a um recurso natural essencial, as políticas de privatização podem exacerbar desigualdades sociais e excluir comunidades inteiras do acesso ao lazer e à natureza, além de levar à degradação ambiental, já que a proteção dos ecossistemas muitas vezes é sacrificada em nome do desenvolvimento turístico.</p>
+        <p>É indiscutível que governos e sociedades civis devem reconhecer o valor intrínseco das praias como espaços públicos. O acesso equitativo a esses espaços é fundamental não apenas para o bem-estar físico e mental das pessoas, mas também para a manutenção de uma sociedade mais justa e inclusiva, e para a proteção dessas áreas sensíveis. O debate sobre a privatização das praias é, portanto, um chamado à ação para proteger o direito de todos ao acesso livre e irrestrito aos recursos naturais.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art6" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Divulgação Científica na Prática</div>
+        <h2>Marketing pessoal<span class="sub">Por que todo cientista também precisa saber se comunicar</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">LV</span> Leonardo Vicente</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Quantas vezes você já se deparou com a seguinte situação: pensar em algo, ter uma ideia, e não saber colocá-la em palavras ou no papel? E quando isso é relacionado a você mesmo, como profissional de uma determinada área? Pode ser insegurança, pode ser timidez — mas também pode ser simplesmente a falta de entender o que é marketing pessoal. Estamos acostumados a ver e ser impactados pelo marketing de empresas e produtos, mas não paramos para analisar o marketing de pessoas. E, no momento atual de redes sociais e influenciadores, isso é muito importante e deveria ser comum.</p>
+        <h3>Autoconhecimento: aplicando a matriz FOFA</h3>
+        <p>SWOT — ou, aportuguesando, FOFA (Forças, Oportunidades, Fraquezas e Ameaças) — é uma das ferramentas de marketing mais conhecidas para análise de mercado e cenário, útil para tirar sua ideia do papel e analisar as chances de sucesso.</p>
+        <p>Vemos muitos profissionais se formarem e, ao entrar em um processo seletivo ou se lançar no mercado de trabalho, empacarem na hora de &quot;vender o seu peixe&quot;. Primeira coisa a colocar na cabeça: você tem especialidade. Pare de se comparar ao outro — você é detentor de muita informação, tem bagagem; precisa de experiência, ok, mas não se desvalorize. Trabalhe sua autoestima.</p>
+        <h3>Benchmarking e networking</h3>
+        <p>É importante entender o que você deseja: se é trabalhar em algum nicho específico, investigue, busque referências, veja como outros profissionais semelhantes postam e vendem seu conteúdo. Isso é benchmarking — uma análise estratégica das melhores práticas usadas por quem atua no mesmo setor que o seu. É o famoso &quot;copia, mas não faz igual&quot;: muito importante para você entender a área onde pretende atuar e saber como conversar com o seu público-alvo.</p>
+        <div class="callout">Networking é construir uma rede de contatos, trocar experiências que podem te ajudar e potencializar sua carreira. Participar de conferências e eventos da sua área, conhecer profissionais que podem te ajudar, parcerias e oportunidades — um bom networking pode ser fundamental.</div>
+        <p>Crie um perfil profissional nas redes sociais: construir um público ali é muito prático e com custos muito reduzidos em relação aos anúncios tradicionais de marketing. Isso te ajudará a testar muitos conteúdos e informações — entender o seu público é a melhor forma de se relacionar com ele: seja interativo e bem responsivo.</p>
+        <h3>Identidade e promoção do seu trabalho</h3>
+        <p>Crie uma identidade, uma marca própria para se identificar — isso tornará sua divulgação e reconhecimento mais fáceis. É interessante criar uma logo e, conforme for sua caminhada, isso vai facilitar a criação de um site e a associação das pessoas entre você e sua marca. Cada passo que der, cada projeto, mostre ao público: registre, tire fotos, grave vídeos curtos. Isso te dará mais credibilidade e reconhecimento — criar um blog ou portfólio do seu trabalho é bem interessante para construir sua autoridade e mostrar seus resultados.</p>
+        <p>Sempre responda as pessoas que entrarem em contato, seja pelas redes sociais, e-mail etc. Procure manter sempre a integridade: saber o que faz ou não, não prometer algo que não pode cumprir. Assim o público será fiel ao seu trabalho e divulgador constante — o tão aguardado e infalível &quot;boca a boca&quot;.</p>
+        <p>Em suma, o marketing pessoal é uma ferramenta crucial para qualquer profissional que busca se destacar e alcançar seus objetivos no mercado de trabalho. Ao dominar conceitos como autoconhecimento, análise FOFA, benchmarking, networking e construção de uma identidade profissional, você se posiciona de maneira mais eficaz e autêntica. Lembre-se de que o marketing pessoal é um processo dinâmico e contínuo, que exige adaptação e evolução conforme você avança em sua carreira.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art7" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Oficina Prática</div>
+        <h2>Pondo a mão na massa: criação de conteúdo<span class="sub">Estudo de caso: como divulgar a privatização das praias nas redes</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">LV</span> Leonardo Vicente</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Vamos imaginar o seguinte cenário: você é um profissional de biologia e começa a elencar temas que gostaria de falar. Decide criar conteúdos sobre a privatização das praias aqui do Brasil — assunto superbadalado no momento, que vem tomando conta dos noticiários nacionais, com opiniões a favor e contra essa privatização. Então, você precisa se inserir no meio digital através das redes sociais.</p>
+        <ul class="tidy"><li>Crie um perfil comercial (ou converta o pessoal): dá acesso a métricas de engajamento e informações sobre público que só esse tipo de perfil oferece.</li><li>Crie uma identidade visual: no caso do perfil pessoal, defina o padrão dos seus posts.</li><li>Defina os assuntos de cada post: criar seu próprio conteúdo é uma forma de começar a falar com o público de maneira mais didática, garantindo compreensão e afinidade.</li></ul>
+        <p>Uma forma legal de trabalhar os conteúdos é elencar dicas e tópicos, pois chamam a atenção. Pensando no tema das privatizações, é interessante explicar sucintamente o que significa privatização e, a partir daí, seguir com conteúdos interessantes: o que é privatização, qual área das praias será privatizada, quais as principais praias do Brasil afetadas — até chegar ao ponto de expor sua opinião sobre o tema, justificando de forma eloquente para que todo público entenda e também interaja e engaje com seu conteúdo.</p>
+        <div class="callout">Exemplos de títulos: &quot;5 motivos para dizer não à privatização das praias&quot; ou &quot;Praias privatizadas: benefícios aos ricos ou aos pobres?&quot;</div>
+        <p>Depois, é necessário definir o tipo de postagem para cada assunto: reels (vídeos rápidos e curtos, até 50s) e carrosséis com três ou mais imagens são os formatos que mais engajam — o que não exclui imagens únicas e stories, mas é bom ter essas informações em mente ao definir suas estratégias de conteúdo.</p>
+        <ul class="tidy"><li><strong>Feed</strong> — prospecção (novos públicos).</li><li><strong>Reels</strong> — prospecção.</li><li><strong>Live</strong> — prospecção e fidelização.</li><li><strong>Stories</strong> — fidelização.</li></ul>
+        <p>Não subestime o propósito dos stories: é a ferramenta para manter seu público fiel à sua proposta e ao seu perfil. Use bastidores das suas criações, reforce conteúdos e diálogos com caixinhas de perguntas, mostre hobbies e vida real, depoimentos e reportagens.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art8" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Resumo</div>
+        <h2>Nossas praias, nosso direito!</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">EB</span> Equipe Bio in Situ</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Fechando essa edição, um resumo dos quatro pontos centrais do debate sobre a privatização das praias brasileiras:</p>
+        <ul class="tidy"><li><strong>Direito de acesso</strong> — as praias são bens públicos e devem ser acessíveis a todos. A privatização impede o livre acesso e exclui a população.</li><li><strong>Impacto ambiental</strong> — a privatização pode levar à degradação ambiental e à construção desenfreada, prejudicando ecossistemas e a fauna local.</li><li><strong>Impacto social</strong> — privatizar praias aumenta a desigualdade social, pois só quem pode pagar terá acesso a esses espaços naturais.</li><li><strong>Benefícios das praias públicas</strong> — promovem saúde, bem-estar e igualdade social, além de serem importantes para a cultura e o lazer das comunidades locais.</li></ul>
+        <div class="prompt-strip" style="background:var(--accent);"><span class="mic">🎙</span> Tem alguma sugestão de tema ou assunto que gostaria de ver na revista? Mande para cartinhas@biologiainsitu.com.br.</div>
+        
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<footer id="apoie">
+  <div class="foot-inner">
+    <div>
+      <h3>Apoie o projeto</h3>
+      <p>O Canal Bio In Situ é uma iniciativa independente de divulgação científica em biologia. Os episódios são publicados semanalmente no site e nos principais agregadores de podcast.</p>
+      <p>Tem alguma sugestão de tema para a próxima edição? Escreva para <a class="link" href="mailto:cartinhas@biologiainsitu.com.br">cartinhas@biologiainsitu.com.br</a>.</p>
+    </div>
+    <div class="foot-col">
+      <div class="row"><span>Apoia.se</span><span>apoia.se/biologiainsitu</span></div>
+      <div class="row"><span>PicPay</span><span>@biologiainsitu</span></div>
+      <div class="row"><span>Pix</span><span>cartinhas@biologiainsitu.com.br</span></div>
+    </div>
+  </div>
+  <div class="credits">
+    <span>ISSN 2965-923X</span>
+    <span>·</span>
+    <span>Organizadores: C. Santana Santos, R. Silva Gomes, H. Caramuru Carlos</span>
+    <span>·</span>
+    <span>Autoras/es: Bárbara Grusag, Cristianne Santana Santos, Dávylla Ribeiro Lopes, Luiza de Freitas Ferreira, Melissa dos Santos Cabral</span>
+    <span>·</span>
+    <span>Design web: equipe voluntária Bio In Situ</span>
+  </div>
+</footer>
+
+</body>
+</html>

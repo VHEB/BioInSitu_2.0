@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brasil em chamas — Bio In Situ, Ed. Vol. 1 · Nº 6 · 2024 · Edição 6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --paper: #F6F4EE;
+    --paper-dim: #EFECE3;
+    --ink: #14231C;
+    --ink-soft: #3A473F;
+    --green: #1E7A46;
+    --green-deep: #123D25;
+    --teal: #0E8E8A;
+    --slate: #4B4B4B;
+    --magenta: #D6116C;
+    --sand: #DCD2B8;
+    --gold: #9C8A4E;
+    --rule: rgba(20,35,28,0.14);
+    --maxw: 760px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ===== Skip / focus ===== */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--green);
+    outline-offset:3px;
+  }
+
+  /* ===== Top bar ===== */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,244,238,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:700; font-size:18px;
+    text-decoration:none;
+  }
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--green);}
+  .topbar nav{display:flex; gap:22px;}
+  .topbar nav a{
+    font-size:13px; text-decoration:none; color:var(--ink-soft);
+    letter-spacing:0.03em; text-transform:uppercase;
+  }
+  .topbar nav a:hover{color:var(--green);}
+  #toc-toggle{display:none;}
+
+  /* ===== Hero ===== */
+  .hero{
+    max-width:980px; margin:0 auto; padding:64px 28px 40px;
+    text-align:left;
+  }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--green-deep);
+    display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .hero .eyebrow::before{content:"";width:28px;height:1px;background:var(--green-deep);display:inline-block;}
+  .hero h1{
+    font-size:clamp(38px, 6vw, 68px);
+    font-weight:600; line-height:1.02; margin:0 0 22px;
+    max-width:850px;
+  }
+  .hero h1 em{font-style:italic; font-weight:500; color:var(--green);}
+  .hero p.lede{
+    max-width:560px; color:var(--ink-soft); font-size:18px; margin:0 0 34px;
+  }
+  .hero .meta-row{
+    display:flex; flex-wrap:wrap; gap:28px; font-size:13.5px; color:var(--ink-soft);
+    border-top:1px solid var(--rule); padding-top:18px;
+  }
+  .hero .meta-row strong{color:var(--ink); display:block; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px; font-weight:600;}
+
+  /* signature motif: circuit-root divider */
+  .motif{
+    display:block; width:100%; height:34px; margin:6px 0 0;
+    opacity:0.9;
+  }
+
+  /* ===== Layout: TOC + content ===== */
+  .layout{
+    max-width:1180px; margin:0 auto; padding:0 28px 40px;
+    display:grid; grid-template-columns:230px 1fr; gap:56px;
+  }
+  .toc{
+    position:sticky; top:70px; align-self:start;
+    padding:22px 0 40px;
+    max-height:calc(100vh - 90px); overflow-y:auto;
+  }
+  .toc-title{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--ink-soft); margin-bottom:14px; font-weight:600;
+  }
+  .toc ol{list-style:none; margin:0; padding:0; counter-reset:art;}
+  .toc li{counter-increment:art; margin-bottom:2px;}
+  .toc a{
+    display:flex; gap:10px; padding:8px 6px; text-decoration:none;
+    font-size:13.5px; color:var(--ink-soft); border-radius:6px;
+    line-height:1.3;
+  }
+  .toc a:hover{background:var(--paper-dim); color:var(--ink);}
+  .toc a::before{
+    content:counter(art, decimal-leading-zero);
+    font-family:'IBM Plex Mono', monospace; font-size:11px;
+    color:var(--green); flex-shrink:0; padding-top:1px;
+  }
+
+  main{min-width:0;}
+
+  /* ===== Article card ===== */
+  article.piece{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:14px;
+    margin-bottom:26px;
+    overflow:hidden;
+    scroll-margin-top:80px;
+  }
+  .piece-head{
+    padding:34px 40px 26px;
+    border-bottom:1px solid var(--rule);
+    position:relative;
+  }
+  .piece-head::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:6px;
+    background:var(--accent, var(--green));
+  }
+  .piece-kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--accent, var(--green));
+    margin-bottom:10px; font-weight:500;
+  }
+  .piece-head h2{
+    font-size:clamp(24px, 3.4vw, 32px); font-weight:600; line-height:1.12; margin:0 0 16px;
+  }
+  .piece-head h2 .sub{
+    display:block; font-family:'IBM Plex Sans', sans-serif; font-style:normal;
+    font-weight:400; font-size:0.55em; color:var(--ink-soft); margin-top:6px; letter-spacing:0;
+  }
+  .byline{
+    display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-soft);
+  }
+  .byline .avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--accent, var(--green)); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:13px;
+  }
+  .piece-body{padding:8px 40px 38px;}
+  .piece-body p{margin:0 0 18px; color:var(--ink);}
+  .piece-body h3{font-size:17px; margin:26px 0 12px; font-weight:600; color:var(--accent, var(--green-deep));}
+  .piece-body .drop::first-letter{
+    float:left; font-family:'Fraunces', serif; font-weight:700; font-size:3.6em;
+    line-height:0.82; padding-right:10px; padding-top:4px; color:var(--accent, var(--green));
+  }
+  .cols{columns:1; column-gap:36px;}
+  @media(min-width:640px){ .cols.two{columns:2;} }
+
+  .callout{
+    background:var(--paper-dim);
+    border-left:3px solid var(--accent, var(--green));
+    border-radius:0 10px 10px 0;
+    padding:16px 20px;
+    margin:8px 0 22px;
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+  .quote{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:20px; line-height:1.45; color:var(--ink);
+    padding:4px 0 4px 20px; border-left:3px solid var(--accent, var(--green));
+    margin:22px 0;
+  }
+  .binary{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em;
+    color:var(--accent, var(--green)); opacity:0.75; margin:-6px 0 20px;
+  }
+  ul.tidy{margin:0 0 18px; padding-left:20px;}
+  ul.tidy li{margin-bottom:8px;}
+  .refs{
+    font-size:13.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:8px; padding-top:18px;
+  }
+  .refs p{margin-bottom:8px;}
+  .caption{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:-8px;}
+
+  .prompt-strip{
+    margin-top:24px; padding:14px 20px; border-radius:10px;
+    background:var(--green-deep); color:#EFEDE3;
+    font-size:13.5px; display:flex; align-items:center; gap:12px;
+  }
+  .prompt-strip .mic{
+    width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+
+  /* reading tips */
+  .book{
+    display:grid; grid-template-columns:64px 1fr; gap:16px; margin-bottom:22px;
+  }
+  .book .spine{
+    width:64px; height:88px; border-radius:4px;
+    background:linear-gradient(160deg, var(--accent, var(--green)), var(--green-deep));
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    font-family:'Fraunces',serif; font-weight:700; font-size:22px;
+  }
+  .book h4{margin:0 0 2px; font-size:16px; font-family:'Fraunces',serif; font-weight:600;}
+  .book .by{font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;}
+  .book p{font-size:14px; margin:0; color:var(--ink-soft);}
+
+  /* footer / support */
+  footer{
+    background:var(--green-deep); color:#EDEAE0; margin-top:40px;
+    padding:56px 28px 40px;
+  }
+  .foot-inner{max-width:980px; margin:0 auto; display:grid; grid-template-columns:1.3fr 1fr; gap:48px;}
+  footer h3{color:#fff; font-size:24px; margin:0 0 14px;}
+  footer p{color:#C9D2C7; max-width:420px; margin:0 0 10px;}
+  footer a.link{color:#9FE3B8; text-decoration:none; border-bottom:1px solid rgba(159,227,184,0.35);}
+  .foot-col .row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.1); font-size:14px;}
+  .foot-col .row span:first-child{color:#9FB0A4;}
+  .credits{max-width:980px; margin:34px auto 0; padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); font-size:12.5px; color:#8AA091; display:flex; flex-wrap:wrap; gap:6px 18px;}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .toc{position:static; max-height:none; padding-bottom:10px;}
+    .foot-inner{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .piece-head, .piece-body{padding-left:22px; padding-right:22px;}
+    .topbar nav{display:none;}
+    .cols.two{columns:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+
+  /* imagem opcional de capa da matéria (não usada nas edições sem gerador de imagem) */
+  .piece-media{width:100%; aspect-ratio:16/9; overflow:hidden;}
+  .piece-media img{width:100%; height:100%; object-fit:cover; display:block;}
+
+  /* link opcional para o PDF/fonte original da matéria */
+  .source-link{
+    font-size:12.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:20px; padding-top:14px;
+  }
+  .source-link a{color:var(--green); text-decoration:underline; text-underline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="#topo"><span class="dot"></span>BIO IN SITU</a>
+  <nav>
+    <a href="#sumario">Sumário</a>
+    <a href="#apoie">Apoie</a>
+    <a href="https://biologiainsitu.com.br" target="_blank" rel="noopener">Site</a>
+  </nav>
+</div>
+
+<div id="topo" class="hero">
+  <div class="eyebrow">Vol. 1 · Nº 6 · 2024 · Edição 6</div>
+  <h1>Brasil <em>em chamas</em></h1>
+  <p class="lede">Nesta edição, olhamos para as queimadas que tomaram o país — seus efeitos na saúde, no clima e nos povos indígenas —, exploramos o tema através do cinema e de um recurso didático simples (o terrário) e conversamos com Renata Ninelo sobre agricultura regenerativa no Sítio Sol e Jardim.</p>
+  <div class="meta-row">
+    <div><strong>Organizadores</strong>Cristianne Santana Santos, Ricardo da Silva Gomes, Heloá Caramuru Carlos, Bruna Garcia da Cruz Canellas, Vitor Estanislau de Almeida Souza, Amanda Honório Nunes, Bárbara Grusag, Carolina Negreiros, Dávylla Ribeiro Lopes, Leonardo Vicente Souza, Luiza de Freitas Ferreira, Melissa dos Santos Cabral e Rayane Ribeiro Rodrigues</div>
+    <div><strong>ISSN</strong>2965-923X</div>
+    <div><strong>Publicação</strong>Rio de Janeiro, RJ</div>
+  </div>
+</div>
+
+<svg class="motif" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 17 H120 M170 17 H1200" stroke="#1E7A46" stroke-width="1" opacity="0.35"/>
+  <circle cx="145" cy="17" r="4" fill="#1E7A46"/>
+  <path d="M145 17 q10 -14 24 -14 M145 17 q10 14 24 -14" stroke="#1E7A46" stroke-width="1.2" fill="none" opacity="0.6"/>
+</svg>
+
+<div class="layout">
+  <aside class="toc" id="sumario">
+    <div class="toc-title">Nesta edição</div>
+    <ol>
+      <li><a href="#art1">Hera Venenosa e Senhor Frio</a></li>
+      <li><a href="#art2">A fumaça das queimadas</a></li>
+      <li><a href="#art3">As mudanças climáticas e as queimadas</a></li>
+      <li><a href="#art4">A crise sob a lente de Pokémon – O Filme 2000</a></li>
+      <li><a href="#art5">Dicas de leitura</a></li>
+      <li><a href="#art6">Terrário e altas temperaturas</a></li>
+      <li><a href="#art7">Queimadas no Brasil: um foco no Maranhão</a></li>
+      <li><a href="#art8">Entrevista: Renata Ninelo, Sítio Sol e Jardim</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+    <article class="piece" id="art1" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Cultura Pop &amp; Biologia</div>
+        <h2>Hera Venenosa e Senhor Frio</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">RG</span> Ricardo Gomes</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Já é corriqueiro que haja revisões de personagens na indústria dos quadrinhos. De tempos em tempos, heróis e vilões ganham nova roupagem, adaptações em suas personalidades e até histórias de origem diferentes das que já foram contadas. Aqui, nós faremos mais uma dessas revisões — porém, vamos partir de um filme, não diretamente dos quadrinhos.</p>
+        <p>Se você é cria dos anos 80 ou 90, pode ter pego essa pérola cinematográfica ainda em uma tenra idade e talvez tenha na sua memória afetiva que este filme seja muito bom. Ou, pelo menos, bom. Razoável, quem sabe… Se esse for o caso, aconselho não reassistir, pois, acredite, ele não passa na famosa regra dos 15 anos. Eu posso falar, pois sofri novamente esse filme para este texto. O que não fazemos pelo Bio In Situ, não é mesmo?</p>
+        <p>Estamos falando de Batman e Robin, de 1997, dirigido por Joel Schumacher e estrelado por George Clooney e Chris O'Donnell como a dupla dinâmica. Porém, nosso foco será a dupla de vilões dessa película: Hera Venenosa, interpretada por Uma Thurman, e o Senhor Frio, interpretado por Arnold Schwarzenegger.</p>
+        <p>Analisando direitinho as intenções de Hera Venenosa, descobrimos que ela é uma botânica (ou seja, uma bióloga especialista em plantas) que quer dar às plantas e à natureza o poder de lutar contra os abusos humanos. A personagem chega, inclusive, a apresentar um plano detalhado de como as indústrias Wayne poderiam zerar todos os tipos de poluição ambiental que estavam cometendo!</p>
+        <p>Já sobre o Senhor Frio, é possível dizer que tinha intenções um pouco mais egoístas, já que ele queria congelar toda a cidade para pedir resgate em troca de descongelá-la. E você pode até perguntar: ele queria o dinheiro só pra ser rico e poderoso? Não, de jeito nenhum! Acontece que a esposa do suposto vilão sofria de uma condição rara e ele precisava do dinheiro para dar continuidade à sua pesquisa científica, na área da biologia molecular, para poder encontrar a cura!</p>
+        <p>Agora, bioleitora, ponha esses elementos na balança: de um lado, duas pessoas biólogas tentando refrear as ações danosas de uma sociedade adoentada pelo capitalismo tardio, e tentando tocar uma pesquisa científica sem fundos para salvar uma vida — pesquisa essa que, se não fosse para uma doença rara, teria mais atenção e dinheiro, pois resultaria em mais patentes lucrativas, por exemplo. E do outro lado, um bilionário excêntrico que acha que descer a porrada em meia dúzia de ladrões de bolsa na rua vai fazer algum bem, enquanto um sem número de trabalhadores precarizados sustentam a fortuna dele.</p>
+        <div class="callout">A tua fortuna já é um crime, imbecil.</div>
+        <p>Quem sou eu pra dizer quem tá certo ou quem tá errado… Enchentes, furacões, chuvas no deserto e desertificação em áreas do semiárido brasileiro. Será que tudo isso não poderia estar sendo evitado se, há uns 30 anos, nós tivéssemos dado mais valor e atenção às palavras de biólogas e outras cientistas do que às falas de grandes industriais e bilionários? E será também que não dá pra mudar alguma coisa ainda hoje? Diminuir as emissões de gases do efeito estufa, a poluição das águas e os números de queimadas de origem humana são algumas das coisas que vêm à cabeça, sem precisar nem gastar tanto tempo e energia.</p>
+        <div class="callout">MOMENTO PISTOLADA! Se você tá torcendo por bilionário, você tá errado sim! Seria bom ter a consciência de que, se você não nasceu herdeiro, você não está na mesma classe de um bilionário. &quot;Ah, mas eu ganho 15 mil por mês&quot; — você ainda está trabalhando, logo, é proletário. Os seus interesses e os do Elon Musk não são os mesmos! FIM DA PISTOLADA!</div>
+        <p>Perdão pela exaltação, voltemos ao tema. Já em 97, não só a comunidade científica como as esferas políticas, empresariais e até mesmo o grande público tinha noções dos efeitos ruins das emissões de gases industriais para a biodiversidade. Hoje, muito antes do que as previsões mais pessimistas diziam, já sentimos na pele as perdas, de vidas inclusive, que se dão a partir de fenômenos naturais intensificados pelas mudanças climáticas.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art2" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Meio Ambiente &amp; Saúde</div>
+        <h2>A fumaça das queimadas</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">LF</span> Luiza Ferreira</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Um grande número de queimadas tomou conta do país nesses últimos meses. O Pantanal e a Amazônia foram os biomas mais afetados, e a fumaça cobriu todo o Brasil. Por mais que as queimadas não estejam acontecendo em todos os estados brasileiros, as nuvens de fumaça deslocam-se por regiões que originalmente não estavam sendo afetadas pelo fogo.</p>
+        <p>As emissões de gases causadas pelas queimadas no Brasil são levadas pelos ventos e podem viajar por milhares de quilômetros, alcançando escalas internacionais. Essa fumaça já está chegando ao sul da África, como retratou Mark Parrington, cientista do Serviço de Monitoramento da Atmosfera do Copernicus (CAMS), que fornece informações diárias sobre a composição da atmosfera.</p>
+        <p>Essas mudanças atmosféricas causadas pela fumaça das queimadas afetaram a qualidade do ar e apresentam riscos à saúde de todos. A inalação dessa fumaça pode causar infecções, provocando problemas respiratórios, além de piorar os quadros de pessoas com doenças respiratórias, cardiovasculares e imunológicas.</p>
+        <div class="callout">Alguns dos sintomas imediatos causados pela inalação dessa fumaça são: irritação e lacrimejamento nos olhos, diminuição da visibilidade, obstruções nas vias respiratórias, sangramento nasal, tosse seca, laringite, rinite, falta de ar, cansaço, confusão mental, dores de cabeça e no peito.</div>
+        <h3>Importante: cuidados recomendados pelo Ministério da Saúde</h3>
+        <ul class="tidy"><li>Aumentar a ingestão de água e líquidos.</li><li>Reduzir o tempo de exposição, permanecendo ao máximo em locais fechados e, de preferência, com ar condicionado.</li><li>Evitar a prática de atividades físicas ao ar livre.</li><li>Manter portas e janelas fechadas, principalmente nos horários de maior concentração de poluentes no ar (entre 12h e 16h).</li><li>Em regiões próximas aos focos de queimadas, usar máscaras cirúrgicas, de pano ou bandanas, para reduzir a exposição às partículas grossas.</li><li>Usar máscaras específicas, como PFF2 e N95, para diminuir a inalação de partículas finas.</li></ul>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art3" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Mudanças Climáticas</div>
+        <h2>As mudanças climáticas e as queimadas</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">CS</span> Cristianne Santos</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">As mudanças climáticas e as queimadas estão muito ligadas, e vou te explicar de um jeito bem simples! Pensa no nosso planeta como uma grande casa. Quando tudo está funcionando bem, o clima ajuda as plantas a crescerem, os animais a viverem felizes e o ar a ficar limpo. Mas, com as mudanças climáticas, o clima está ficando mais quente e seco em algumas partes do mundo, como aqui no Brasil. Isso é como se o planeta estivesse &quot;com febre&quot;. E isso deixa as florestas e os campos mais secos, o que facilita o surgimento de queimadas.</p>
+        <p>As queimadas são como incêndios, só que muitas vezes são provocadas por pessoas que usam fogo para limpar áreas de terra. Mas, quando o clima está muito quente e seco, esse fogo sai do controle e se espalha rapidamente, destruindo árvores, matando animais e enchendo o ar de fumaça.</p>
+        <div class="callout">As queimadas também fazem o planeta ficar ainda mais quente! Quando queimamos as árvores, elas liberam gases que ficam presos na atmosfera, funcionando como um cobertor que deixa o planeta ainda mais quente. É um ciclo: o clima esquenta, o que causa mais queimadas, e as queimadas deixam o clima ainda mais quente!</div>
+        <p>Por isso, é muito importante cuidar das nossas florestas, evitar queimadas e plantar mais árvores. Isso ajuda a natureza a ficar mais forte e saudável, e também ajuda a combater as mudanças climáticas.</p>
+        <h3>Os povos indígenas e as queimadas</h3>
+        <p>As queimadas no Brasil afetam muitas pessoas e lugares, mas uma das partes mais importantes que sofrem com isso são os povos indígenas. Eles vivem nas florestas há muito tempo, cuidando da terra e dos animais, em harmonia com a natureza. Conhecem muito bem as plantas, os animais e tudo o que está ao redor, e sabem usar a natureza para viver sem estragar nada. Para eles, a floresta é como uma grande casa cheia de vida e recursos.</p>
+        <p>As queimadas são como grandes incêndios que destroem as árvores, as plantas e até os animais que vivem na floresta. Muitas vezes, começam porque algumas pessoas usam o fogo para limpar o terreno e plantar outras coisas, mas às vezes o fogo sai do controle e acaba queimando florestas inteiras. Quando isso acontece, os povos indígenas perdem parte da floresta onde moram e tiram seu sustento — as árvores que usam para colher frutos e as plantas que usam para fazer remédios são destruídas pelo fogo. É como se alguém estivesse queimando o quintal da casa deles!</p>
+        <p>Além disso, o fogo também faz muito mal para a saúde dessas pessoas: a fumaça que sobe das queimadas deixa o ar cheio de sujeira, dificultando a respiração e deixando os indígenas doentes.</p>
+        <div class="callout">Mas você sabia que os povos indígenas também usam o fogo? Eles têm um jeito especial e cuidadoso de usar o fogo na floresta — o chamado fogo controlado. Usam o fogo de forma segura, apenas em pequenos pedaços de terra, sabendo exatamente quando e onde usar, para não prejudicar as plantas e os animais ao redor.</div>
+        <p>Esse conhecimento é passado de geração em geração: os avós ensinam os pais, que ensinam os filhos, e assim por diante. Eles entendem que, usado da maneira certa, o fogo pode ajudar a floresta a crescer mais forte — muito diferente das queimadas grandes e descontroladas que destroem tudo.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art4" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Cultura Pop &amp; Meio Ambiente</div>
+        <h2>A crise sob a lente de Pokémon – O Filme 2000<span class="sub">Reflexões sobre a mudança climática</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">EA</span> Eduardo Andrade</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Pokémon – O Filme 2000, lançado em 1999 no Japão e, logo em seguida, em 2000, distribuído globalmente, é um dos mais famosos filmes de Pokémon e uma das aventuras que explora os perigos do desequilíbrio ecológico.</p>
+        <p>No decorrer do filme, Ash Ketchum, Pikachu e seus amigos se deparam com uma crise provocada pela tentativa de captura e invasão dos espaços das aves lendárias Articuno, Zapdos e Moltres. Esses pokémons lendários são representados pelos elementos de gelo, eletricidade e fogo, e são essenciais para o equilíbrio climático e ecológico da região. Quando um colecionador tenta capturá-los, ele desestabiliza esse equilíbrio, trazendo catástrofes naturais e um alerta urgente sobre a fragilidade do ambiente, sendo necessária a intervenção de Lugia, pokémon lendário que só aparece para buscar o equilíbrio.</p>
+        <p>Assim como no filme e para além de uma distopia, nossa atual realidade enfrenta uma crise ambiental causada pela interferência e pelas consequências da ação humana. Não é novidade que o aquecimento global, a poluição e a exploração descontrolada dos recursos naturais ameaçam a estabilidade dos ecossistemas e a própria sobrevivência de diversas espécies, incluindo a humanidade. Vamos explorar os paralelos entre o filme e a crise climática atual, como metáfora para os impactos da ação humana no ambiente e a necessidade de restaurar o equilíbrio.</p>
+        <h3>O desequilíbrio ambiental</h3>
+        <p>No filme, a captura das aves lendárias desencadeia uma série de desastres, pois a ausência de um dos elementos rompe o equilíbrio que mantém a harmonia no ecossistema. Articuno, Zapdos e Moltres representam forças da natureza que, quando em conflito, causam um efeito dominó de destruição — esses Pokémon não estão em guerra por escolha, mas pela interferência humana, que altera seu comportamento e, consequentemente, a estabilidade.</p>
+        <p>Esse cenário, para além do fictício, guarda semelhanças com o impacto da ação humana no planeta na realidade. A emissão de gases de efeito estufa, a destruição de florestas e a poluição do solo e da água têm causado desequilíbrios que modificam a forma como a Terra regula sua temperatura e seus ciclos naturais.</p>
+        <p>Diversos estudos já apontam que o uso descontrolado de combustíveis fósseis e o desmatamento intensivo contribuem diretamente para o aumento do aquecimento global, que, por sua vez, causa alterações nos padrões climáticos. Esse ciclo de degradação ambiental destaca a necessidade urgente de mudanças que, além dos nossos hábitos de consumo, passam por rever o sistema capitalista que favorece a manutenção desse desequilíbrio.</p>
+        <div class="callout">A transformação individual só será possível quando o sistema capitalista deixar de exercer seu impacto sobre todos nós de forma coletiva!</div>
+        <p>Embora esses eventos estejam acontecendo na ficção, os desastres no filme representam uma ameaça cada vez mais real na atualidade: as temperaturas registradas em 2024 não eram vistas há pelo menos 120 mil anos; o Brasil registrou 9 episódios de ondas de calor ao longo do ano; e diversas cidades ao redor do mundo registraram índices de qualidade do ar alarmantes, exacerbados por incêndios florestais e emissões industriais.</p>
+        <p>Na realidade, a crise climática já gera consequências devastadoras. Essas catástrofes têm cor, gênero, sexualidade, classe social: elas afetam principalmente as populações vulneráveis, expondo desigualdades socioeconômicas enquanto devastam ecossistemas inteiros. A perda de biodiversidade é outra consequência crítica, pois espécies inteiras ficam ameaçadas ou extintas devido à destruição de seus habitats naturais e à poluição ambiental.</p>
+        <h3>A necessidade de ação</h3>
+        <p>No desenrolar do filme, Ash é revelado como o &quot;Escolhido&quot;, aquele capaz de restaurar o equilíbrio entre os pokémons lendários e proteger o mundo Pokémon. Sua jornada simboliza a importância do agir, individual e, mais importante ainda, coletivo, na preservação do ambiente. Assim como Ash, devemos nos ver como parte de uma rede ligada, na qual a proteção de um ecossistema beneficia a todo mundo — a urgência climática não permite mais adiamentos, e é necessário que cada um assuma a responsabilidade de agir.</p>
+        <p>A crise climática não é apenas uma questão ambiental; é um desafio que exige mudanças sociais, econômicas e políticas para garantir a sobrevivência e a qualidade de vida de todos os seres vivos. Que essa mensagem inspire uma nova geração de &quot;escolhidos&quot; a lutar por um futuro sustentável e justo para todos.</p>
+        <ul class="tidy"><li><strong>Articuno</strong> — descrito como um lendário Pokémon pássaro que pode criar nevascas congelando a umidade do ar (TV Pokémon, 2024).</li><li><strong>Zapdos</strong> — Pokémon lendário que vive em nuvens de trovão e controla livremente os raios (TV Pokémon, 2024).</li><li><strong>Moltres</strong> — um dos Pokémon pássaros lendários; dizem que sua aparição indica a chegada da primavera (TV Pokémon, 2024).</li><li><strong>Lugia</strong> — suas asas contêm um poder devastador: um leve bater de asas pode explodir casas comuns, por isso escolhe viver fora de vista, nas profundezas do mar (TV Pokémon, 2024).</li></ul>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art5" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Recomendações</div>
+        <h2>Dicas de leitura</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">EB</span> Equipe Bio in Situ</div>
+      </div>
+      <div class="piece-body">
+        <div class="book"><div class="spine" style="background:linear-gradient(160deg,var(--accent),var(--green-deep));">F</div><div><h4>Flecha no Tempo</h4><div class="by">Luiz Antonio Simas e Luiz Rufino</div><p>O contrário da vida não é a morte, mas o desencanto. Partindo desse princípio, estes textos foram escritos com a palavra encaboclada e o olhar atento à labuta das iaôs que cobrirão com folhas de pitangas o nosso solo fértil, macaia das solidões compartilhadas. Para a batalha, os ogãs preparam o balaio das iabás, aquele que será ofertado na quebrada do sol, onde o mar afaga o céu e o mundo continua. Contra o canhão, o caboclo riscará o chão da mata.</p></div></div>
+        <div class="book"><div class="spine" style="background:linear-gradient(160deg,var(--accent),var(--green-deep));">U</div><div><h4>Uma Ecologia Decolonial</h4><div class="by">Malcom Ferdinand</div><p>É para cuidar da ferida aberta pelas inúmeras crises engendradas pelo sistema capitalista que o martinicano Malcom Ferdinand propõe uma ecologia decolonial, uma abordagem interseccional extremamente sagaz que reúne o ecológico com o pensamento decolonial e antirracista, em uma crítica contundente ao &quot;habitar colonial da Terra&quot;.</p></div></div>
+        <div class="book"><div class="spine" style="background:linear-gradient(160deg,var(--accent),var(--green-deep));">O</div><div><h4>O Jardim Secreto</h4><div class="by">Frances Hodgson Burnett</div><p>Clássico da literatura inglesa, O Jardim Secreto conta a história de duas crianças solitárias que decidem restaurar um jardim proibido, cujo mistério remete a um acidente ocorrido anos atrás. A amizade improvável entre os dois personagens funciona como uma metáfora para a descoberta do mundo e para o autoconhecimento.</p></div></div>
+        <div class="prompt-strip" style="background:var(--accent);"><span class="mic">🎙</span> Saia do celular. Leia um livro!</div>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art6" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Educação &amp; Ciência</div>
+        <h2>Terrário e altas temperaturas<span class="sub">Explorando o impacto das mudanças climáticas</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">TD</span> Tatiana Dias</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Como os professores, em sala de aula, podem abordar as mudanças climáticas que vêm destruindo alguns biomas brasileiros (destacando-se o Pantanal e a Amazônia) de maneira concreta e didática, para alertar seus alunos sobre essa crise? A resposta é simples e eficaz: utilizar o recurso didático do terrário fechado, que pode simular um ecossistema em miniatura autossustentável e demonstrar o ciclo da água, a fotossíntese, o aumento da temperatura e o impacto das mudanças climáticas.</p>
+        <h3>A ciência dentro do terrário</h3>
+        <ul class="tidy"><li><strong>Autossustentável</strong> — baseia-se no ciclo da água e na fotossíntese das plantas.</li><li><strong>Ciclo da água</strong> — a água evapora do solo e das plantas, condensa-se no vidro e volta ao solo, dispensando regas constantes.</li><li><strong>Fotossíntese</strong> — as plantas dentro do terrário fechado produzem seu próprio alimento com a luz que entra no recipiente.</li><li><strong>Altas temperaturas</strong> — quando a temperatura se eleva demasiadamente, as plantas podem sofrer danos irreversíveis ou até mesmo morrer.</li></ul>
+        <h3>Como construir um terrário fechado em sala de aula?</h3>
+        <p>A construção de um terrário em sala de aula pode ser bastante simples, utilizando materiais reutilizados, como garrafas PET, e elementos extraídos da natureza. O professor pode seguir o passo a passo e aproveitar com os alunos o processo de construção, observação e investigação do terrário.</p>
+        <p>Com a construção e a observação diária do terrário fechado, é possível compreender como os seres humanos podem afetar o nosso ecossistema. Em um ambiente equilibrado, como o terrário, sem as interferências humanas que provocam desequilíbrios ambientais, ele se mantém em perfeita harmonia.</p>
+        <ul class="tidy"><li>Garrafa PET</li><li>Plástico filme</li><li>Fitônia</li><li>Musgo</li><li>Brita 3/4</li><li>Rochas ornamentais</li><li>Carvão vegetal</li><li>Solo arenoso (areia lavada)</li><li>Terra adubada</li><li>Água</li></ul>
+        <p>Início da construção: primeiro é feito um corte na garrafa PET. Em seguida, são cuidadosamente acrescentados os elementos na seguinte ordem: brita 3/4, carvão vegetal, areia lavada, terra adubada, musgos, fitônia e, por fim, rochas ornamentais para complementar o visual. Depois da inserção dos elementos, é realizado o fechamento com filme plástico, fixado com fita adesiva, garantindo o lacre completo do terrário.</p>
+        <div class="callout">Os ciclos naturais acontecem de maneira espontânea, o crescimento das plantas não é prejudicado, e a beleza da natureza se torna mais radiante a cada dia, mostrando que a preservação é uma escolha certa para mantê-la.</div>
+        <h3>Por que evitar a incidência direta de luz solar no terrário fechado?</h3>
+        <p>Fatores que aumentam a temperatura ao redor das plantas: exposição direta ao sol, especialmente em dias quentes; ausência de sombra e proximidade de materiais que retêm calor, como concreto ou asfalto — que, ao aquecer, irradiam calor para o ambiente ao redor; e ventilação insuficiente, comum em estufas ou ambientes fechados, que acumula calor ao redor das plantas.</p>
+        <h3>Desidratação e queimaduras nas folhas</h3>
+        <p>O aumento da temperatura acelera a evaporação da água do solo e das folhas. As plantas perdem água mais rápido do que conseguem absorver, levando à desidratação, o que afeta a capacidade de absorver nutrientes e pode causar danos nas folhas e nos caules, resultando em um aspecto murcho.</p>
+        <p>Altas temperaturas também danificam as células das folhas, resultando em manchas marrons ou amareladas. Folhas danificadas comprometem a fotossíntese, reduzindo a produção de nutrientes, e tornam as plantas mais vulneráveis a infecções por fungos e outras doenças. Como pode ser observado nas fotos, um terrário fechado exposto diretamente a uma alta incidência solar submete a planta a fatores ambientais inadequados para sua sobrevivência, o que resulta em danos irreparáveis.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art7" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Meio Ambiente</div>
+        <h2>Queimadas no Brasil<span class="sub">Um foco na região do Maranhão</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">DR</span> Dávylla Ribeiro</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">As queimadas são um fenômeno recorrente no Brasil, especialmente em períodos de seca. Elas têm impactos significativos no meio ambiente, na saúde pública e na economia. No Maranhão, assim como em outras regiões do país, as queimadas são frequentemente associadas a práticas agrícolas e à expansão da fronteira agrícola. Em um recente levantamento, o país registrou cerca de 1,2 mil focos de incêndio, e o Maranhão se destacou como a região com o maior número desses incêndios.</p>
+        <p>No Brasil, as queimadas são utilizadas como uma técnica de manejo da terra, principalmente para limpar áreas para cultivo. No entanto, essa prática pode sair do controle e causar sérios danos ao meio ambiente.</p>
+        <p>O Maranhão, com sua vasta biodiversidade e ecossistemas variados, enfrenta desafios únicos relacionados às queimadas. Elas liberam grandes quantidades de carbono na atmosfera, contribuindo para as mudanças climáticas, além de afetar a qualidade do ar e causar problemas respiratórios na população local. A fauna e a flora também sofrem com a destruição de habitats, levando à diminuição da biodiversidade.</p>
+        <p>O Maranhão possui uma rica diversidade de biomas, incluindo o cerrado e a floresta amazônica. As queimadas se intensificam nos meses mais quentes e secos do ano, quando as condições climáticas favorecem a propagação do fogo. Em muitas áreas rurais, os pequenos agricultores utilizam o fogo para preparar a terra para o plantio, mas essa prática muitas vezes se torna descontrolada.</p>
+        <p>As queimadas não afetam apenas o meio ambiente: elas também têm um impacto direto nas comunidades locais. A fumaça gerada pode prejudicar a saúde dos moradores, aumentando casos de doenças respiratórias, além de comprometer a agricultura familiar, que é uma fonte vital de sustento para muitas famílias no Maranhão.</p>
+        <div class="callout">É fundamental promover práticas agrícolas sustentáveis que evitem o uso do fogo como ferramenta de manejo. Programas de educação ambiental e incentivos para técnicas alternativas podem ajudar os agricultores a adotarem métodos mais seguros e eficazes.</div>
+        <p>As queimadas no Brasil, especialmente no Maranhão, são um tema complexo que requer atenção e ação conjunta de governos, comunidades e organizações ambientais. Incentivar práticas agrícolas sustentáveis, promover campanhas de educação ambiental e apoiar políticas públicas que visem à proteção do meio ambiente são ações essenciais para combater esse problema e garantir um futuro sustentável para todos.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art8" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Entrevista</div>
+        <h2>Sítio Sol e Jardim<span class="sub">Entrevista com Renata Ninelo</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">LV</span> Leonardo Vicente</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">O cultivo de plantas e ervas começou como uma jornada terapêutica para Renata Ninelo, unindo autoconhecimento, arteterapia e um amor pela arte e pela natureza. Inicialmente em casa, ao lado da mãe, o projeto se expandiu para espaços públicos em Presidente Prudente e para a Unesp, onde o ambiente chamado &quot;Terra Pia&quot; se tornou um refúgio de paz e conexão com a natureza — e serviu de impulso para um projeto familiar ambicioso e muito encantador, o Sítio Sol e Jardim.</p>
+        <p>Hoje, junto com uma sócia, Renata gerencia cada etapa desse projeto, unindo a beleza das plantas, o cultivo ecológico e a apicultura.</p>
+        <div class="quote">Através do empreendedorismo, tenho aprendido a projetar nosso trabalho e impactar positivamente outras pessoas, algo que considero extremamente gratificante.</div>
+        <h3>Apresentação</h3>
+        <p>&quot;Sou Renata Ninelo, tenho 36 anos e sou natural de Presidente Prudente. Me considero uma profissional multidisciplinar, pois minha trajetória me levou a explorar diversas áreas que hoje enriquecem meu trabalho no campo. Sou formada em Letras, já fui professora de italiano e, posteriormente, estudei Geografia para aprofundar meu interesse pela natureza. Também tenho uma forte conexão com a arte, tendo estudado história da arte na Itália e atuado como ilustradora por mais de 10 anos, especialmente retratando a natureza.&quot;</p>
+        <p>&quot;Há cerca de 10 anos, comecei a me interessar por agroecologia, permacultura e agrofloresta, desenvolvendo uma visão holística e integrativa da paisagem. Hoje, sou agricultora e produtora rural, com foco no cultivo de flores e ervas. Também me vejo como empreendedora, especialmente com a administração do sítio de nossa família, um espaço onde unimos práticas sustentáveis e criatividade.&quot;</p>
+        <h3>Como surgiu o projeto Sítio Sol e Jardim?</h3>
+        <p>&quot;O projeto nasceu como resultado de um processo pessoal e familiar de autoconhecimento e busca por bem-estar. Comecei a me interessar por plantas de forma intuitiva, como um apoio para lidar com ansiedade e depressão, descobrindo na natureza uma fonte de paz e equilíbrio. O interesse se aprofundou com meus estudos em arteterapia, agroecologia e paisagismo, e foi alimentado por minha paixão por arte e flores.&quot;</p>
+        <p>&quot;Junto com minha mãe, o cultivo começou em casa e, com o tempo, se expandiu para espaços públicos em Presidente Prudente, como praças e a Unesp. Em 2018, tive a oportunidade de vivenciar o manejo de agroflorestas no projeto Cite Semente, em Brasília, o que ampliou minha visão sobre o potencial do cultivo sustentável. Em 2022, minha família conseguiu legalizar uma propriedade herdada em Pirapózinho, SP, um sítio antigo que agora serve como base para o projeto.&quot;</p>
+        <h3>Como começou o cultivo de ervas e flores?</h3>
+        <p>&quot;Meu interesse começou com as flores, mas, com o tempo, passei a me aprofundar no universo das ervas aromáticas, descobrindo afinidade com seu cultivo e o potencial de criar produtos a partir delas. Essa conexão com as flores também me aproximou das abelhas, especialmente das nativas sem ferrão, e hoje cultivo o sonho de criar um ambiente que una flores, ervas e polinizadores. Esse interesse levou ao projeto Rainhas da Floresta, em parceria com Ana Luisa Bovoi, que une ilustração e divulgação científica para conscientizar sobre a importância das abelhas nativas e a regeneração ambiental.&quot;</p>
+        <p>&quot;No sítio, praticamos agricultura regenerativa, focada em flores, ervas medicinais e sementes, com uma abordagem integrada que reúne agroecologia, agrofloresta e outras práticas sustentáveis. Nosso objetivo é criar um ambiente vivo, onde plantas, abelhas e pessoas coexistam em harmonia.&quot;</p>
+        <div class="quote">Quem é apaixonado por flores em algum momento também se apaixona pelas abelhas.</div>
+        <h3>Quais são as principais ervas e plantas que vocês cultivam?</h3>
+        <p>&quot;No sítio, cultivamos uma grande variedade de flores e ervas, priorizando sempre a biodiversidade. Atualmente, temos mais de 50 variedades de flores, como zínias, verbenas e cosmos, e mais de 35 de ervas, incluindo lavanda, capim-limão, manjericão e erva-luísa. Esse enfoque na diversidade nos permite colher diferentes espécies ao longo do ano e oferecer recursos contínuos para as abelhas.&quot;</p>
+        <h3>Como garantem a qualidade das ervas?</h3>
+        <p>&quot;Todo o processo de plantio é realizado por nós, desde a produção de mudas até a multiplicação por sementes ou estacas. Priorizamos a agricultura orgânica e biodiversa, planejando os plantios de forma escalonada para garantir colheitas contínuas ao longo do ano. Garantimos a qualidade priorizando vitalidade e saúde desde o cultivo até a entrega — isso reflete diretamente na durabilidade, beleza e propriedades medicinais, no caso das ervas.&quot;</p>
+        <h3>Quais são os principais desafios?</h3>
+        <p>&quot;Hoje, um dos maiores desafios é o clima, que se tornou mais imprevisível devido às mudanças climáticas. A seca dos últimos anos trouxe dificuldades, especialmente enquanto ainda estamos estruturando o sítio. Outro desafio é testar e descobrir quais espécies realmente podem ser cultivadas na nossa região, e também há a questão da mão de obra, já que poucas pessoas estão dispostas a trabalhar no campo.&quot;</p>
+        <div class="quote">Reconheço que hoje as pessoas estão carentes de natureza, de que elas estão carentes dessa vivência com a natureza.</div>
+        <h3>Meliponicultura</h3>
+        <div class="callout">A meliponicultura é a atividade de criação de abelhas sem ferrão, praticada por comunidades tradicionais, agricultores familiares, produtores rurais e hobbistas.</div>
+        <p>&quot;Meu interesse pelas abelhas cresceu devido às flores, o que me levou a ilustrar abelhas nativas sem ferrão e a observar suas interações com as plantas. Decidimos trazer abelhas para o sítio para que elas ocupem esses espaços novamente, aumentando a polinização e a fertilidade. As abelhas sensibilizam as pessoas ao mostrar como tudo está conectado, já que mais de 80% da produção de alimentos depende delas.&quot;</p>
+        <h3>Quais foram os maiores aprendizados?</h3>
+        <p>&quot;O projeto do sítio é recente, com quase três anos, mas já trouxe muitas mudanças. A principal transformação foi me enxergar como parte da natureza, percebendo que podemos interagir com ela de forma benéfica. A natureza ensina humildade, mostrando que não somos maiores que ela e que podemos aprender muito ao nos alinhar com seu ritmo. Para mim, a agricultura é um caminho possível de tratamento e cura, pois nos reconecta com nosso ritmo natural e nossa própria natureza interior.&quot;</p>
+        <h3>Sobre a gestão do projeto</h3>
+        <p>&quot;Divulgamos o projeto principalmente pelas redes sociais, como o Instagram, e através de um site e blog. Também participamos da Feira de Pequenos Produtores do Sesc, que nos ajudou a alcançar um público maior. Conciliar o trabalho no campo com a gestão do projeto é um grande desafio, mas a presença digital tem sido essencial para ampliar o alcance para além da região local.&quot;</p>
+        <h3>Que conselhos você daria para quem quer começar um negócio de cultivo orgânico?</h3>
+        <p>&quot;Meu principal conselho é testar suas ideias e praticar bastante. É com os testes e a prática que você ganha confiança e fortalece seu projeto. Lembre-se de que o cultivo orgânico é o mais alinhado com a natureza, e que isso permite que você faça a diferença — acredite que seu trabalho é importante, digno e necessário para o mundo.&quot;</p>
+        <p>A conversa com a Renata nos mostra como a agricultura orgânica e o contato com a natureza têm o poder de regenerar espaços, inspirar pessoas e transformar vidas. Através do seu trabalho, ela demonstra que é possível cultivar saúde, beleza e conexão, plantando não apenas alimentos, mas sementes de mudança e consciência.</p>
+        
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<footer id="apoie">
+  <div class="foot-inner">
+    <div>
+      <h3>Apoie o projeto</h3>
+      <p>O Biologia In Situ é uma iniciativa de divulgação científica em biologia criada por um grupo independente. Os programas de podcast, revista e canais de divulgação se encontram no site biologiainsitu.com.br e nos agregadores de podcasts como Spotify, Deezer e Apple Podcasts.</p>
+      <p>O nosso projeto pode ser apoiado através das plataformas Orelo e Apoia.se e no PIX pela chave: <a href="mailto:cartinhas@biologiainsitu.com.br">cartinhas@biologiainsitu.com.br</a></p>
+    </div>
+    <div class="foot-col">
+      <div class="row"><span>Apoia.se</span><span>apoia.se/biologiainsitu</span></div>
+      <div class="row"><span>Picpay</span><span>@biologiainsitu</span></div>
+      <div class="row"><span>Pix</span><span>cartinhas@biologiainsitu.com.br</span></div>
+    </div>
+  </div>
+  <div class="credits">
+    <span>ISSN 2965-923X</span>
+    <span>·</span>
+    <span>Organizadores: Cristianne Santana Santos, Ricardo da Silva Gomes, Heloá Caramuru Carlos, Bruna Garcia da Cruz Canellas, Vitor Estanislau de A. Souza Lopes</span>
+    <span>·</span>
+    <span>Autoras/es: Bárbara Grusag, Cristianne Santana Santos, Dávylla Ribeiro Lopes, José Eduardo Andrade Neto, Leonardo Vicente Souza, Luiza de Freitas Ferreira, Melissa dos Santos Cabral, Tatiana Maria dos Santos Dias</span>
+    <span>·</span>
+    <span>Design web: Carolina Negreiros, Leonardo Vicente Souza, Rayane Ribeiro Rodrigues</span>
+  </div>
+</footer>
+
+</body>
+</html>

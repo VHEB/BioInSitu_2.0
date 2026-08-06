@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etnobotânica: conhecimento em expansão — Bio In Situ, Ed. Vol. 1 · Nº 5 · 2024 · Edição 5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --paper: #F6F4EE;
+    --paper-dim: #EFECE3;
+    --ink: #14231C;
+    --ink-soft: #3A473F;
+    --green: #1E7A46;
+    --green-deep: #123D25;
+    --teal: #0E8E8A;
+    --slate: #4B4B4B;
+    --magenta: #D6116C;
+    --sand: #DCD2B8;
+    --gold: #9C8A4E;
+    --rule: rgba(20,35,28,0.14);
+    --maxw: 760px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ===== Skip / focus ===== */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--green);
+    outline-offset:3px;
+  }
+
+  /* ===== Top bar ===== */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,244,238,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:700; font-size:18px;
+    text-decoration:none;
+  }
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--green);}
+  .topbar nav{display:flex; gap:22px;}
+  .topbar nav a{
+    font-size:13px; text-decoration:none; color:var(--ink-soft);
+    letter-spacing:0.03em; text-transform:uppercase;
+  }
+  .topbar nav a:hover{color:var(--green);}
+  #toc-toggle{display:none;}
+
+  /* ===== Hero ===== */
+  .hero{
+    max-width:980px; margin:0 auto; padding:64px 28px 40px;
+    text-align:left;
+  }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--green-deep);
+    display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .hero .eyebrow::before{content:"";width:28px;height:1px;background:var(--green-deep);display:inline-block;}
+  .hero h1{
+    font-size:clamp(38px, 6vw, 68px);
+    font-weight:600; line-height:1.02; margin:0 0 22px;
+    max-width:850px;
+  }
+  .hero h1 em{font-style:italic; font-weight:500; color:var(--green);}
+  .hero p.lede{
+    max-width:560px; color:var(--ink-soft); font-size:18px; margin:0 0 34px;
+  }
+  .hero .meta-row{
+    display:flex; flex-wrap:wrap; gap:28px; font-size:13.5px; color:var(--ink-soft);
+    border-top:1px solid var(--rule); padding-top:18px;
+  }
+  .hero .meta-row strong{color:var(--ink); display:block; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px; font-weight:600;}
+
+  /* signature motif: circuit-root divider */
+  .motif{
+    display:block; width:100%; height:34px; margin:6px 0 0;
+    opacity:0.9;
+  }
+
+  /* ===== Layout: TOC + content ===== */
+  .layout{
+    max-width:1180px; margin:0 auto; padding:0 28px 40px;
+    display:grid; grid-template-columns:230px 1fr; gap:56px;
+  }
+  .toc{
+    position:sticky; top:70px; align-self:start;
+    padding:22px 0 40px;
+    max-height:calc(100vh - 90px); overflow-y:auto;
+  }
+  .toc-title{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--ink-soft); margin-bottom:14px; font-weight:600;
+  }
+  .toc ol{list-style:none; margin:0; padding:0; counter-reset:art;}
+  .toc li{counter-increment:art; margin-bottom:2px;}
+  .toc a{
+    display:flex; gap:10px; padding:8px 6px; text-decoration:none;
+    font-size:13.5px; color:var(--ink-soft); border-radius:6px;
+    line-height:1.3;
+  }
+  .toc a:hover{background:var(--paper-dim); color:var(--ink);}
+  .toc a::before{
+    content:counter(art, decimal-leading-zero);
+    font-family:'IBM Plex Mono', monospace; font-size:11px;
+    color:var(--green); flex-shrink:0; padding-top:1px;
+  }
+
+  main{min-width:0;}
+
+  /* ===== Article card ===== */
+  article.piece{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:14px;
+    margin-bottom:26px;
+    overflow:hidden;
+    scroll-margin-top:80px;
+  }
+  .piece-head{
+    padding:34px 40px 26px;
+    border-bottom:1px solid var(--rule);
+    position:relative;
+  }
+  .piece-head::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:6px;
+    background:var(--accent, var(--green));
+  }
+  .piece-kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--accent, var(--green));
+    margin-bottom:10px; font-weight:500;
+  }
+  .piece-head h2{
+    font-size:clamp(24px, 3.4vw, 32px); font-weight:600; line-height:1.12; margin:0 0 16px;
+  }
+  .piece-head h2 .sub{
+    display:block; font-family:'IBM Plex Sans', sans-serif; font-style:normal;
+    font-weight:400; font-size:0.55em; color:var(--ink-soft); margin-top:6px; letter-spacing:0;
+  }
+  .byline{
+    display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-soft);
+  }
+  .byline .avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--accent, var(--green)); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:13px;
+  }
+  .piece-body{padding:8px 40px 38px;}
+  .piece-body p{margin:0 0 18px; color:var(--ink);}
+  .piece-body h3{font-size:17px; margin:26px 0 12px; font-weight:600; color:var(--accent, var(--green-deep));}
+  .piece-body .drop::first-letter{
+    float:left; font-family:'Fraunces', serif; font-weight:700; font-size:3.6em;
+    line-height:0.82; padding-right:10px; padding-top:4px; color:var(--accent, var(--green));
+  }
+  .cols{columns:1; column-gap:36px;}
+  @media(min-width:640px){ .cols.two{columns:2;} }
+
+  .callout{
+    background:var(--paper-dim);
+    border-left:3px solid var(--accent, var(--green));
+    border-radius:0 10px 10px 0;
+    padding:16px 20px;
+    margin:8px 0 22px;
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+  .quote{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:20px; line-height:1.45; color:var(--ink);
+    padding:4px 0 4px 20px; border-left:3px solid var(--accent, var(--green));
+    margin:22px 0;
+  }
+  .binary{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em;
+    color:var(--accent, var(--green)); opacity:0.75; margin:-6px 0 20px;
+  }
+  ul.tidy{margin:0 0 18px; padding-left:20px;}
+  ul.tidy li{margin-bottom:8px;}
+  .refs{
+    font-size:13.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:8px; padding-top:18px;
+  }
+  .refs p{margin-bottom:8px;}
+  .caption{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:-8px;}
+
+  .prompt-strip{
+    margin-top:24px; padding:14px 20px; border-radius:10px;
+    background:var(--green-deep); color:#EFEDE3;
+    font-size:13.5px; display:flex; align-items:center; gap:12px;
+  }
+  .prompt-strip .mic{
+    width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+
+  /* reading tips */
+  .book{
+    display:grid; grid-template-columns:64px 1fr; gap:16px; margin-bottom:22px;
+  }
+  .book .spine{
+    width:64px; height:88px; border-radius:4px;
+    background:linear-gradient(160deg, var(--accent, var(--green)), var(--green-deep));
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    font-family:'Fraunces',serif; font-weight:700; font-size:22px;
+  }
+  .book h4{margin:0 0 2px; font-size:16px; font-family:'Fraunces',serif; font-weight:600;}
+  .book .by{font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;}
+  .book p{font-size:14px; margin:0; color:var(--ink-soft);}
+
+  /* footer / support */
+  footer{
+    background:var(--green-deep); color:#EDEAE0; margin-top:40px;
+    padding:56px 28px 40px;
+  }
+  .foot-inner{max-width:980px; margin:0 auto; display:grid; grid-template-columns:1.3fr 1fr; gap:48px;}
+  footer h3{color:#fff; font-size:24px; margin:0 0 14px;}
+  footer p{color:#C9D2C7; max-width:420px; margin:0 0 10px;}
+  footer a.link{color:#9FE3B8; text-decoration:none; border-bottom:1px solid rgba(159,227,184,0.35);}
+  .foot-col .row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.1); font-size:14px;}
+  .foot-col .row span:first-child{color:#9FB0A4;}
+  .credits{max-width:980px; margin:34px auto 0; padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); font-size:12.5px; color:#8AA091; display:flex; flex-wrap:wrap; gap:6px 18px;}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .toc{position:static; max-height:none; padding-bottom:10px;}
+    .foot-inner{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .piece-head, .piece-body{padding-left:22px; padding-right:22px;}
+    .topbar nav{display:none;}
+    .cols.two{columns:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+
+  /* imagem opcional de capa da matéria (não usada nas edições sem gerador de imagem) */
+  .piece-media{width:100%; aspect-ratio:16/9; overflow:hidden;}
+  .piece-media img{width:100%; height:100%; object-fit:cover; display:block;}
+
+  /* link opcional para o PDF/fonte original da matéria */
+  .source-link{
+    font-size:12.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:20px; padding-top:14px;
+  }
+  .source-link a{color:var(--green); text-decoration:underline; text-underline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="#topo"><span class="dot"></span>BIO IN SITU</a>
+  <nav>
+    <a href="#sumario">Sumário</a>
+    <a href="#apoie">Apoie</a>
+    <a href="https://biologiainsitu.com.br" target="_blank" rel="noopener">Site</a>
+  </nav>
+</div>
+
+<div id="topo" class="hero">
+  <div class="eyebrow">Vol. 1 · Nº 5 · 2024 · Edição 5</div>
+  <h1>Etnobotânica: <em>conhecimento em expansão</em></h1>
+  <p class="lede">Nesta edição, exploramos os saberes que conectam pessoas e plantas: da infância nordestina ao Candomblé, das plantas medicinais brasileiras às PANCs, passando por um tributo à pesquisadora Terezinha Rêgo e uma reflexão sobre o impacto da Inteligência Artificial no mercado de trabalho.</p>
+  <div class="meta-row">
+    <div><strong>Organizadores</strong>Cristianne Santana Santos, Ricardo da Silva Gomes, Heloá Caramuru Carlos, Bruna Garcia da Cruz Canellas, Vitor Estanislau de Almeida Souza, Amanda Honório Nunes, Bárbara Grusag, Dávylla Ribeiro Lopes, Leonardo Vicente Souza, Luiza de Freitas Ferreira, Melissa dos Santos Cabral e Rayane Ribeiro Rodrigues</div>
+    <div><strong>ISSN</strong>2965-923X</div>
+    <div><strong>Publicação</strong>Rio de Janeiro, RJ</div>
+  </div>
+</div>
+
+<svg class="motif" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 17 H120 M170 17 H1200" stroke="#1E7A46" stroke-width="1" opacity="0.35"/>
+  <circle cx="145" cy="17" r="4" fill="#1E7A46"/>
+  <path d="M145 17 q10 -14 24 -14 M145 17 q10 14 24 -14" stroke="#1E7A46" stroke-width="1.2" fill="none" opacity="0.6"/>
+</svg>
+
+<div class="layout">
+  <aside class="toc" id="sumario">
+    <div class="toc-title">Nesta edição</div>
+    <ol>
+      <li><a href="#art1">Etnobotânica e infância no Nordeste</a></li>
+      <li><a href="#art2">Um parque e sua diversidade</a></li>
+      <li><a href="#art3">É verdade que a folha estanca o sangramento?</a></li>
+      <li><a href="#art4">Impacto das mudanças climáticas</a></li>
+      <li><a href="#art5">Candomblé e educação: lições de sustentabilidade</a></li>
+      <li><a href="#art6">O impacto da Inteligência Artificial no mercado de trabalho</a></li>
+      <li><a href="#art7">Tributo à Professora Dra. Terezinha Rêgo</a></li>
+      <li><a href="#art8">Explorando o mundo das Plantas Medicinais do Brasil</a></li>
+      <li><a href="#art9">Dicas de leitura</a></li>
+      <li><a href="#art10">Plantas Alimentícias Não Convencionais (PANCs)</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+    <article class="piece" id="art1" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Cultura &amp; Tradição</div>
+        <h2>Etnobotânica e infância no Nordeste</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">CS</span> Cristianne Santos</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">A etnobotânica no Nordeste do Brasil é um reflexo de uma rica herança cultural que permeia a vida cotidiana, especialmente durante a infância. Em uma região marcada pela diversidade biológica e cultural, as práticas relacionadas ao uso das plantas transcendem gerações, formando a base do conhecimento tradicional que molda as vivências das crianças nordestinas.</p>
+        <p>No Nordeste, a transmissão do conhecimento etnobotânico ocorre predominantemente de forma oral, muitas vezes dentro do núcleo familiar. Os pais e, principalmente, os avós desempenham um papel crucial como transmissores desses saberes.</p>
+        <div class="callout">Estudos indicam que, em comunidades rurais nordestinas, cerca de 70% das crianças aprendem sobre o uso medicinal e alimentício das plantas através de membros mais velhos da família.</div>
+        <p>Esse aprendizado informal é complementado por histórias, mitos e contos populares que integram as plantas à cultura local, transformando o conhecimento em algo vivo e dinâmico.</p>
+        <p>Nas brincadeiras ao ar livre, as crianças incorporam plantas em seus jogos. Folhas se transformam em remédios imaginários, galhos em brinquedos e frutos em pequenos tesouros. Esse contato direto com a natureza não só alimenta a curiosidade infantil, mas também reforça a conexão com o ambiente e o respeito pelas tradições locais.</p>
+        <p>A etnobotânica na infância nordestina vai além do simples conhecimento de plantas; ela é uma ferramenta de resistência cultural. Em uma era de globalização, onde a modernidade ameaça ofuscar os saberes tradicionais, essas práticas ajudam a manter viva a identidade cultural da região. As crianças que crescem imersas nesses conhecimentos tornam-se guardiãs das tradições, capazes de levar adiante os segredos das plantas que seus antepassados descobriram e utilizaram por séculos.</p>
+        <p>Assim, a etnobotânica molda não apenas a infância no Nordeste, mas também a formação de uma consciência ecológica e cultural que perdura por toda a vida. Essas vivências enriquecem a infância nordestina, transformando a relação com as plantas em uma parte fundamental da construção de identidade e pertencimento a essa rica e diversa região do Brasil.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art2" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Biodiversidade &amp; Territórios</div>
+        <h2>Um parque e sua diversidade<span class="sub">Etnobotânica no Parque Nacional Serra de Itabaiana</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">CS</span> Cristianne Santos</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">O Parque Nacional Serra de Itabaiana, localizado no estado de Sergipe, Brasil, é uma área de proteção ambiental que desempenha um papel crucial na preservação da biodiversidade local e no estudo da etnobotânica. Este parque, que abrange cerca de 8.000 hectares, é conhecido por sua rica diversidade de flora e fauna, além de ser uma área de grande importância cultural e histórica para as comunidades locais.</p>
+        <p>A etnobotânica, o estudo das interações entre as pessoas e as plantas, é especialmente relevante no contexto do Parque Nacional Serra de Itabaiana. A região é habitada por comunidades que, ao longo dos séculos, desenvolveram um conhecimento profundo sobre o uso de plantas nativas para diversas finalidades, incluindo medicinais, alimentares, rituais e artesanais.</p>
+        <p>O parque abriga uma variedade de ecossistemas, como matas, campos rupestres e áreas de cerrado, cada um com sua própria composição de espécies vegetais. Algumas plantas nativas que são de particular interesse etnobotânico incluem:</p>
+        <ul class="tidy"><li><strong>Aroeira</strong> (Schinus terebinthifolia) — utilizada por suas propriedades anti-inflamatórias e antimicrobianas.</li><li><strong>Jatobá</strong> (Hymenaea courbaril) — conhecida por suas propriedades medicinais e uso na fabricação de produtos alimentares como a farinha de jatobá.</li><li><strong>Barbatimão</strong> (Stryphnodendron sp.) — utilizado tradicionalmente para curar feridas e tratar problemas de pele devido às suas propriedades adstringentes.</li></ul>
+        <p>O conhecimento sobre o uso dessas plantas é passado de geração em geração, principalmente através da oralidade, e desempenha um papel vital na sobrevivência das comunidades locais. As plantas são usadas não apenas para curar doenças e prover alimento, mas também em práticas culturais e rituais que fortalecem a identidade dessas comunidades.</p>
+        <div class="callout">A conservação desse conhecimento tradicional é um dos desafios enfrentados no parque. À medida que as práticas modernas e a urbanização avançam, há o risco de perda desse saber. Programas de educação ambiental e projetos de pesquisa em etnobotânica são essenciais para documentar e preservar esse patrimônio cultural.</div>
+        <p>O Parque Nacional Serra de Itabaiana também serve como um importante campo de pesquisa para etnobotânicos que buscam compreender melhor como as comunidades locais interagem com a flora da região. Pesquisas recentes têm focado em como as práticas tradicionais podem ser integradas a programas de conservação e sustentabilidade — o uso sustentável de plantas medicinais, por exemplo, é promovido como forma de manter as tradições vivas enquanto se protege o meio ambiente.</p>
+        <p>Além disso, a etnobotânica no parque contribui para o desenvolvimento de estratégias de manejo sustentável, que podem ser aplicadas tanto na conservação da biodiversidade quanto no desenvolvimento de produtos derivados das plantas nativas, beneficiando as comunidades locais economicamente.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art3" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Etnobotânica &amp; Saúde</div>
+        <h2>É verdade que a folha estanca o sangramento?</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">CS</span> Cristianne Santos</div>
+      </div>
+      <div class="piece-body">
+        <h3>De onde surgiu?</h3>
+        <p class="drop">A crença de que folhas verdes podem estancar o sangue tem raízes profundas em tradições populares e conhecimentos etnobotânicos, transmitidos de geração em geração. Essa ideia provavelmente surgiu da observação de plantas com propriedades adstringentes, anti-inflamatórias e cicatrizantes, que efetivamente ajudavam a controlar o sangramento em pequenas feridas.</p>
+        <p>Em muitas culturas, especialmente em comunidades indígenas e rurais, as pessoas aprenderam a identificar e utilizar plantas locais para tratar feridas e cortes. O uso de folhas verdes para estancar sangue pode ter se originado da prática de aplicar folhas de plantas específicas conhecidas por suas propriedades medicinais. Algumas plantas possuem compostos que contraem os tecidos e os vasos sanguíneos, ajudando a reduzir ou parar o sangramento — e foram naturalmente selecionadas e difundidas pelas comunidades ao longo do tempo.</p>
+        <ul class="tidy"><li><strong>Barbatimão</strong> (Stryphnodendron sp.) — no Brasil, as folhas e a casca dessa planta são tradicionalmente usadas para estancar o sangue devido às suas propriedades adstringentes.</li><li><strong>Tanchagem</strong> (Plantago major) — as folhas dessa planta são conhecidas por suas propriedades hemostáticas, ou seja, ajudam a parar o sangramento, além de terem ação anti-inflamatória e cicatrizante.</li><li><strong>Confrei</strong> (Symphytum officinale) — conhecida por promover a regeneração celular, também é usada tradicionalmente para acelerar a cicatrização de feridas.</li></ul>
+        <p>Os povos antigos e as comunidades tradicionais observavam os efeitos das plantas no corpo humano, muitas vezes por tentativa e erro, e compartilhavam essas descobertas. Ao notar que certas folhas ajudavam a conter o sangramento, essas práticas passaram a fazer parte do conhecimento popular e foram transmitidas ao longo das gerações. Com o tempo, a ideia de que &quot;folhas verdes&quot; em geral poderiam estancar o sangue se difundiu, mesmo que, na verdade, essa propriedade seja específica de certas plantas.</p>
+        <div class="callout">Hoje, sabemos que nem todas as folhas verdes têm propriedades hemostáticas, mas a tradição se manteve viva na cultura popular. A ciência moderna continua a investigar e validar as propriedades medicinais das plantas, muitas vezes confirmando o que as práticas tradicionais já indicavam.</div>
+        <p>A crença de que folhas verdes podem estancar o sangue, portanto, é um reflexo do profundo e antigo vínculo entre seres humanos e a natureza, sustentado por séculos de observação e transmissão de saberes.</p>
+        <h3>Outras plantas e seus usos populares</h3>
+        <ul class="tidy"><li><strong>Coentro</strong> (Coriandrum sativum L.) — a semente é usada para fazer chá e tratar a dor de cabeça.</li><li><strong>Babosa</strong> (Aloe vera (L.) Burm. F.) — suas folhas são usadas como cicatrizantes e creme de cabelo.</li><li><strong>Pitangueira</strong> (Eugenia uniflora L.) — o chá das folhas dessa planta trata a diarreia.</li><li><strong>Erva-doce</strong> (Pimpinella anisum L.) — o chá da semente é usado para tratar a tosse, ansiedade e cólica menstrual.</li><li><strong>Hortelã de São Francisco</strong> (Plectranthus neochilus Schlechter) — o chá das folhas dessa planta trata a dor de barriga.</li><li><strong>Jurubeba</strong> (Solanum paniculatum L.) — é feito um xarope da raiz e das folhas para tratar doenças do fígado.</li></ul>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art4" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Meio Ambiente</div>
+        <h2>Impacto das mudanças climáticas<span class="sub">Contaminação de metais pesados e os ribeirinhos</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">MC</span> Melissa Cabral</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">O mundo está em colapso climático, estamos perdendo nossa biodiversidade aos poucos, animais e plantas. Já pensou o que aconteceria com a indústria farmacêutica se as plantas medicinais deixassem de existir? O que seria dos povos indígenas e de todas as comunidades que dependem da natureza como fonte principal de sobrevivência? Falando assim parece exagero, mas isso está mais perto de acontecer do que parece.</p>
+        <p>Uma revisão de 434 artigos publicados sobre plantas medicinais e metais pesados dos últimos 10 anos, realizada em 2022 por Natiele da Silva Galvan, Maria Lucia Campos, David José Miqueluti, Márcia Eduarda Souza Esteves e Priscilla Dors, e publicada pela revista Society and Development, mostrou que, apesar de as plantas serem bastante resistentes às mudanças climáticas e à absorção de metais pesados, sua fisiologia e metabolismo são bastante afetados.</p>
+        <div class="callout">Isso significa que, além de a planta não conseguir se desenvolver na maneira ou tempo adequados, seus compostos bioquímicos também são afetados — o que resulta em mudanças drásticas na utilização dessas plantas para uso terapêutico, ou seja, efeitos nocivos à saúde humana por contaminação de metais pesados através da utilização das plantas medicinais (1).</div>
+        <h3>Ribeirinhos e mudanças climáticas</h3>
+        <p>No estado do Amazonas, as comunidades ribeirinhas e indígenas são as mais afetadas pelas mudanças climáticas, devido à seca dos rios e à queimada das florestas, que impossibilitam os recursos naturais para alimentação e sobrevivência das famílias mais vulneráveis, obrigando-as a consumir comidas industrializadas e aumentando drasticamente os gastos mensais (2).</p>
+        <div class="quote">Fico me perguntando como deve estar a situação nesse exato momento no qual mais florestas no Amazonas estão pegando fogo. Além de afetar a vida dessas pessoas, ainda há toda a diversidade animal e vegetal que provavelmente entrará em colapso na cadeia alimentar — e, a médio prazo, poderá ocorrer um problema ainda maior: a extinção de espécies, principalmente de plantas medicinais que ainda nem foram descobertas.</div>
+        <h3>Os ribeirinhos</h3>
+        <p>Por conta dos aspectos geográficos do país, é na Amazônia que está a maior parte dessa população. Além das populações nativas, somam-se a esta categoria descendentes de migrantes do Nordeste. Vivendo em um ambiente onde a natureza é dominante, os ribeirinhos aprenderam a lidar com diversas limitações e desafios impostos pelo rio e pela floresta, adaptando seu dia a dia, seu estilo de vida e as formas de garantir sua subsistência.</p>
+        <p>As moradias são feitas principalmente de madeira, sendo a maioria delas palafitas. Essas casas, localizadas perto das margens dos rios, geralmente não têm eletricidade, água encanada ou saneamento básico. Construídas a alguns metros acima do nível do rio para evitar inundações durante as cheias, as palafitas também utilizam tábuas para elevar o piso nesses períodos.</p>
+        <div class="callout">As mudanças climáticas afetam negativamente os ribeirinhos ao alterar os ciclos de cheias e secas dos rios, dificultando a pesca e a agricultura, que são suas principais fontes de sustento. As secas severas e as enchentes extremas podem destruir moradias e contaminar fontes de água, tornando a vida dessas comunidades ainda mais desafiadora.</div>
+        <p class="caption"><em>Referência bibliográfica: da Silva, Maria Almerice Lopes, et al. &quot;Avaliação da composição química de Cymbopogon citratus Stapf cultivado em ambientes com diferentes níveis de poluição e a influência na composição do chá.&quot; Acta Scientiarum. Health Sciences 32.1 (2010): 67-72.</em></p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art5" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Cultura &amp; Meio Ambiente</div>
+        <h2>Candomblé e educação<span class="sub">Lições de sustentabilidade e o respeito à natureza</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">JE</span> José Eduardo Andrade</div>
+      </div>
+      <div class="piece-body">
+        <h3>O Candomblé e a etnobotânica</h3>
+        <p class="drop">Além de ser uma religião de matriz afro-brasileira rica em conhecimento e tradição, o Candomblé oferece importantes lições de sustentabilidade e respeito à natureza que podem ser integradas à educação ambiental. As práticas de manejo sustentável das plantas sagradas utilizadas nos rituais do Candomblé não apenas protegem o meio ambiente, mas também demonstram um profundo respeito pela natureza — aspecto que pode ser explorado em cursos de ciências para ensinar conceitos de sustentabilidade a partir da etnobotânica do conhecimento tradicional religioso.</p>
+        <div class="quote">Construo esse texto pensando a partir das minhas vivências enquanto candomblecista e abiã do Ilê Axé Omíojoidan, além da literatura já produzida.</div>
+        <p>No Candomblé, as plantas são consideradas sagradas e partes fundamentais que desempenham papel central nos rituais religiosos. O orixá Ossain, divindade que rege a sabedoria sobre as plantas, ensina que sem planta não existe Orixá — o que fundamenta a importância do conhecimento ancestral dessas comunidades tradicionais religiosas como aliado para a sala de aula. No entanto, a recolha indiscriminada dessas plantas em áreas naturais pode levar à degradação do habitat, ameaçando as espécies e a fauna associada.</p>
+        <p>Muitas dessas plantas são endêmicas ou não são tão fáceis de serem encontradas, aumentando o risco de extinção se não forem adotadas práticas de recolha sustentáveis. Com a expansão agrícola, o desmatamento e a urbanização, o espaço disponível para o crescimento dessas plantas se reduz, intensificando a pressão sobre as áreas remanescentes.</p>
+        <p>Essas situações afetaram e continuam afetando diretamente as práticas do Candomblé, pois as alternativas para essas plantas são limitadas ou inexistentes, já que, dentro desse conhecimento histórico, tudo tem uma justificativa e finalidade.</p>
+        <p>Além disso, as alterações climáticas mudaram os padrões de crescimento das plantas, com secas prolongadas e mudanças nas estações chuvosas, afetando sua disponibilidade e forçando as comunidades a percorrer distâncias maiores para ter acesso a elas. Para mitigar esses impactos, o Candomblé adota práticas de manejo sustentável que servem de modelo para a educação ambiental.</p>
+        <p>A coleta seletiva, na qual são colhidas apenas partes das folhas, permite que as plantas se regenerem naturalmente. A utilização de técnicas de manejo agroflorestal que combinem o plantio de plantas sagradas com outras espécies nativas também é uma estratégia eficaz para manter a biodiversidade e o equilíbrio ecológico.</p>
+        <p>A plantação comunitária dessas plantas sagradas é outra prática sustentável que pode reduzir a pressão sobre as populações silvestres. As hortas comunitárias podem controlar o cultivo de plantas, garantindo que possam ser utilizadas em cerimônias religiosas sem afetar as populações naturais.</p>
+        <div class="callout">Paulo Freire defendia a ideia de que a educação deve ser um processo dialógico, em que o conhecimento é construído em colaboração entre educadores e educandos.</div>
+        <p>Educar e conscientizar as comunidades sobre a importância da proteção das plantas sagradas e da adoção de práticas sustentáveis é crucial para garantir a proteção desses recursos naturais. Programas de educação ambiental que enfatizem essa proteção e a dos conhecimentos tradicionais a elas associados são fundamentais para que essas práticas sejam reconhecidas e respeitadas pelas gerações futuras.</p>
+        <p>Freire afirmava que a educação precisa ser inserida no contexto da vida dos alunos. Um exemplo disso é o ensino dos conceitos de sustentabilidade através das práticas de cultivo de plantas no Candomblé, que liga os estudantes à sua cultura e ao ambiente em que vivem.</p>
+        <p>Iniciativas de conservação, como o estabelecimento de reservas ecológicas e santuários, são cruciais para garantir a regeneração natural das plantas sagradas e promover sua investigação e conservação.</p>
+        <p>Finalmente, incentivar a investigação científica sobre plantas sagradas e documentar o conhecimento tradicional sobre seus usos são passos importantes para garantir que essas práticas sejam reconhecidas e respeitadas. Essas iniciativas não só ajudam a conservar as espécies, mas também promovem a valorização do conhecimento tradicional e sua integração com o conhecimento científico.</p>
+        <p>As práticas sustentáveis do Candomblé fornecem um modelo valioso de desenvolvimento sustentável que pode ser aplicado à educação ambiental. Ao integrar esse conhecimento nos currículos escolares, podemos promover uma compreensão mais profunda das interligações entre cultura, religião e ambiente, incentivando o respeito pela diversidade natural e cultural — o que enriquece o ensino das ciências e ajuda a construir uma sociedade mais consciente e sustentável.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art6" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Ciência &amp; Sociedade</div>
+        <h2>O impacto da Inteligência Artificial no mercado de trabalho<span class="sub">Vou perder meu emprego?</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">LV</span> Leonardo Vicente</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">O avanço nas otimizações de vários softwares de Inteligência Artificial vem chamando a atenção pelas inovações — isso é inegável. Mas certos setores do mercado, mais especificamente alguns cargos profissionais, demonstram receio de serem substituídos frente a essa nova realidade.</p>
+        <p>Porém, em certas áreas, se o profissional se especializar seguindo as tendências do mercado, ele conseguirá utilizar as tecnologias a seu favor. Por isso é importante entender o avanço da tecnologia, para sabermos também como nos especializar e dominar novas ferramentas de trabalho.</p>
+        <h3>Revolução da Inteligência Artificial</h3>
+        <p>Inteligência Artificial é um assunto recorrente nos mais diferentes canais, seja em redes sociais, sites ou vídeos. Ela está cada vez mais presente em nosso dia a dia, então entender como surgiu, sua evolução e tendências é fundamental.</p>
+        <h3>O que é Inteligência Artificial</h3>
+        <p>A Inteligência Artificial (IA) refere-se ao campo da ciência da computação dedicado à criação de sistemas capazes de realizar tarefas que normalmente exigiriam inteligência humana. Isso inclui habilidades como aprendizado, raciocínio, reconhecimento de padrões, tomada de decisões e compreensão de linguagem natural.</p>
+        <p>A IA é impulsionada por algoritmos de aprendizado de máquina, que permitem que as máquinas melhorem seu desempenho com o tempo, aprendendo com dados e experiências extraídos de informações humanas — nosso uso da internet, nossas redes sociais e nossos hábitos geram esses dados.</p>
+        <p>Atualmente, a IA já está presente em diversas áreas, como assistentes virtuais, diagnósticos médicos e sistemas de recomendação, demonstrando seu potencial transformador no cotidiano e no ambiente de trabalho.</p>
+        <h3>Como a IA está transformando o mercado de trabalho?</h3>
+        <p>A IA tem transformado o mercado de trabalho no que diz respeito a atividades repetitivas e manuais, ajudando em processos facilmente previsíveis, como a automação de atendimentos — o que libera espaço para atividades mais estratégicas e criativas.</p>
+        <p>Novos cargos também podem surgir, como cientista de dados, engenheiro de aprendizado de máquina e especialistas em IA para diversas áreas empresariais, otimizando processos e impactando a eficiência, a produtividade e a qualidade do trabalho.</p>
+        <h3>Setores mais afetados pela IA</h3>
+        <div class="callout">De acordo com a McKinsey &amp; Company, entre 75 e 375 milhões de pessoas poderão ter de mudar de categoria profissional e aprender novas competências até 2030.</div>
+        <p>Na manufatura, a automação robótica tem substituído trabalhadores em tarefas de linha de produção, otimizando o tempo e reduzindo erros humanos. O setor de transporte também enfrenta transformações com o desenvolvimento de veículos autônomos, tanto para transporte de mercadorias quanto para mobilidade urbana — o que pode reduzir a demanda por motoristas e operadores de máquinas.</p>
+        <p>O atendimento ao cliente também é diretamente afetado pela IA, com o uso crescente de chatbots e assistentes virtuais que automatizam interações simples e padronizadas. É preciso cuidado para que a percepção de atendimento exclusivo e personalizado não se perca, o que pode gerar infidelidade do cliente. Embora a automação tenha potencial para eliminar alguns empregos, também cria oportunidades para quem se especializa no desenvolvimento, monitoramento e melhoria dessas tecnologias.</p>
+        <p>Setores como saúde, educação e finanças também estão sendo transformados pela IA, exigindo novas habilidades e maior adaptabilidade por parte dos profissionais.</p>
+        <h3>A IA substituirá ou complementará o trabalho humano?</h3>
+        <p>Otimista: as ferramentas e softwares inteligentes complementarão o trabalho humano, melhorando a qualidade e a produtividade das tarefas.</p>
+        <p>Pessimista: não temos como negar que, em certos setores, o mercado de trabalho terá espaço substituído por IAs devido a essa automação.</p>
+        <p>Equilíbrio: a mão de obra humana, com suas emoções e criatividade — itens ainda difíceis de reproduzir nas ferramentas de IA —, encontrará formas de se especializar para controlar esses softwares, que vão necessitar de reparos, atualizações e complementos, permanecendo relevante no processo.</p>
+        <h3>Como se preparar para o futuro com IA?</h3>
+        <p>Requalificações profissionais terão de ser feitas através do aprendizado contínuo. Será muito importante adquirir novas habilidades, como programação, análise de dados e pensamento crítico, além de investir em habilidades humanas difíceis de automatizar: criatividade, inteligência emocional, resolução de problemas complexos, relações interpessoais e liderança.</p>
+        <p>Não podemos deixar de lado o papel do governo frente a essa nova realidade — políticas públicas e programas de apoio devem ser pensados e implementados para facilitar essa transição e a qualificação de profissionais.</p>
+        <p>É inegável que a Inteligência Artificial está transformando o mercado de trabalho, trazendo desafios e oportunidades. A chave para enfrentar essa revolução tecnológica está na adaptação: profissionais que investirem em educação contínua, no desenvolvimento de novas habilidades e na compreensão das ferramentas tecnológicas terão mais chances de prosperar. A IA não precisa ser vista como uma ameaça, mas sim como uma aliada na potencialização das capacidades humanas.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art7" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Perfil</div>
+        <h2>Tributo à Professora Dra. Terezinha Rêgo<span class="sub">Pioneira na pesquisa de plantas medicinais</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">RR</span> Rayane Ribeiro</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Terezinha de Jesus Almeida Silva Rêgo foi uma das mais renomadas farmacêuticas do Brasil, sendo a profissional com maior tempo de atividade no Maranhão. Doutora em Botânica e professora titular do Departamento de Farmácia da Universidade Federal do Maranhão (UFMA), Terezinha também foi uma das fundadoras da Academia Maranhense de Ciências, além de ser mundialmente reconhecida por suas contribuições ao estudo da flora medicinal maranhense.</p>
+        <h3>Trajetória</h3>
+        <p>Sua trajetória foi marcada por uma paixão inigualável pela botânica e pelas plantas medicinais. Desde que se formou em 1957, sua missão tem sido promover a cura através das plantas, em um tempo em que o acesso a medicamentos alopáticos era restrito e caro para muitas comunidades — contexto que a levou a buscar alternativas naturais para tratar doenças comuns, principalmente por meio da fitoterapia, a cura pelas plantas.</p>
+        <p>A professora começou suas atividades de campo fazendo levantamentos sobre as doenças mais recorrentes nas comunidades periféricas e estudando plantas com potencial medicinal. Esse esforço resultou na criação de uma ampla gama de medicamentos naturais, muitos baseados em mel, como xaropes, pomadas e tinturas.</p>
+        <h3>Contribuições científicas</h3>
+        <p>Ao longo de sua carreira, Terezinha Rêgo lançou 48 produtos fitoterápicos amplamente utilizados. Seu trabalho pioneiro também incluiu a fundação do Herbário do Maranhão, onde catalogou mais de 10.800 espécies da flora local, além do lançamento de livros como Fitogeografia das Plantas Medicinais no Maranhão e 57 Chás Medicinais da Flora do Maranhão.</p>
+        <p>Entre suas descobertas mais notáveis, destaca-se o isolado de cabacinha, planta que levou 20 anos para ter seu princípio ativo desvendado, hoje utilizado no tratamento de sinusite, rinite alérgica e adenoide. Outra planta de grande importância em sua pesquisa é a chanana, usada para aumentar a resistência imunológica e auxiliar no tratamento de câncer, sendo aplicada no Hospital Aldenora Bello.</p>
+        <h3>Reconhecimento e legado</h3>
+        <p>Amplamente homenageada ao longo de sua vida, em 2019 seu legado foi celebrado quando a 15ª edição do prêmio FAPEMA levou seu nome, reconhecendo sua contribuição para a ciência no Maranhão. No ano seguinte, em setembro de 2020, ela recebeu uma homenagem especial no Senado Federal, em Brasília, pelos 55 anos dedicados à pesquisa e preservação da flora medicinal do estado.</p>
+        <div class="callout">Seu maior legado talvez seja o amor pelas plantas, que ela fez questão de transmitir para as novas gerações de pesquisadores. Sua luta pela fitoterapia e pelo reconhecimento do valor das plantas medicinais brasileiras permanece como uma inspiração para muitos.</div>
+        <p>Neste tributo, celebramos a vida e obra de uma mulher que dedicou sua existência à valorização da flora maranhense e à promoção de alternativas terapêuticas naturais, sempre buscando melhorar a vida das pessoas. Que o legado de Terezinha Rêgo floresça nas futuras gerações de botânicos e fitoterapeutas, assim como as plantas que ela tanto amou e defendeu.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art8" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Etnobotânica &amp; Saúde</div>
+        <h2>Explorando o mundo das Plantas Medicinais do Brasil</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">BG</span> Bárbara Grusag</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Mundialmente, plantas com propriedades fitoterápicas têm sido utilizadas há séculos por diferentes povos e culturas. No Brasil, país considerado megadiverso por sua vasta diversidade biológica — resultado das características climáticas, de relevo e de vegetação —, também há uma tradição consolidada no uso de plantas com componentes farmacológicos.</p>
+        <p>Os povos originários, por séculos, vêm utilizando essas plantas em diversos territórios. De norte a sul, elas são fervidas, moídas e preparadas de diferentes formas para atender a variados objetivos de cura e prevenção.</p>
+        <p>No Brasil, o SUS — Sistema Único de Saúde — possui a Política e o Programa Nacional de Plantas Medicinais e Fitoterápicos (PNPMF), que buscam garantir o acesso seguro e o uso racional dessas plantas. Alguns exemplos de espécies utilizadas são: Aroeira, Babosa, Espinheira-Santa, Guaco e Hortelã.</p>
+        <p>Entre as plantas presentes no SUS, destaca-se a Aroeira (Schinus terebinthifolius), espécie arbórea com diversos nomes populares, que ocorre em várias regiões do Brasil, como nos biomas Mata Atlântica, Cerrado e Pampa. Pertencente à família Anacardiaceae, a mesma do cajueiro, a aroeira se destaca por suas propriedades terapêuticas, como características antimicrobianas eficazes contra uma variedade de bactérias e fungos.</p>
+        <p>Além disso, possui propriedades antioxidantes, que auxiliam na neutralização dos radicais livres no corpo, e efeitos anti-inflamatórios e cicatrizantes amplamente conhecidos. Fora da medicina, os frutos da aroeira, conhecidos como pimenta-rosa, são apreciados na culinária nacional e internacional, usados como condimento em diversos pratos.</p>
+        <p>A Espinheira-Santa (Maytenus ilicifolia) é uma planta nativa do sul do Brasil e de países vizinhos, como Argentina e Paraguai, tradicionalmente utilizada no tratamento de úlceras e gastrites. Além de antiulcerosa, possui propriedades antioxidantes, anti-inflamatórias, analgésicas e antissépticas, sendo eficaz na redução de dores e na prevenção de infecções. Seu destaque na comunidade médica começou em 1922, quando o professor Aluízio França demonstrou sua eficácia no tratamento de úlceras gastrointestinais.</p>
+        <div class="callout">A Espinheira-Santa é um dos fitoterápicos mais prescritos para problemas gástricos. Uma curiosidade é que a planta obteve reconhecimento internacional, com a concessão de uma patente a um laboratório japonês para o tratamento de úlceras.</div>
+        <p>Outra planta muito conhecida é o Guaco (Mikania glomerata), de ampla distribuição e comumente encontrado na Mata Atlântica. Suas folhas são amplamente utilizadas no tratamento de doenças respiratórias, como tosse, asma e bronquite, mas também são mencionados usos no tratamento de doenças gastrointestinais, derrames e reumatismos. Uma curiosidade é que o Guaco foi utilizado como adjuvante no tratamento da pandemia de Covid-19.</p>
+        <p>Conhecer essas plantas e entender seus potenciais é essencial para a preservação cultural, mantendo viva a sabedoria ancestral e tradicional. Além disso, promove a conservação de espécies nativas e de seus habitats e ecossistemas, fortalecendo a pesquisa científica e possibilitando o desenvolvimento de novos medicamentos.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art9" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Recomendações</div>
+        <h2>Dicas de leitura</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">EB</span> Equipe Bio in Situ</div>
+      </div>
+      <div class="piece-body">
+        <div class="book"><div class="spine" style="background:linear-gradient(160deg,var(--accent),var(--green-deep));">A</div><div><h4>A vida secreta das árvores</h4><div class="by">Peter Wohlleben</div><p>E se tudo o que você sempre pensou saber a respeito das árvores estivesse errado? E se, apesar de tão diferentes de nós, descobríssemos que elas compartilham diversas características dos humanos? Nos últimos anos a ciência tem comprovado que as árvores e o homem têm muito mais em comum do que poderíamos imaginar.</p></div></div>
+        <div class="book"><div class="spine" style="background:linear-gradient(160deg,var(--accent),var(--green-deep));">R</div><div><h4>Revolução vegetal</h4><div class="by">Stefano Mancuso</div><p>Stefano Mancuso não é apenas uma das maiores autoridades sobre o estudo da inteligência das plantas — é também um excelente prosador. Cada história revela um aspecto inusitado sobre um universo que só estamos começando a compreender. Do mesmo autor: A revolução das plantas, A planta do mundo e A incrível viagem das plantas.</p></div></div>
+        <div class="book"><div class="spine" style="background:linear-gradient(160deg,var(--accent),var(--green-deep));">O</div><div><h4>O Jardim de Ossain no Reino de Orunmilá</h4><div class="by">Murilo Meihy e Eduardo Freitas</div><p>Uma obra que mergulha nas tradições e mitologias afro-brasileiras, especificamente nos mitos dos orixás e suas conexões com o Candomblé, explorando a relação de Ossain com a cura, a sabedoria das plantas e seu papel na preservação do equilíbrio entre o mundo natural e o espiritual.</p></div></div>
+        <div class="prompt-strip" style="background:var(--accent);"><span class="mic">🎙</span> Saia do celular. Leia um livro!</div>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art10" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Alimentação &amp; Sustentabilidade</div>
+        <h2>Plantas Alimentícias Não Convencionais (PANCs)<span class="sub">Aliadas contra a fome e na busca por uma alimentação saudável</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">DR</span> Dávylla Ribeiro</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">O uso das PANCs contribui para a diversificação da alimentação, reduzindo a dependência de produtos industrializados e de monoculturas, que muitas vezes carecem de variedade nutricional. Ao incentivar o consumo dessas plantas, é possível aumentar a segurança alimentar e promover hábitos alimentares mais sustentáveis e saudáveis.</p>
+        <p>Assim, o aproveitamento das PANCs tem o potencial de transformar o sistema alimentar, ao mesmo tempo que valoriza o conhecimento tradicional e estimula o consumo consciente e nutritivo. Pesquisadores e botânicos revelam que as PANCs podem compor o cardápio de forma fácil e barata.</p>
+        <p>Geralmente, apenas 20 tipos de plantas correspondem a 90% dos alimentos consumidos. No entanto, existem cerca de 30 mil espécies vegetais com partes comestíveis em todo o mundo, das quais aproximadamente 10 mil espécies com potencial alimentício são encontradas no Brasil. Apesar disso, essas plantas nativas frequentemente são ignoradas e rotuladas como &quot;ervas daninhas&quot; em jardins — mas estão bem adaptadas a diferentes ambientes naturais, contribuindo para o equilíbrio ecológico e para a saúde do solo.</p>
+        <div class="callout">Apenas 20 tipos de plantas dominam 90% da alimentação global, embora o Brasil tenha cerca de 10 mil espécies com potencial alimentício.</div>
+        <p>Adicionalmente, as PANCs proporcionam a manutenção do ciclo hidrológico, reduzindo o consumo de energia no processo. Amplamente disponíveis, desempenham um papel fundamental na estabilidade do ambiente produtivo, constituindo uma valiosa fonte natural de alimentos.</p>
+        <p>No território brasileiro, foram identificados mais de 2.800 tipos de plantas alimentícias não convencionais, e acredita-se que haja cerca de 5 mil variedades diferentes. (Fonte: Blog Yacamim, 2020)</p>
+        
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<footer id="apoie">
+  <div class="foot-inner">
+    <div>
+      <h3>Apoie o projeto</h3>
+      <p>O Biologia In Situ é uma iniciativa de divulgação científica em biologia criada por um grupo independente. Os programas de podcast, revista e canais de divulgação se encontram no site biologiainsitu.com.br e nos agregadores de podcasts como Spotify, Deezer e Apple Podcasts.</p>
+      <p>O nosso projeto pode ser apoiado através das plataformas Orelo e Apoia.se e no PIX pela chave: <a href="mailto:cartinhas@biologiainsitu.com.br">cartinhas@biologiainsitu.com.br</a></p>
+    </div>
+    <div class="foot-col">
+      <div class="row"><span>Apoia.se</span><span>apoia.se/biologiainsitu</span></div>
+      <div class="row"><span>Picpay</span><span>@biologiainsitu</span></div>
+      <div class="row"><span>Pix</span><span>cartinhas@biologiainsitu.com.br</span></div>
+    </div>
+  </div>
+  <div class="credits">
+    <span>ISSN 2965-923X</span>
+    <span>·</span>
+    <span>Organizadores: Cristianne Santana Santos, Ricardo da Silva Gomes, Heloá Caramuru Carlos, Bruna Garcia da Cruz Canellas, Vitor Estanislau de A. Souza Lopes</span>
+    <span>·</span>
+    <span>Autoras/es: Bárbara Grusag, Cristianne Santana Santos, Dávylla Ribeiro Lopes, José Eduardo Andrade Neto, Leonardo Vicente Souza, Melissa dos Santos Cabral, Rayane Ribeiro Rodrigues</span>
+    <span>·</span>
+    <span>Design web: Amanda Honório Nunes, Carolina Negreiros, Leonardo Vicente Souza, Rayane Ribeiro Rodrigues</span>
+  </div>
+</footer>
+
+</body>
+</html>

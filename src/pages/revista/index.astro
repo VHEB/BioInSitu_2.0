@@ -1,0 +1,148 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import revistas from '../../data/revistas.json';
+
+const edicoes = [...revistas].sort((a, b) => b.numero - a.numero);
+const prontas = edicoes.filter((e) => e.pronta);
+const emProducao = edicoes.filter((e) => !e.pronta);
+---
+
+<Layout
+  title="Revista"
+  description="A revista Bio in Situ: edições especiais de divulgação científica em biologia, em formato de leitura."
+>
+  <section class="wrap page-head">
+    <p class="eyebrow">{prontas.length} de {edicoes.length} edições publicadas</p>
+    <h1>Revista Bio in Situ</h1>
+    <p class="lede">
+      Cada edição reúne matérias de divulgação científica escritas pela nossa equipe,
+      a partir dos temas discutidos no podcast.
+    </p>
+  </section>
+
+  <section class="wrap grid">
+    {prontas.map((e) => (
+      <a class="card" href={`/revista/${e.slug}/`}>
+        <div class="thumb">
+          <span class="num">Edição {String(e.numero).padStart(2, '0')}</span>
+        </div>
+        <div class="body">
+          <p class="meta">{new Date(e.data).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</p>
+          <h3>{e.titulo}</h3>
+          <p class="excerpt">{e.resumo}</p>
+          <span class="read">Ler edição →</span>
+        </div>
+      </a>
+    ))}
+  </section>
+
+  {emProducao.length > 0 && (
+    <section class="wrap section-em-producao">
+      <div class="section-head">
+        <h2>Em produção</h2>
+        <p>Estas edições já existem em PDF e estão sendo adaptadas para este novo formato.</p>
+      </div>
+      <div class="grid grid-compact">
+        {emProducao.map((e) => (
+          <div class="card card-disabled">
+            <div class="thumb thumb-dim">
+              <span class="num">Edição {String(e.numero).padStart(2, '0')}</span>
+            </div>
+            <div class="body">
+              <p class="meta">{new Date(e.data).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</p>
+              <h3>{e.titulo}</h3>
+              <span class="soon">Em breve</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+</Layout>
+
+<style>
+  .page-head { padding: 56px 24px 32px; max-width: 640px; }
+  .page-head h1 { font-size: clamp(28px, 4vw, 38px); margin-top: 8px; }
+  .lede { color: var(--ink-soft); margin-top: 14px; font-size: 15.5px; line-height: 1.6; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 8px 24px 16px;
+  }
+  .grid-compact { gap: 16px; }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .card:not(.card-disabled):hover { border-color: var(--ink-faint); transform: translateY(-2px); }
+
+  .thumb {
+    aspect-ratio: 3 / 2;
+    background: linear-gradient(155deg, var(--green) 0%, var(--green-deep) 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 16px;
+  }
+  .thumb-dim { background: var(--paper-dim); }
+  .thumb-dim .num { color: var(--ink-faint); }
+  .num {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .body { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  h3 { font-size: 16.5px; line-height: 1.35; font-weight: 600; }
+  .excerpt {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .read { font-size: 13px; font-weight: 600; color: var(--green); margin-top: 4px; }
+  .card:hover .read { color: var(--coral); }
+
+  .card-disabled { cursor: default; }
+  .soon {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-faint);
+    background: var(--paper-dim);
+    padding: 3px 10px;
+    border-radius: 20px;
+    width: fit-content;
+    margin-top: 2px;
+  }
+
+  .section-em-producao { padding: 40px 24px 72px; }
+  .section-head { margin-bottom: 20px; max-width: 560px; }
+  .section-head h2 { font-size: 20px; }
+  .section-head p { color: var(--ink-soft); font-size: 13.5px; margin-top: 6px; }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>

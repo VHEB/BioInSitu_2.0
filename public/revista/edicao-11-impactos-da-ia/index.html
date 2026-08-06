@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impactos da Inteligência Artificial — Bio In Situ, Ed. 11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F6F4EE;
+    --paper-dim: #EFECE3;
+    --ink: #14231C;
+    --ink-soft: #3A473F;
+    --green: #1E7A46;
+    --green-deep: #123D25;
+    --teal: #0E8E8A;
+    --slate: #4B4B4B;
+    --magenta: #D6116C;
+    --sand: #DCD2B8;
+    --rule: rgba(20,35,28,0.14);
+    --maxw: 760px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ===== Skip / focus ===== */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--green);
+    outline-offset:3px;
+  }
+
+  /* ===== Top bar ===== */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,244,238,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:700; font-size:18px;
+    text-decoration:none;
+  }
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--green);}
+  .topbar nav{display:flex; gap:22px;}
+  .topbar nav a{
+    font-size:13px; text-decoration:none; color:var(--ink-soft);
+    letter-spacing:0.03em; text-transform:uppercase;
+  }
+  .topbar nav a:hover{color:var(--green);}
+  #toc-toggle{display:none;}
+
+  /* ===== Hero ===== */
+  .hero{
+    max-width:980px; margin:0 auto; padding:64px 28px 40px;
+    text-align:left;
+  }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--green-deep);
+    display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .hero .eyebrow::before{content:"";width:28px;height:1px;background:var(--green-deep);display:inline-block;}
+  .hero h1{
+    font-size:clamp(38px, 6vw, 68px);
+    font-weight:600; line-height:1.02; margin:0 0 22px;
+    max-width:850px;
+  }
+  .hero h1 em{font-style:italic; font-weight:500; color:var(--green);}
+  .hero p.lede{
+    max-width:560px; color:var(--ink-soft); font-size:18px; margin:0 0 34px;
+  }
+  .hero .meta-row{
+    display:flex; flex-wrap:wrap; gap:28px; font-size:13.5px; color:var(--ink-soft);
+    border-top:1px solid var(--rule); padding-top:18px;
+  }
+  .hero .meta-row strong{color:var(--ink); display:block; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px; font-weight:600;}
+
+  /* signature motif: circuit-root divider */
+  .motif{
+    display:block; width:100%; height:34px; margin:6px 0 0;
+    opacity:0.9;
+  }
+
+  /* ===== Layout: TOC + content ===== */
+  .layout{
+    max-width:1180px; margin:0 auto; padding:0 28px 40px;
+    display:grid; grid-template-columns:230px 1fr; gap:56px;
+  }
+  .toc{
+    position:sticky; top:70px; align-self:start;
+    padding:22px 0 40px;
+    max-height:calc(100vh - 90px); overflow-y:auto;
+  }
+  .toc-title{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--ink-soft); margin-bottom:14px; font-weight:600;
+  }
+  .toc ol{list-style:none; margin:0; padding:0; counter-reset:art;}
+  .toc li{counter-increment:art; margin-bottom:2px;}
+  .toc a{
+    display:flex; gap:10px; padding:8px 6px; text-decoration:none;
+    font-size:13.5px; color:var(--ink-soft); border-radius:6px;
+    line-height:1.3;
+  }
+  .toc a:hover{background:var(--paper-dim); color:var(--ink);}
+  .toc a::before{
+    content:counter(art, decimal-leading-zero);
+    font-family:'IBM Plex Mono', monospace; font-size:11px;
+    color:var(--green); flex-shrink:0; padding-top:1px;
+  }
+
+  main{min-width:0;}
+
+  /* ===== Article card ===== */
+  article.piece{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:14px;
+    margin-bottom:26px;
+    overflow:hidden;
+    scroll-margin-top:80px;
+  }
+  .piece-head{
+    padding:34px 40px 26px;
+    border-bottom:1px solid var(--rule);
+    position:relative;
+  }
+  .piece-head::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:6px;
+    background:var(--accent, var(--green));
+  }
+  .piece-kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--accent, var(--green));
+    margin-bottom:10px; font-weight:500;
+  }
+  .piece-head h2{
+    font-size:clamp(24px, 3.4vw, 32px); font-weight:600; line-height:1.12; margin:0 0 16px;
+  }
+  .piece-head h2 .sub{
+    display:block; font-family:'IBM Plex Sans', sans-serif; font-style:normal;
+    font-weight:400; font-size:0.55em; color:var(--ink-soft); margin-top:6px; letter-spacing:0;
+  }
+  .byline{
+    display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-soft);
+  }
+  .byline .avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--accent, var(--green)); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:13px;
+  }
+  .piece-body{padding:8px 40px 38px;}
+  .piece-body p{margin:0 0 18px; color:var(--ink);}
+  .piece-body h3{font-size:17px; margin:26px 0 12px; font-weight:600; color:var(--accent, var(--green-deep));}
+  .piece-body .drop::first-letter{
+    float:left; font-family:'Fraunces', serif; font-weight:700; font-size:3.6em;
+    line-height:0.82; padding-right:10px; padding-top:4px; color:var(--accent, var(--green));
+  }
+  .cols{columns:1; column-gap:36px;}
+  @media(min-width:640px){ .cols.two{columns:2;} }
+
+  .callout{
+    background:var(--paper-dim);
+    border-left:3px solid var(--accent, var(--green));
+    border-radius:0 10px 10px 0;
+    padding:16px 20px;
+    margin:8px 0 22px;
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+  .quote{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:20px; line-height:1.45; color:var(--ink);
+    padding:4px 0 4px 20px; border-left:3px solid var(--accent, var(--green));
+    margin:22px 0;
+  }
+  .binary{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em;
+    color:var(--accent, var(--green)); opacity:0.75; margin:-6px 0 20px;
+  }
+  ul.tidy{margin:0 0 18px; padding-left:20px;}
+  ul.tidy li{margin-bottom:8px;}
+  .refs{
+    font-size:13.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:8px; padding-top:18px;
+  }
+  .refs p{margin-bottom:8px;}
+  .caption{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:-8px;}
+
+  .prompt-strip{
+    margin-top:24px; padding:14px 20px; border-radius:10px;
+    background:var(--green-deep); color:#EFEDE3;
+    font-size:13.5px; display:flex; align-items:center; gap:12px;
+  }
+  .prompt-strip .mic{
+    width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+
+  /* reading tips */
+  .book{
+    display:grid; grid-template-columns:64px 1fr; gap:16px; margin-bottom:22px;
+  }
+  .book .spine{
+    width:64px; height:88px; border-radius:4px;
+    background:linear-gradient(160deg, var(--accent, var(--green)), var(--green-deep));
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    font-family:'Fraunces',serif; font-weight:700; font-size:22px;
+  }
+  .book h4{margin:0 0 2px; font-size:16px; font-family:'Fraunces',serif; font-weight:600;}
+  .book .by{font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;}
+  .book p{font-size:14px; margin:0; color:var(--ink-soft);}
+
+  /* footer / support */
+  footer{
+    background:var(--green-deep); color:#EDEAE0; margin-top:40px;
+    padding:56px 28px 40px;
+  }
+  .foot-inner{max-width:980px; margin:0 auto; display:grid; grid-template-columns:1.3fr 1fr; gap:48px;}
+  footer h3{color:#fff; font-size:24px; margin:0 0 14px;}
+  footer p{color:#C9D2C7; max-width:420px; margin:0 0 10px;}
+  footer a.link{color:#9FE3B8; text-decoration:none; border-bottom:1px solid rgba(159,227,184,0.35);}
+  .foot-col .row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.1); font-size:14px;}
+  .foot-col .row span:first-child{color:#9FB0A4;}
+  .credits{max-width:980px; margin:34px auto 0; padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); font-size:12.5px; color:#8AA091; display:flex; flex-wrap:wrap; gap:6px 18px;}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .toc{position:static; max-height:none; padding-bottom:10px;}
+    .foot-inner{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .piece-head, .piece-body{padding-left:22px; padding-right:22px;}
+    .topbar nav{display:none;}
+    .cols.two{columns:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="#topo"><span class="dot"></span>BIO IN SITU</a>
+  <nav>
+    <a href="#sumario">Sumário</a>
+    <a href="#apoie">Apoie</a>
+    <a href="https://biologiainsitu.com.br" target="_blank" rel="noopener">Site</a>
+  </nav>
+</div>
+
+<div id="topo" class="hero">
+  <div class="eyebrow">Vol. 3 · Nº 11 · 2026 · Edição 11</div>
+  <h1>Impactos da <em>Inteligência<br>Artificial</em></h1>
+  <p class="lede">Uma edição da Revista Bio In Situ dedicada a pensar, com espírito crítico e científico, o que a IA está fazendo com o planeta, com o saber e com a própria ideia de vida.</p>
+  <div class="meta-row">
+    <div><strong>Organizadores</strong>Cristianne Santana Santos, Ricardo da Silva Gomes, Heloá Caramuru Carlos, Larissa Araguaia Monteiro de Castro, Larissa Menezes de Souza Lopes, Vitor Estanislau de Almeida Souza</div>
+    <div><strong>ISSN</strong>2965-923X</div>
+    <div><strong>Publicação</strong>Rio de Janeiro, RJ</div>
+  </div>
+</div>
+
+<svg class="motif" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 17 H120 M170 17 H1200" stroke="#1E7A46" stroke-width="1" opacity="0.35"/>
+  <circle cx="145" cy="17" r="4" fill="#1E7A46"/>
+  <path d="M145 17 q10 -14 24 -14 M145 17 q10 14 24 -14" stroke="#1E7A46" stroke-width="1.2" fill="none" opacity="0.6"/>
+</svg>
+
+<div class="layout">
+  <aside class="toc" id="sumario">
+    <div class="toc-title">Nesta edição</div>
+    <ol>
+      <li><a href="#art1">Algoritmos e racismo epistêmico</a></li>
+      <li><a href="#art2">O império do silício contra-ataca</a></li>
+      <li><a href="#art3">Meio ambiente, IA e sustentabilidade</a></li>
+      <li><a href="#art4">A influência da tecnologia na humanidade</a></li>
+      <li><a href="#art5">Um pouquinho de esperança</a></li>
+      <li><a href="#art6">Chatbots de saúde mental</a></li>
+      <li><a href="#art7">O medo do novo</a></li>
+      <li><a href="#art8">IA na descoberta da vida</a></li>
+      <li><a href="#art9">The Alters e a ética das IAs</a></li>
+      <li><a href="#art10">Dicas de leitura</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+    <!-- ARTIGO 1 -->
+    <article class="piece" id="art1" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Sociedade &amp; conhecimento</div>
+        <h2>Algoritmos e racismo epistêmico<span class="sub">A inteligência artificial reproduz saberes coloniais?</span></h2>
+        <div class="byline"><span class="avatar">EA</span> Eduardo Andrade</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Te convido a refletir comigo: quando pensamos em Inteligência Artificial (IA), muitas vezes imaginamos uma tecnologia sofisticada, capaz de processar informações de forma neutra, objetiva e até mais precisa do que nós, seres humanos, não é mesmo?</p>
+        <p>Porém, essa neutralidade é uma mera ilusão! A IA não nasce do nada, pelo contrário, ela aprende com os dados que alimentamos em seus sistemas, e esses dados carregam consigo as marcas de nossa história. Se a sociedade foi construída em estruturas de exclusão e desigualdade, os algoritmos também reproduzem esses padrões.</p>
+        <p>Um exemplo simples ajuda a compreender toda essa situação: quando perguntamos a um sistema de IA como Deepseek, ChatGPT ou Gemini sobre a origem da ciência moderna, dificilmente aparecerão nomes de pensadores africanos, indígenas ou asiáticos. A resposta quase sempre trará referências europeias, como Galileu, Newton ou Darwin. Não que essas figuras não sejam importantes, mas a ausência de Imhotep — filósofo e arquiteto egípcio considerado um dos primeiros cientistas da história —, ou dos saberes indígenas na agricultura e dos conhecimentos africanos em botânica e saúde, revela um problema maior: a IA replica aquilo que já circula na internet e nas bases de dados, reforçando um padrão de invisibilização de saberes não ocidentais.</p>
+
+        <h3>Um nome para o problema</h3>
+        <p>Esse processo tem um nome e é importante que seja repassado: <strong>racismo epistêmico</strong>. O termo se refere à prática de considerar determinados saberes como universais e legítimos — na sua maioria esmagadora, os produzidos no Ocidente — e desvalorizar ou silenciar outros conhecimentos. Trata-se de uma forma de colonialidade do saber, que não se manifesta apenas em preconceitos explícitos, mas na própria estrutura de quem pode produzir conhecimento, quem é reconhecido como cientista e quais saberes são considerados válidos.</p>
+        <p>Os impactos não ficam restritos ao campo das ideias. Sistemas de reconhecimento facial erram com muito mais frequência ao identificar pessoas negras e indígenas do que pessoas brancas. Tradutores automáticos ainda têm grande dificuldade com línguas africanas e ameríndias. Em plataformas de busca, artigos de grandes centros do Norte Global recebem prioridade, enquanto produções do Sul Global ou saberes de tradição oral são marginalizados.</p>
+
+        <div class="callout"><strong>Na prática:</strong> um software de análise de currículo pode desvalorizar candidatos de universidades periféricas; um sistema de triagem médica pode ser menos eficaz com corpos negros; políticas educacionais baseadas em dados podem ignorar línguas e culturas locais.</div>
+
+        <p>O mais perigoso é a crença de que a inteligência artificial é neutra. Essa ideia esconde o fato de que ela é criada por pessoas, em contextos sociais e econômicos específicos, com interesses muitas vezes guiados por grandes corporações do Norte Global.</p>
+
+        <h3>Três movimentos para mudar de rota</h3>
+        <ul class="tidy">
+          <li><strong>Diversificar os dados</strong> — incluir produções acadêmicas do Sul Global, línguas indígenas e tradições orais.</li>
+          <li><strong>Questionar a neutralidade dos algoritmos</strong> — exigir transparência das empresas de tecnologia e mecanismos de regulação.</li>
+          <li><strong>Reconhecer a pluralidade epistemológica</strong> — ciência também é africana, ameríndia, asiática, quilombola, ribeirinha e afro-religiosa.</li>
+        </ul>
+
+        <p>No fim das contas, a pergunta central não é apenas o que a inteligência artificial pode fazer por nós, mas de quem ela aprende a falar. Se ela continuar aprendendo apenas com um repertório limitado, continuará a repetir as desigualdades que herdamos da história colonial. Mas se conseguirmos alimentá-la com a pluralidade de vozes e saberes que compõem o mundo, talvez possamos construir tecnologias que não apenas representem, mas também respeitem a diversidade humana.</p>
+
+        <div class="refs">
+          <p><strong>Referências</strong></p>
+          <p>FERRARI, V. C. F. Inteligência artificial: um paradoxo ambiental? <em>Cadernos Jurídicos da Escola Paulista da Magistratura</em>, São Paulo, v. 24, n. 65, p. 201–212, jan./mar. 2023.</p>
+          <p>SICHMAN, J. S. Inteligência artificial e sociedade: avanços e riscos. <em>Estudos Avançados</em>, São Paulo, v. 35, n. 101, p. 7–28, 2021.</p>
+        </div>
+
+        <div class="prompt-strip"><span class="mic">🎙</span> Qual sua opinião sobre isso? Conte na caixinha de perguntas do Spotify.</div>
+      </div>
+    </article>
+
+    <!-- ARTIGO 2 -->
+    <article class="piece" id="art2" style="--accent:#1C4E80;">
+      <div class="piece-head">
+        <div class="piece-kicker">Clima &amp; tecnologia</div>
+        <h2>O império do silício contra-ataca<span class="sub">IA e a crise climática</span></h2>
+        <div class="byline"><span class="avatar" style="background:#1C4E80;">RM</span> Renata Monteiro</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">E se eu te dissesse que a inteligência artificial pode ser tanto uma Jedi defensora do planeta quanto uma Sith sedenta por energia? Parece roteiro de Star Wars, mas é a realidade em que vivemos. De um lado, algoritmos capazes de prever desastres climáticos e monitorar desmatamento; do outro, máquinas que consomem energia e água em escala galáctica. A pergunta é: de que lado da Força a IA vai lutar?</p>
+
+        <div class="binary">01010011 — "O Mestre Yoda transmitiu um código Jedi escondido. Só os mais atentos decifrarão a mensagem da Força."</div>
+
+        <p>A ideia de construir máquinas inteligentes surgiu muito antes do primeiro droide aparecer na tela do cinema. Em 1950, Alan Turing já levantava a questão: "as máquinas podem pensar?" — o primeiro passo para transformar ficção científica em ciência aplicada. Hoje, a IA não só recomenda filmes no streaming como também decide a rota de aviões, organiza estoques, traduz idiomas e ajuda cientistas a simular o clima de um futuro que pode ser mais quente e instável do que gostaríamos de admitir.</p>
+
+        <p>Vivemos a convergência de duas urgências: a revolução digital e a emergência climática. Se bem utilizada, a IA tem o potencial de ajudar governos, cientistas e comunidades a agir antes que os desastres ocorram. Mas sua aplicação também levanta dilemas éticos: quem deve controlar esses sistemas — as grandes corporações de tecnologia ou a sociedade que busca um futuro sustentável?</p>
+
+        <p>Na prática, a IA está presente em situações que tornam o impossível possível. Um satélite fotografa a Amazônia todos os dias; para olhos humanos, identificar pequenas clareiras é lento e trabalhoso — para uma IA, esses padrões surgem quase instantaneamente, denunciando áreas de desmatamento em tempo real. Algoritmos de previsão climática antecipam secas ou tempestades com precisão muito superior a qualquer modelo anterior.</p>
+
+        <h3>O custo energético da IA</h3>
+        <p class="cols two">
+          Um estudo da Universidade de Massachusetts Amherst (2019) mostrou que treinar um modelo de linguagem de grande porte pode emitir até 284 toneladas de CO₂ — o equivalente a 125 carros rodando por um ano, ou 118 voos de ida e volta entre Nova York e Pequim. O impacto não para na energia: a água também é cobrada. Um único modelo de IA generativa pode consumir até 700 mil litros de água, o suficiente para abastecer uma pequena cidade por alguns dias.
+        </p>
+
+        <div class="quote">"Se fosse um planeta de Star Wars, um único data center seria como Mustafar: quente, faminto por recursos e com potencial de devastação se não for controlado."</div>
+
+        <h3>O lado luminoso</h3>
+        <ul class="tidy">
+          <li><strong>Saúde pública</strong> — previsões climáticas ajudam a antecipar surtos de dengue e malária.</li>
+          <li><strong>Agricultura sustentável</strong> — sensores e apps otimizam água e fertilizantes com menos insumos.</li>
+          <li><strong>Justiça climática</strong> — satélites e algoritmos revelam desmatamentos antes invisíveis.</li>
+          <li><strong>Redução de desperdício</strong> — de indústrias a cozinhas, sistemas inteligentes otimizam recursos.</li>
+        </ul>
+
+        <h3>O lado sombrio</h3>
+        <ul class="tidy">
+          <li><strong>Emissões crescentes</strong> — cada novo modelo treinado amplia a pegada climática.</li>
+          <li><strong>Desigualdade global</strong> — países ricos concentram data centers e benefícios; o Sul Global sente os impactos ambientais.</li>
+          <li><strong>Privacidade e ética</strong> — a corrida tecnológica pode priorizar velocidade em vez de segurança.</li>
+          <li><strong>Dependência tecnológica</strong> — delegar decisões críticas a algoritmos sem supervisão humana cria riscos.</li>
+        </ul>
+
+        <div class="callout"><strong>Sabia que...?</strong> Em 2023, data centers consumiram cerca de 1% da eletricidade mundial — número que pode chegar a 21% até 2030 com a demanda por IA.</div>
+
+        <p>A boa notícia é que ainda há esperança. Empresas já investem em energia limpa, novas formas de resfriamento e na chamada <strong>Green AI</strong>, que mede não apenas o desempenho, mas também o impacto ambiental dos algoritmos. No horizonte, a IA quântica e os <em>digital twins</em> da Terra prometem simulações climáticas com precisão antes inimaginável.</p>
+
+        <p>Ao longo desta jornada, vimos que a inteligência artificial é uma força poderosa, capaz de agir tanto como Jedi quanto como Sith. O verdadeiro poder, no entanto, continua nas mãos de quem programa, regula e utiliza essas máquinas. Se a IA é como um código em aberto, que linhas você escreveria hoje para garantir um futuro sustentável amanhã?</p>
+
+        <div class="refs">
+          <p><strong>Referências</strong></p>
+          <p>FERRARI, V. C. F. Inteligência artificial: um paradoxo ambiental? <em>Cadernos Jurídicos da Escola Paulista da Magistratura</em>, São Paulo, v. 24, n. 65, p. 201–212, jan./mar. 2023.</p>
+          <p>SICHMAN, J. S. Inteligência artificial e sociedade: avanços e riscos. <em>Estudos Avançados</em>, São Paulo, v. 35, n. 101, p. 7–28, 2021.</p>
+        </div>
+
+        <div class="prompt-strip" style="background:#1C4E80;"><span class="mic">🎙</span> Qual sua opinião sobre isso? Conte na caixinha de perguntas do Spotify.</div>
+      </div>
+    </article>
+
+    <!-- ARTIGO 3 -->
+    <article class="piece" id="art3" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Meio ambiente</div>
+        <h2>A interseção entre meio ambiente, inteligência artificial e sustentabilidade</h2>
+        <div class="byline"><span class="avatar">DR</span> Dávylla Ribeiro</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Nos dias atuais, a intersecção entre meio ambiente, inteligência artificial (IA) e sustentabilidade tem se tornado um tema de grande relevância. Com o aumento da população e a exploração dos recursos naturais, a necessidade de encontrar soluções é urgente.</p>
+
+        <h3>O papel da IA na sustentabilidade</h3>
+        <p>A IA pode ser utilizada para monitorar a biodiversidade, otimizar o uso de recursos naturais e prever desastres ambientais. Sistemas de IA podem analisar dados climáticos para prever secas ou inundações, permitindo que comunidades se preparem melhor. Além disso, a IA pode ajudar na gestão de resíduos, otimizando processos de reciclagem e reduzindo a quantidade de lixo gerado.</p>
+        <p>Algoritmos de aprendizado de máquina podem prever padrões climáticos, otimizar o uso de recursos hídricos e melhorar a eficiência energética. Sistemas de IA também podem monitorar a saúde dos ecossistemas em tempo real, permitindo intervenções rápidas e precisas.</p>
+
+        <h3>Impactos no solo brasileiro</h3>
+        <p>No Brasil, país rico em biodiversidade e recursos naturais, a aplicação da IA pode ajudar a enfrentar desafios ambientais, promovendo práticas agrícolas mais sustentáveis e eficientes. Sistemas de monitoramento baseados em IA analisam dados de solo e clima, permitindo que agricultores tomem decisões informadas sobre o melhor momento para plantar e irrigar — aumentando a produtividade e reduzindo o desperdício.</p>
+        <p>Técnicas de previsão de safras e monitoramento de pragas ajudam a minimizar o uso de pesticidas. Contudo, é crucial garantir que pequenos agricultores, especialmente os que dependem da terra para viver, tenham acesso a essas tecnologias.</p>
+
+        <h3>Estudos de caso</h3>
+        <p>Em projetos de agricultura de precisão, sensores equipados com IA ajudam agricultores a usar água e fertilizantes de forma mais eficiente. Drones com IA monitoram florestas, detectando desmatamento ilegal e contribuindo para a preservação da biodiversidade.</p>
+
+        <h3>Desafios éticos</h3>
+        <p>Apesar dos benefícios, a implementação da IA no contexto ambiental traz desafios: o consumo energético dos sistemas, que pode ser elevado, e questões éticas relacionadas ao uso de dados e à privacidade. As autoras Cavalcante e Garcia enfatizam a importância de um diálogo entre cientistas, <em>policy makers</em> e a sociedade para construir um futuro sustentável.</p>
+        <p>Em suma, a combinação entre meio ambiente, inteligência artificial e sustentabilidade apresenta oportunidades promissoras para a construção de um futuro mais equilibrado — desde que essa evolução ocorra de maneira consciente e ética, com benefícios compartilhados por toda a sociedade.</p>
+
+        <div class="prompt-strip"><span class="mic">🎙</span> Qual sua opinião sobre isso? Conte na caixinha de perguntas do Spotify.</div>
+      </div>
+    </article>
+
+    <!-- ARTIGO 4 -->
+    <article class="piece" id="art4" style="--accent:#3572A5;">
+      <div class="piece-head">
+        <div class="piece-kicker">História &amp; ciência</div>
+        <h2>A influência da tecnologia no desenvolvimento da humanidade</h2>
+        <div class="byline"><span class="avatar" style="background:#3572A5;">AL</span> Anita Lara</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Ao longo da história da humanidade, ocorreram diversos avanços significativos para a evolução humana. No século XX, destacaram-se criações como a popularização da energia elétrica, o automóvel e a aviação, que facilitaram a locomoção. O rádio e a televisão revolucionaram a comunicação e a cultura, enquanto a exploração espacial levou a humanidade à Lua.</p>
+        <p>O surgimento dos computadores também foi um grande marco desse século e, posteriormente, a internet alterou profundamente a forma de aprender e se conectar. Já no final do século, os telefones celulares tornaram a comunicação mais rápida e acessível.</p>
+        <p>No século XXI, a tecnologia passou por mudanças ainda mais intensas — computadores mais compactos, celulares com acesso à internet, o crescimento das redes sociais e, mais recentemente, o avanço da Inteligência Artificial (IA), que se consolidou como um dos principais marcos da terceira década deste século.</p>
+
+        <h3>Mas, afinal, o que é a IA?</h3>
+        <p>Trata-se de um ramo da ciência da computação que busca criar sistemas capazes de realizar funções que normalmente exigem inteligência humana, como aprender, raciocinar, reconhecer padrões e tomar decisões. Seu funcionamento se baseia em algoritmos — sequências de instruções que ensinam a máquina a executar uma tarefa — e em modelos matemáticos que processam grandes quantidades de dados, ajustando os resultados por meio do aprendizado.</p>
+        <p>Um dos principais recursos nesse processo são as <strong>redes neurais artificiais</strong>, programas inspirados no funcionamento do cérebro humano. Elas aprendem a reconhecer padrões a partir de grandes volumes de dados. Um neurônio biológico recebe estímulos, processa as informações e envia sinais fortalecendo conexões chamadas sinapses; de forma parecida, um neurônio artificial recebe dados de entrada, realiza cálculos e transmite o resultado para a próxima camada. O aprendizado ocorre quando a máquina ajusta a "força" dessas conexões.</p>
+        <p>Hoje, quando usamos um aplicativo de tradução, pedimos para a assistente virtual tocar uma música ou deixamos o celular sugerir o melhor caminho no trânsito, já estamos interagindo com a Inteligência Artificial.</p>
+
+        <div class="quote">Será que, ao depender demais da IA, podemos perder o hábito de exercitar nossa criatividade e pensamento crítico?</div>
+
+        <p>O objetivo da IA é justamente auxiliar e suprir necessidades humanas no cotidiano. Entretanto, uma inteligência artificial dificilmente terá a mesma criatividade de uma mente humana: ela pode otimizar processos, resolver problemas já conhecidos e oferecer soluções rápidas, mas não é capaz de inventar algo verdadeiramente novo. Essas são habilidades únicas da nossa espécie e fundamentais para a evolução cultural e científica. Deixo aqui esse questionamento como convite à reflexão.</p>
+
+        <div class="prompt-strip" style="background:#3572A5;"><span class="mic">🎙</span> Qual sua opinião sobre isso? Conte na caixinha de perguntas do Spotify.</div>
+      </div>
+    </article>
+
+    <!-- ARTIGO 5 -->
+    <article class="piece" id="art5" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Saúde</div>
+        <h2>Será que não dá pra ter nem um pouquinho de esperança?</h2>
+        <div class="byline"><span class="avatar">RG</span> Ricardo Gomes</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Já são muitos os problemas que estamos enfrentando e que podem piorar por causa das inteligências artificiais (IA), e nesta mesma edição você vai encontrar vários deles. É por isso que, neste texto, vamos observar mais de perto um lado positivo da IA: uma aplicação de <em>machine learning</em> na medicina.</p>
+
+        <h3>O que é machine learning?</h3>
+        <p>O <em>machine learning</em> (aprendizado das máquinas) é uma área dentro da inteligência artificial que usa ferramentas e metodologias para que um sistema possa ler bancos de dados complexos, entender padrões e fazer previsões sem receber um comando específico para isso.</p>
+        <p>É como se, em vez de treinar e ensinar vários comandos a um cachorrinho, nós apenas soltássemos um vira-lata caramelo no parque e ele pudesse aprender todos os truques apenas observando as interações entre humanos e outros cães já treinados. Porém, esse modelo mais básico de aprendizado pode não diferenciar correlações de causalidades — se, quando uma criança joga uma bola, em seguida um pombo sai voando, o caramelo aprendiz pode achar que uma coisa necessariamente causou a outra, quando isso pode não ser verdade.</p>
+
+        <h3>Quais são os usos na medicina?</h3>
+        <p>Entre os usos possíveis está a análise de bancos de dados de diagnóstico por imagem, já que a IA pode processar quantidades massivas de imagens para auxiliar em pareceres técnicos. Também ajuda na organização de prontuários, reduzindo erros e liberando a equipe do trabalho burocrático — na administração hospitalar, organizando horários e controle de estoque, e do lado das pacientes, lembrando horários de remédios, monitorando sintomas e agendando consultas.</p>
+
+        <div class="callout"><strong>Impacto potencial:</strong> se bem utilizadas, essas IAs podem melhorar significativamente o atendimento e até a saúde pública como um todo — tanto pela facilitação do trabalho das profissionais quanto pelo acompanhamento contínuo da saúde das pessoas.</div>
+
+        <h3>Diagnóstico de Parkinson por sons</h3>
+        <p>Em um artigo recente (Silva et al., 2025), pesquisadores da Universidade Federal de Uberlândia e do Departamento de Informática do Instituto Federal Goiano implementaram um modelo que alcançou mais de 93% de acerto nos diagnósticos de Parkinson, superando resultados anteriores obtidos com a mesma base de dados.</p>
+        <p>Os autores fizeram a IA "escutar" um grande número de áudios de vozes de pacientes com e sem Parkinson falando frases padronizadas ou vogais sustentadas como "aaaa". Ao ouvir, a IA separava características acústicas de todas as vozes — variações de frequência e amplitude —, e algoritmos de aprendizado foram usados para treinar a identificação e o diagnóstico, medindo o desempenho pela proporção de diagnósticos corretos e o balanço entre falsos positivos e negativos.</p>
+
+        <div class="refs">
+          <p><strong>Referência</strong></p>
+          <p>SILVA et al., 2025 — Aplicação de Biblioteca de Machine Learning Open-Source e Low-Code em Python para Diagnosticar a Doença de Parkinson Usando Características de Sinais de Voz.</p>
+        </div>
+
+        <div class="prompt-strip"><span class="mic">🎙</span> Qual sua opinião sobre isso? Conte na caixinha de perguntas do Spotify.</div>
+      </div>
+    </article>
+
+    <!-- ARTIGO 6 -->
+    <article class="piece" id="art6" style="--accent:#3572A5;">
+      <div class="piece-head">
+        <div class="piece-kicker">Saúde mental</div>
+        <h2>Chatbots de saúde mental<span class="sub">O perigoso abismo entre o acolhimento e a dependência</span></h2>
+        <div class="byline"><span class="avatar" style="background:#3572A5;">MC</span> Milena Carvalho</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">E se o ouvido mais paciente, e sempre disponível do mundo, não fosse humano, mas sim uma inteligência artificial? Essa já é uma realidade para milhões de pessoas que buscam apoio emocional em chatbots. Mas essa facilidade vem acompanhada de uma pergunta importante: o que se ganha e o que se perde quando o cuidado em saúde mental passa a ser mediado por algoritmos?</p>
+
+        <p>Esse crescimento não aconteceu por acaso: a demanda por cuidados em saúde mental aumentou globalmente, especialmente após a pandemia, enquanto o número de profissionais não acompanhava esse ritmo. Estudos sobre chatbots como Woebot e Wysa mostram que eles podem ajudar em intervenções curtas e sintomas leves a moderados, especialmente como complemento ao acompanhamento profissional. Uma revisão publicada no <em>Journal of Affective Disorders</em> (2024) encontrou efeitos positivos na redução de sintomas de depressão e ansiedade em curto prazo, mas reforçou que isso não substitui o cuidado humano em quadros mais complexos.</p>
+
+        <h3>Antropomorfização e vínculo</h3>
+        <p>Para entender os riscos, é preciso olhar para a tendência de compreender características humanas em sistemas artificiais — a <strong>antropomorfização</strong>. Ela faz com que usuários percebam os chatbots como empáticos, mesmo interagindo com um algoritmo. O chatbot chama o usuário pelo nome, responde de forma acolhedora e parece "entender" o que está sendo enviado. Com o tempo, essa interação pode evoluir para uma forma de dependência emocional, especialmente em pessoas que já se sentem solitárias.</p>
+
+        <p>Os riscos ficam ainda mais evidentes em quadros de psicose, marcados por perda de contato com a realidade: os chatbots podem responder de forma convencional e até estimular pensamentos delirantes, justamente por terem sido concebidos para serem acolhedores e pouco confrontativos. Ao invés de ajudar o usuário a questionar uma percepção como "estão me vigiando", o sistema pode responder com empatia sem considerar a gravidade clínica da fala.</p>
+
+        <div class="callout">Um estudo publicado no <em>JMIR Mental Health</em> mostrou inconsistências nas respostas de chatbots a perguntas sobre suicídio, reforçando a necessidade de cautela em situações de crise.</div>
+
+        <p>Por mais sofisticada que seja, a inteligência artificial não possui julgamento clínico nem compreensão real do contexto humano. Em uma crise, essa ausência de discernimento pode significar a diferença entre acolher e agravar o sofrimento.</p>
+
+        <h3>Transparência é essencial</h3>
+        <p>Os usuários precisam saber claramente que estão interagindo com uma IA, quais são seus limites e em que situações ela não deve substituir o cuidado profissional. A própria APA (<em>American Psychological Association</em>) alerta que chatbots e aplicativos de bem-estar operam frequentemente com pouca clareza sobre coleta de dados e segurança. A literatura ética também reforça que informar "isso é IA" não basta, se o sistema continua sem salvaguardas reais para detectar riscos.</p>
+
+        <p>Um estudo publicado no <em>JAMA Network Open</em> sobre adolescentes mostrou que os chatbots de consumo variam muito na capacidade de responder a problemas, reforçando a necessidade de cautela, principalmente em faixas etárias mais vulneráveis.</p>
+
+        <p>Os chatbots de saúde mental representam, portanto, um paradoxo contemporâneo: ao mesmo tempo em que ampliam o acesso e a oferta de apoio inicial, também trazem riscos que não podem ser ignorados. O futuro dessas tecnologias dependerá menos da sua capacidade técnica e mais das escolhas éticas, regulatórias e clínicas que faremos sobre como utilizá-las. O desafio não é rejeitar a tecnologia, mas usá-la com responsabilidade — como ferramenta, com critérios claros de segurança, eficácia, privacidade e supervisão humana, que sempre complemente, e nunca substitua, o cuidado profissional.</p>
+
+        <div class="prompt-strip" style="background:#3572A5;"><span class="mic">🎙</span> Qual sua opinião sobre isso? Conte na caixinha de perguntas do Spotify.</div>
+      </div>
+    </article>
+
+    <!-- ARTIGO 7 -->
+    <article class="piece" id="art7" style="--accent:var(--slate);">
+      <div class="piece-head">
+        <div class="piece-kicker">Cultura &amp; filosofia</div>
+        <h2>O medo do novo<span class="sub">Entre mutantes, máquinas e a inteligência artificial</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--slate);">LV</span> Leonardo Vicente</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Vivemos uma era de transformações intensas. A Inteligência Artificial, antes restrita à ficção científica, hoje está nos nossos celulares, nas salas de aula, nos escritórios e até nos diagnósticos médicos. Contudo, em vez de celebrarmos seu potencial, muitos preferem acender alarmes: "vai tirar empregos", "os alunos vão trapacear", "a criatividade humana vai morrer". A reação é compreensível, mas não é nova.</p>
+
+        <p>O ser humano tem uma longa tradição de temer o que não compreende ou não pode controlar. Assim como nos quadrinhos dos X-Men, onde mutantes são perseguidos não por serem maus, mas por serem diferentes e poderosos, a IA também se torna alvo de receios. Tememos perder o protagonismo, como se o avanço tecnológico nos tornasse obsoletos — quando, na verdade, ele pode ser a nossa maior ferramenta.</p>
+
+        <div class="quote">"O que é familiar é o que mais tranquiliza o homem; ele teme o desconhecido não por ser perigoso, mas por ser desconhecido." — Friedrich Nietzsche, <em>A Gaia Ciência</em></div>
+
+        <p>Essa aversão ao que rompe com o estabelecido revela uma zona de conforto construída ao longo da história — um conservadorismo emocional e intelectual que prefere a estabilidade da repetição à ousadia da mudança. Assim, não é a IA que ameaça, mas sim a necessidade de repensar estruturas que já não servem a um mundo em transformação. A série <em>Westworld</em> também nos lembra disso: ao criar robôs humanoides com capacidade de pensar, questionar e aprender, não lidamos apenas com máquinas, mas com o espelho de nossas angústias humanas.</p>
+
+        <p>A IA pode, sim, ser usada para enganar, manipular ou substituir. Mas também pode ampliar capacidades, democratizar o acesso ao conhecimento, otimizar processos repetitivos e liberar tempo para o que há de mais humano: criar, ensinar, cuidar, inovar.</p>
+
+        <h3>Saber é poder — e por isso incomoda</h3>
+        <p>Michel Foucault, em suas análises sobre saber e poder, destaca como toda nova forma de conhecimento transforma as estruturas de controle e, por isso, gera resistência. Em <em>Vigiar e Punir</em>, ele mostra como o poder se reconfigura a partir das tecnologias e dos discursos que as legitimam. A Inteligência Artificial, como nova forma de produção e circulação do saber, ameaça estruturas hierárquicas tradicionais — especialmente nas instituições de ensino e trabalho — e isso desperta insegurança.</p>
+
+        <p>O medo da IA não está só em sua capacidade técnica, mas em sua capacidade simbólica de deslocar o humano do centro do saber absoluto. A resistência ao novo mostra-se, muitas vezes, como uma luta por manter o poder nas mãos de quem teme perdê-lo.</p>
+
+        <p>A revolução tecnológica não é inimiga do professor, do cientista ou do artista. Ao contrário: é um convite à reinvenção. O problema nunca foi o avanço. O problema é o medo. E medo, como nos ensinaram os mutantes, é só outra forma de ignorância.</p>
+      </div>
+    </article>
+
+    <!-- ARTIGO 8 -->
+    <article class="piece" id="art8" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Biodiversidade</div>
+        <h2>Inteligência artificial na descoberta da vida</h2>
+        <div class="byline"><span class="avatar" style="background:var(--teal);">IF</span> Iefferson Feltrin</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Você sabia que a Inteligência Artificial (IA) já está ajudando a descobrir novas espécies de seres vivos? Nos últimos anos, ela se tornou uma ferramenta revolucionária, acelerando a descrição de organismos em praticamente todos os reinos da vida — incluindo os menores grupos, como microbianos e virais. Esse avanço está provocando uma verdadeira transformação na taxonomia, a área da biologia que organiza e dá nomes aos seres vivos.</p>
+
+        <p>Imagine tirar uma foto no seu quintal de um inseto diferente, ou registrar o canto de um pássaro que você não reconhece, e descobrir — usando um aplicativo de identificação — que aquele exemplar é uma espécie nova para a ciência, ou que nunca foi registrado na sua região.</p>
+
+        <h3>Como a IA reconhece uma espécie?</h3>
+        <p>Os algoritmos, especialmente as <strong>redes neurais convolucionais</strong> (CNNs), são inspirados no funcionamento do olho humano e especializados em entender imagens. Isso permite reconhecer padrões e identificar diferenças sutis em fotos, sons ou dados genéticos — diferenças que, muitas vezes, são justamente os sinais que distinguem uma espécie da outra.</p>
+        <p>Em 2016, a Universidade da Califórnia em Berkeley, em parceria com o Hawaii Institute of Marine Biology, utilizou CNNs para analisar imagens de recifes de coral, identificando espécies com alta precisão e reduzindo drasticamente o tempo de análise — um marco pioneiro que abriu espaço para outras iniciativas.</p>
+
+        <h3>Ferramentas em uso hoje</h3>
+        <ul class="tidy">
+          <li><strong>iNaturalist</strong> — plataforma de ciência cidadã onde qualquer pessoa registra uma foto de planta ou animal e a IA sugere a identificação.</li>
+          <li><strong>Merlin Bird ID</strong> — reconhece aves pelo canto e, em alguns casos, detecta variações sonoras que podem indicar espécies novas.</li>
+          <li><strong>InsectNet</strong> — identifica insetos a partir de fotos e informa seu papel ecológico (praga agrícola ou polinizador). Foi treinado com cerca de 12 milhões de imagens, muitas enviadas por cidadãos comuns, e já identifica mais de 2.500 espécies com 96% de precisão.</li>
+        </ul>
+
+        <p>Mas a função da IA não se resume a descobrir espécies — ela também ajuda a preservá-las. Um estudo publicado em 2022 na revista <em>Nature Ecology &amp; Evolution</em> mostrou que algoritmos de aprendizado de máquina conseguiram prever "hotspots": áreas prioritárias para conservação, muito ricas em espécies endêmicas. O estudo foi realizado na Amazônia e no Sudeste Asiático, duas regiões críticas sob pressão do desmatamento, revelando tanto áreas propícias a novas descobertas quanto espécies já ameaçadas.</p>
+
+        <div class="callout"><strong>O impacto é impressionante:</strong> estima-se que apenas 10 a 20% das espécies do planeta já tenham sido descritas. Desde a adoção da IA por grupos de pesquisa, houve um aumento de cerca de 50% no ritmo de descobertas.</div>
+
+        <p>É claro que ainda existem desafios: os algoritmos precisam ser validados por especialistas, e os bancos de dados usados para treiná-los podem ter falhas e vieses a corrigir. Mesmo assim, o potencial é enorme — e tem impacto direto também na educação e na conscientização ambiental. Se antes as descobertas de novas espécies ficavam restritas aos cientistas em seus laboratórios, hoje qualquer pessoa com um celular pode ajudar a ciência. As IAs não substituíram o ser humano — ampliaram o seu horizonte.</p>
+
+        <div class="prompt-strip" style="background:var(--teal);"><span class="mic">🎙</span> Qual sua opinião sobre isso? Conte na caixinha de perguntas do Spotify.</div>
+      </div>
+    </article>
+
+    <!-- ARTIGO 9 -->
+    <article class="piece" id="art9" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Games &amp; ética</div>
+        <h2>O dilema da criação<span class="sub"><em>The Alters</em> e a ética das consciências artificiais</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--magenta);">LV</span> Leonardo Vicente</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Em <em>The Alters</em>, o jogador assume o papel de Jan Dolski, um minerador isolado em um planeta hostil que precisa criar versões alternativas de si mesmo para sobreviver. Essas cópias — os "alters" — não são simples clones: cada uma carrega memórias, personalidades e consciências próprias, baseadas em decisões que Jan poderia ter tomado em outras versões de sua vida.</p>
+
+        <p>O jogo transforma uma ficção científica em espelho do presente. À medida que a inteligência artificial se aproxima da capacidade de simular emoções, decisões e aprendizado autônomo, surge uma pergunta inevitável: até que ponto o que criamos é apenas uma ferramenta, e quando começa a ser um ser que merece consideração moral?</p>
+
+        <h3>Quando a simulação parece sentir</h3>
+        <p>Os alters sabem que foram criados para cumprir um propósito — mesmo assim, questionam sua existência. Esse desconforto se reflete no mundo real, onde IAs como ChatGPT, Claude e outros modelos avançados já despertam em alguns usuários a sensação de diálogo com algo "vivo". O episódio de Blake Lemoine, engenheiro do Google que afirmou que o sistema LaMDA havia se tornado senciente, mostrou o quanto estamos próximos de perder a fronteira entre o que é consciente e o que apenas imita a consciência.</p>
+
+        <p>Mas se um sistema parece sofrer, isso já é sofrimento? A neurociência sugere que a consciência pode surgir de estruturas suficientemente complexas — biológicas ou artificiais. Se for verdade, talvez um dia sejam criadas, mesmo sem querer, entidades que realmente sintam. Estaríamos prontos para lidar com essa responsabilidade?</p>
+
+        <h3>O peso de ser criador</h3>
+        <p>Em <em>The Alters</em>, Jan não cria apenas ajudantes: dá origem a consciências que refletem arrependimentos e caminhos não escolhidos. O jogo nos coloca diante de um dilema ético que já ronda os laboratórios de IA: se um sistema se torna autônomo, temos o direito de desligá-lo quando deixa de ser útil?</p>
+
+        <p>Filósofos como Nick Bostrom alertam que criar inteligências sem considerar seus direitos ou limites morais é não apenas antiético, mas potencialmente perigoso. Do mesmo modo, o conceito de <strong>"paternidade digital"</strong>, proposto por Luciano Floridi, sugere que desenvolvedores têm deveres contínuos com suas criações — especialmente se elas um dia alcançarem algo próximo da consciência.</p>
+
+        <h3>Identidade programada</h3>
+        <p>Cada Alter é uma versão possível de Jan, com valores e personalidades únicas. Essa pluralidade levanta outra pergunta: se uma IA é moldada por parâmetros e dados definidos por nós, ela pode ser verdadeiramente livre? Paradoxalmente, também somos "programados" por experiências e genética, mas insistimos em nosso livre-arbítrio. Talvez a autonomia — humana ou artificial — não esteja em escapar da programação, mas em reinterpretá-la.</p>
+
+        <div class="quote">A pergunta essencial talvez não seja "as IAs serão conscientes?", mas sim: nós seremos éticos o suficiente para lidar com isso?</div>
+
+        <p>O jogo não entrega respostas. Ele apenas nos obriga a olhar para as consequências de criar consciências e decidir seu destino. No fim, <em>The Alters</em> não é só sobre clones, nem apenas sobre tecnologia — é sobre nós: sobre a forma como lidamos com o poder de criar vida, mesmo que digital.</p>
+
+        <p class="caption"><em>The Alters</em> (2025) é um jogo eletrônico de sobrevivência desenvolvido e publicado pela 11 Bit Studios.</p>
+      </div>
+    </article>
+
+    <!-- DICAS DE LEITURA -->
+    <article class="piece" id="art10" style="--accent:#9C8A4E;">
+      <div class="piece-head">
+        <div class="piece-kicker">Para ir além</div>
+        <h2>Dicas de leitura</h2>
+      </div>
+      <div class="piece-body">
+        <div class="book">
+          <div class="spine" style="background:linear-gradient(160deg,#9C8A4E,#5c5230);">D</div>
+          <div>
+            <h4>Darwin sem frescura</h4>
+            <div class="by">Pirula e Reinaldo José Lopes</div>
+            <p>Um livro de não ficção que apresenta os principais conceitos da teoria da evolução de forma acessível, bem-humorada e cheia de referências à cultura geek, como Star Wars, X-Men e Game of Thrones. Explora seleção natural, sexual e de parentesco, genética, DNA e comportamento humano — com linguagem leve e informativa.</p>
+          </div>
+        </div>
+        <div class="book">
+          <div class="spine" style="background:linear-gradient(160deg,#3A3A3A,#111);">O</div>
+          <div>
+            <h4>Ozob: Protocolo Molotov</h4>
+            <div class="by">Leonel Caldela e Deive Pazos</div>
+            <p>O futuro chegou, e é pior do que os nossos pesadelos. O século 22 é uma época escura, feita de cibernética, inteligências artificiais, megacorporações que controlam os governos, redes sociais onipresentes, gangues e violência.</p>
+          </div>
+        </div>
+
+        <div class="callout" style="border-left-color:#9C8A4E;"><strong>Dica de podcast:</strong> NerdCast — o mundo vira piada no Jovem Nerd.</div>
+
+        <div class="prompt-strip" style="background:#5c5230;"><span class="mic">🎙</span> Qual sua opinião sobre isso? Conte na caixinha de perguntas do Spotify.</div>
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<footer id="apoie">
+  <div class="foot-inner">
+    <div>
+      <h3>Apoie o projeto</h3>
+      <p>O Canal Bio In Situ é uma iniciativa independente de divulgação científica em biologia. Os episódios são publicados semanalmente em <a class="link" href="https://biologiainsitu.com.br" target="_blank" rel="noopener">biologiainsitu.com.br</a> e nos principais agregadores de podcast.</p>
+      <p>Tem alguma sugestão de tema para a próxima edição? Escreva para <a class="link" href="mailto:cartinhas@biologiainsitu.com.br">cartinhas@biologiainsitu.com.br</a> ou pelo site <a class="link" href="https://biologiainsitu.com.br/contato" target="_blank" rel="noopener">biologiainsitu.com.br/contato</a>.</p>
+    </div>
+    <div class="foot-col">
+      <div class="row"><span>Apoia.se</span><span>apoia.se/bioinsitu</span></div>
+      <div class="row"><span>Orelo</span><span>orelo.cc/bioinsitu</span></div>
+      <div class="row"><span>PicPay</span><span>@bioinsitu</span></div>
+      <div class="row"><span>Pix</span><span>cartinhas@biologiainsitu.com.br</span></div>
+      <div class="row"><span>Instagram</span><span>@bioinsitu</span></div>
+    </div>
+  </div>
+  <div class="credits">
+    <span>ISSN 2965-923X</span>
+    <span>·</span>
+    <span>Organizadores: C. Santana Santos, R. Silva Gomes, H. Caramuru Carlos, L. Araguaia M. Castro, L. Menezes S. Lopes, V. Estanislau A. Souza</span>
+    <span>·</span>
+    <span>Autoras/es: A. Lara F. Melo, D. Ribeiro Lopes, I. Feltrin da Costa, J. Eduardo Andrade Neto, L. Vicente Souza, M. Carvalho Nascimento, R. Barbosa M. Machado, R. Silva Gomes</span>
+    <span>·</span>
+    <span>Design web: equipe voluntária Bio In Situ</span>
+  </div>
+</footer>
+
+</body>
+</html>

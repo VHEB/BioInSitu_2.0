@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edição sobre Mudanças Climáticas — Bio In Situ, Ed. Vol. 1 · Nº 1 · 2024 · Edição 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --paper: #F6F4EE;
+    --paper-dim: #EFECE3;
+    --ink: #14231C;
+    --ink-soft: #3A473F;
+    --green: #1E7A46;
+    --green-deep: #123D25;
+    --teal: #0E8E8A;
+    --slate: #4B4B4B;
+    --magenta: #D6116C;
+    --sand: #DCD2B8;
+    --gold: #9C8A4E;
+    --rule: rgba(20,35,28,0.14);
+    --maxw: 760px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ===== Skip / focus ===== */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--green);
+    outline-offset:3px;
+  }
+
+  /* ===== Top bar ===== */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,244,238,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:700; font-size:18px;
+    text-decoration:none;
+  }
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--green);}
+  .topbar nav{display:flex; gap:22px;}
+  .topbar nav a{
+    font-size:13px; text-decoration:none; color:var(--ink-soft);
+    letter-spacing:0.03em; text-transform:uppercase;
+  }
+  .topbar nav a:hover{color:var(--green);}
+  #toc-toggle{display:none;}
+
+  /* ===== Hero ===== */
+  .hero{
+    max-width:980px; margin:0 auto; padding:64px 28px 40px;
+    text-align:left;
+  }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--green-deep);
+    display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .hero .eyebrow::before{content:"";width:28px;height:1px;background:var(--green-deep);display:inline-block;}
+  .hero h1{
+    font-size:clamp(38px, 6vw, 68px);
+    font-weight:600; line-height:1.02; margin:0 0 22px;
+    max-width:850px;
+  }
+  .hero h1 em{font-style:italic; font-weight:500; color:var(--green);}
+  .hero p.lede{
+    max-width:560px; color:var(--ink-soft); font-size:18px; margin:0 0 34px;
+  }
+  .hero .meta-row{
+    display:flex; flex-wrap:wrap; gap:28px; font-size:13.5px; color:var(--ink-soft);
+    border-top:1px solid var(--rule); padding-top:18px;
+  }
+  .hero .meta-row strong{color:var(--ink); display:block; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px; font-weight:600;}
+
+  /* signature motif: circuit-root divider */
+  .motif{
+    display:block; width:100%; height:34px; margin:6px 0 0;
+    opacity:0.9;
+  }
+
+  /* ===== Layout: TOC + content ===== */
+  .layout{
+    max-width:1180px; margin:0 auto; padding:0 28px 40px;
+    display:grid; grid-template-columns:230px 1fr; gap:56px;
+  }
+  .toc{
+    position:sticky; top:70px; align-self:start;
+    padding:22px 0 40px;
+    max-height:calc(100vh - 90px); overflow-y:auto;
+  }
+  .toc-title{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--ink-soft); margin-bottom:14px; font-weight:600;
+  }
+  .toc ol{list-style:none; margin:0; padding:0; counter-reset:art;}
+  .toc li{counter-increment:art; margin-bottom:2px;}
+  .toc a{
+    display:flex; gap:10px; padding:8px 6px; text-decoration:none;
+    font-size:13.5px; color:var(--ink-soft); border-radius:6px;
+    line-height:1.3;
+  }
+  .toc a:hover{background:var(--paper-dim); color:var(--ink);}
+  .toc a::before{
+    content:counter(art, decimal-leading-zero);
+    font-family:'IBM Plex Mono', monospace; font-size:11px;
+    color:var(--green); flex-shrink:0; padding-top:1px;
+  }
+
+  main{min-width:0;}
+
+  /* ===== Article card ===== */
+  article.piece{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:14px;
+    margin-bottom:26px;
+    overflow:hidden;
+    scroll-margin-top:80px;
+  }
+  .piece-head{
+    padding:34px 40px 26px;
+    border-bottom:1px solid var(--rule);
+    position:relative;
+  }
+  .piece-head::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:6px;
+    background:var(--accent, var(--green));
+  }
+  .piece-kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--accent, var(--green));
+    margin-bottom:10px; font-weight:500;
+  }
+  .piece-head h2{
+    font-size:clamp(24px, 3.4vw, 32px); font-weight:600; line-height:1.12; margin:0 0 16px;
+  }
+  .piece-head h2 .sub{
+    display:block; font-family:'IBM Plex Sans', sans-serif; font-style:normal;
+    font-weight:400; font-size:0.55em; color:var(--ink-soft); margin-top:6px; letter-spacing:0;
+  }
+  .byline{
+    display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-soft);
+  }
+  .byline .avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--accent, var(--green)); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:13px;
+  }
+  .piece-body{padding:8px 40px 38px;}
+  .piece-body p{margin:0 0 18px; color:var(--ink);}
+  .piece-body h3{font-size:17px; margin:26px 0 12px; font-weight:600; color:var(--accent, var(--green-deep));}
+  .piece-body .drop::first-letter{
+    float:left; font-family:'Fraunces', serif; font-weight:700; font-size:3.6em;
+    line-height:0.82; padding-right:10px; padding-top:4px; color:var(--accent, var(--green));
+  }
+  .cols{columns:1; column-gap:36px;}
+  @media(min-width:640px){ .cols.two{columns:2;} }
+
+  .callout{
+    background:var(--paper-dim);
+    border-left:3px solid var(--accent, var(--green));
+    border-radius:0 10px 10px 0;
+    padding:16px 20px;
+    margin:8px 0 22px;
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+  .quote{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:20px; line-height:1.45; color:var(--ink);
+    padding:4px 0 4px 20px; border-left:3px solid var(--accent, var(--green));
+    margin:22px 0;
+  }
+  .binary{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em;
+    color:var(--accent, var(--green)); opacity:0.75; margin:-6px 0 20px;
+  }
+  ul.tidy{margin:0 0 18px; padding-left:20px;}
+  ul.tidy li{margin-bottom:8px;}
+  .refs{
+    font-size:13.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:8px; padding-top:18px;
+  }
+  .refs p{margin-bottom:8px;}
+  .caption{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:-8px;}
+
+  .prompt-strip{
+    margin-top:24px; padding:14px 20px; border-radius:10px;
+    background:var(--green-deep); color:#EFEDE3;
+    font-size:13.5px; display:flex; align-items:center; gap:12px;
+  }
+  .prompt-strip .mic{
+    width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+
+  /* reading tips */
+  .book{
+    display:grid; grid-template-columns:64px 1fr; gap:16px; margin-bottom:22px;
+  }
+  .book .spine{
+    width:64px; height:88px; border-radius:4px;
+    background:linear-gradient(160deg, var(--accent, var(--green)), var(--green-deep));
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    font-family:'Fraunces',serif; font-weight:700; font-size:22px;
+  }
+  .book h4{margin:0 0 2px; font-size:16px; font-family:'Fraunces',serif; font-weight:600;}
+  .book .by{font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;}
+  .book p{font-size:14px; margin:0; color:var(--ink-soft);}
+
+  /* footer / support */
+  footer{
+    background:var(--green-deep); color:#EDEAE0; margin-top:40px;
+    padding:56px 28px 40px;
+  }
+  .foot-inner{max-width:980px; margin:0 auto; display:grid; grid-template-columns:1.3fr 1fr; gap:48px;}
+  footer h3{color:#fff; font-size:24px; margin:0 0 14px;}
+  footer p{color:#C9D2C7; max-width:420px; margin:0 0 10px;}
+  footer a.link{color:#9FE3B8; text-decoration:none; border-bottom:1px solid rgba(159,227,184,0.35);}
+  .foot-col .row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.1); font-size:14px;}
+  .foot-col .row span:first-child{color:#9FB0A4;}
+  .credits{max-width:980px; margin:34px auto 0; padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); font-size:12.5px; color:#8AA091; display:flex; flex-wrap:wrap; gap:6px 18px;}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .toc{position:static; max-height:none; padding-bottom:10px;}
+    .foot-inner{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .piece-head, .piece-body{padding-left:22px; padding-right:22px;}
+    .topbar nav{display:none;}
+    .cols.two{columns:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+
+  /* imagem opcional de capa da matéria (não usada nas edições sem gerador de imagem) */
+  .piece-media{width:100%; aspect-ratio:16/9; overflow:hidden;}
+  .piece-media img{width:100%; height:100%; object-fit:cover; display:block;}
+
+  /* link opcional para o PDF/fonte original da matéria */
+  .source-link{
+    font-size:12.5px; color:var(--ink-soft); border-top:1px dashed var(--rule);
+    margin-top:20px; padding-top:14px;
+  }
+  .source-link a{color:var(--green); text-decoration:underline; text-underline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="#topo"><span class="dot"></span>BIO IN SITU</a>
+  <nav>
+    <a href="#sumario">Sumário</a>
+    <a href="#apoie">Apoie</a>
+    <a href="https://biologiainsitu.com.br" target="_blank" rel="noopener">Site</a>
+  </nav>
+</div>
+
+<div id="topo" class="hero">
+  <div class="eyebrow">Vol. 1 · Nº 1 · 2024 · Edição 1</div>
+  <h1>Edição sobre <em>Mudanças Climáticas</em></h1>
+  <p class="lede">Do podcast à revista, fazendo divulgação científica: a estreia da nossa série especial sobre mudanças climáticas, da ciência do clima à justiça social.</p>
+  <div class="meta-row">
+    <div><strong>Organizadores</strong>Cristianne Santana Santos, Ricardo da Silva Gomes, Heloá Caramuru Carlos, Bruna Garcia da Cruz Canellas, Vitor Estanislau de Almeida Souza Lopes, Luiza de Freitas Ferreira, Karina Alves de Souza Laskawski, Melissa dos Santos Cabral, Raquel Ribeiro da Rosa, Luana Campos Leal e Renê Seabra Oliezer</div>
+    <div><strong>ISSN</strong>2965-923X</div>
+    <div><strong>Publicação</strong>Rio de Janeiro, RJ</div>
+  </div>
+</div>
+
+<svg class="motif" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 17 H120 M170 17 H1200" stroke="#1E7A46" stroke-width="1" opacity="0.35"/>
+  <circle cx="145" cy="17" r="4" fill="#1E7A46"/>
+  <path d="M145 17 q10 -14 24 -14 M145 17 q10 14 24 -14" stroke="#1E7A46" stroke-width="1.2" fill="none" opacity="0.6"/>
+</svg>
+
+<div class="layout">
+  <aside class="toc" id="sumario">
+    <div class="toc-title">Nesta edição</div>
+    <ol>
+      <li><a href="#art1">Mudanças climáticas</a></li>
+      <li><a href="#art2">Perda da biodiversidade</a></li>
+      <li><a href="#art3">Crise energética</a></li>
+      <li><a href="#art4">Justiça social</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+    <article class="piece" id="art1" style="--accent:var(--teal);">
+      <div class="piece-head">
+        <div class="piece-kicker">Mudanças Climáticas</div>
+        <h2>Mudanças climáticas</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">KL</span> Karina Laskawski</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Quem nunca teve um compromisso adiado por conta de uma tempestade? Ou saiu de casa sem blusa e quase congelou, mais tarde, na volta pra casa? Vai dizer que nunca passou sufoco por não ter colocado o guarda-chuva na mochila? Isso acontece porque o clima influencia muito o nosso dia a dia. Mas será que essas mudanças repentinas têm alguma coisa a ver com as mudanças climáticas de que tanto se fala por aí? Vamos falar sobre isso e muito mais na estreia da nossa série especial sobre mudanças climáticas.</p>
+        <h3>Clima ou tempo?</h3>
+        <p>Você provavelmente já ouviu um pouco sobre o aquecimento global e o efeito estufa… mas, para falar sobre isso, precisamos antes entender a diferença entre os fenômenos clima e tempo. Já ouviu a frase &quot;clima é aquilo que esperamos; tempo é o que sentimos&quot;, dita pelo escritor e humorista estadunidense Mark Twain? Pois bem, tanto um quanto o outro se referem a variáveis atmosféricas: as mudanças que sentimos no dia a dia definem o que chamamos de tempo, já as variações que definem o clima de um determinado lugar devem ser observadas por um período maior — geralmente um mínimo de 30 anos. Quando falamos de aquecimento global e mudanças climáticas, estamos nos referindo ao clima.</p>
+        <p>Mas aqui fica a dúvida: o que causaria impacto suficiente para alterar o clima de todo o planeta e romper com a estabilidade observada ao longo dos últimos 10 mil anos? É importante ressaltar que esses impactos também ocorrem naturalmente, desde que o mundo é mundo — mas hoje queremos falar sobre onde entra o ser humano nisso.</p>
+        <div class="callout">O último relatório do IPCC (Painel Intergovernamental sobre Mudanças Climáticas), publicado em agosto de 2021, colocou um ponto final na discussão sobre a interferência humana nas mudanças climáticas: nosso modo de vida — e a forma como produzimos e consumimos — tem como consequência a emissão de grandes quantidades de Gases do Efeito Estufa, os grandes responsáveis pelo aquecimento global e pela intensificação dos eventos climáticos extremos.</div>
+        <p>Atualmente o setor energético é um problema quando se trata de poluição atmosférica. O Brasil ainda é um país coadjuvante na emissão de gases pela produção de energia, mas isso pode mudar devido ao desmatamento. Estudos mostram como modelos agrícolas tradicionais impactam o clima, a disponibilidade de recursos naturais, a biodiversidade e a saúde das pessoas — e quando tratamos de desmatamento e agropecuária, o Brasil se torna o protagonista dessa história, infelizmente.</p>
+        <p>Apesar das consequências das mudanças climáticas afetarem o mundo inteiro, elas não são sentidas da mesma maneira em todos os lugares: países mais pobres têm um valor quase desprezível de emissão de gases, mas são os mais afetados — inclusive pela migração causada por fatores ambientais, um fenômeno cada vez mais recorrente. Precisamos falar também da diferença entre desastre natural e crime ambiental, e de como o racismo ambiental tem relação direta com a exploração, seja de terras ou de pessoas.</p>
+        <h3>Agropecuária</h3>
+        <p>Como a agropecuária interage com as mudanças climáticas? Só a produção agrícola é responsável por cerca de 10% a 12% de todas as emissões do efeito estufa — isso sem contar o desmatamento atrelado a essa questão, que pode dobrar esse número. Enquanto países como Estados Unidos e China deveriam estar preocupados com alternativas para reverter o CO2 liberado pela queima de combustíveis fósseis, o problema do Brasil nesse assunto é o gás metano (CH4), liberado pelos gases dos gados: o Brasil tem mais cabeças de gado do que pessoas, ocupando o 1º lugar mundial em criação de gado, além de aves, suínos e grãos.</p>
+        <p>Desde o surgimento da agricultura, o homem vem se adaptando à expansão de alimentos através da tecnologia para acompanhar o crescimento populacional. Com a Revolução Industrial, no século XVIII, na Inglaterra, foi instituída a lei do &quot;cercamento de terra&quot;: famílias com mais posses expulsavam pequenos produtores e exploravam trabalhadores assalariados, triplicando a produtividade. O aumento na produtividade trouxe a mecanização do campo, trocando pessoas por máquinas — e, com o tempo, também a necessidade de defensivos e fertilizantes agrícolas.</p>
+        <p>No Brasil, a chegada dos portugueses e a divisão de terras entre donatários trouxe as monoculturas — cultivo de uma única espécie de planta —, com mão de obra escravizada. No século XIX, após a abolição da escravatura, a plantação de café ganhou outro patamar, agora com mão de obra assalariada. A produção agrícola brasileira teve destaque entre 1975 e 2016, passando de 38 milhões para 236 milhões de toneladas — arroz, trigo, feijão, milho e soja à frente —, e o aumento de áreas plantadas trouxe junto o aumento do uso de fertilizantes como o NPK, até chegarmos a 69,5 milhões de hectares de uso agrícola. &quot;Isso é muuuita coisa.&quot;</p>
+        <h3>Desafios futuros</h3>
+        <p>A substituição de trabalhadores e animais por máquinas movidas a combustível, somada ao desmatamento, são os principais fatores da agropecuária que contribuem para o aumento da temperatura global. A maior preocupação da ONU é manter a expansão da produção alimentar acompanhando o crescimento populacional — estima-se uma população mundial de 9,7 bilhões até 2050. Mesmo assim, estudos apontam que cerca de 80 milhões de pessoas a mais poderão passar fome: muita comida produzida, e gente passando fome. Será que faz sentido?</p>
+        <div class="callout">Em 2005, o setor da pecuária emitiu cerca de 7,1 bilhões de toneladas de CO2 — 14,5% do total de gases do efeito estufa lançados por ações humanas. Em 2010, o número subiu para 8,1 bilhões de toneladas. Só a fermentação digestiva dos ruminantes libera cerca de 4 bilhões de toneladas de gases por ano, e a produção de carne e laticínios responde por mais de 27% do consumo de água potável do mundo — segundo a UNESCO, um quilo de carne bovina exige 25 kg de grãos e 1.500 litros de água.</div>
+        <p>Outro desafio: o clima interfere diretamente na produção agrícola, o que pode levar ao aumento dos ultraprocessados de baixo valor nutricional, gerando taxas cada vez maiores de desnutrição ao redor do mundo. A monocultura também produz impactos negativos para o solo, a diversidade da região e o clima global, já que exige a retirada total das espécies nativas do local usando agentes químicos de forma agressiva. Some a isso a emergência de patógenos e novas doenças capazes de gerar novas pandemias — e aí, você ainda acha que o agro é &quot;pop&quot;?</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art2" style="--accent:var(--gold);">
+      <div class="piece-head">
+        <div class="piece-kicker">Biodiversidade</div>
+        <h2>Perda da biodiversidade</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">MC</span> Melissa Cabral</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Não é de hoje que os cientistas falam em como as mudanças climáticas estão causando danos à nossa biodiversidade, que poderá chegar a qualquer momento a um quadro irreversível. Na visão de ambientalistas e especialistas da USP, a falta de severidade na política sobre esse assunto — e como a humanidade se relaciona com o meio ambiente — é crucial para que haja alguma mudança significativa. Mas uma pergunta que não quer se calar é: como chegamos até aqui?</p>
+        <h3>Como são causadas as extinções em massa?</h3>
+        <p>Na biologia, a diversidade biológica significa a variedade e as diferenças entre os organismos vivos e o sistema ecológico do qual eles fazem parte. Tudo que vemos hoje na natureza faz parte de uma diversidade ecológica que passou por intensas seleções e adaptações ao longo de milhões de anos. Desde o surgimento da vida, a Terra passou por processos de aquecimento e resfriamento que se alternaram em eras glaciais e interglaciais, influenciados por causas naturais como atividades vulcânicas, variação do eixo terrestre e movimentação das placas tectônicas.</p>
+        <p>Todos esses aspectos afetam diretamente todas as formas de vida e, quando a mudança é radical, pode ocorrer uma extinção em massa. A Terra já viveu 5 extinções famosas pela quantidade de biodiversidade devastada pelo clima:</p>
+        <ul class="tidy"><li><strong>Extinção do Ordoviciano</strong> — cerca de 440 milhões de anos atrás.</li><li><strong>Extinção do Devoniano</strong> — entre 370 e 360 milhões de anos atrás.</li><li><strong>Extinção do Permiano-Triássico</strong> — cerca de 250 milhões de anos atrás, a maior de todas: cerca de 73% da vida no planeta deixou de existir.</li><li><strong>Extinção do Triássico-Jurássico</strong> — 200 milhões de anos atrás.</li><li><strong>Extinção do Cretáceo</strong> — 65 milhões de anos atrás, causada por um meteoro; é a mais conhecida, responsável pela extinção dos dinossauros (embora alguns tenham sobrevivido e dado origem aos pássaros de hoje).</li></ul>
+        <div class="callout">Atualmente, cientistas afirmam que viveremos uma sexta extinção — causada pela própria humanidade, em um ritmo muito mais acelerado do que o processo levaria para acontecer naturalmente.</div>
+        <h3>Recursos naturais</h3>
+        <p>Vivemos dentro de uma cadeia alimentar complexa, em que todo ser vivo serve de alimento para outro (com exceção das plantas, que produzem sua própria energia). Quando o ser humano degrada um ecossistema, interfere em outros, já que todos estão interligados direta ou indiretamente. A maior preocupação, no momento, são as degradações que os oceanos sofrem com o aumento de resíduos plásticos, poluição das águas e pesca ilegal — elementos fundamentais para a manutenção da vida na água.</p>
+        <p>Um exemplo desse desequilíbrio é o branqueamento dos corais, que, se entrar em colapso, pode afetar tanto a flora quanto a fauna marinha. A intensificação do efeito estufa pelas queimadas e pela emissão de CO2 por combustíveis fósseis aumenta a temperatura da atmosfera com mais frequência — o que preocupa também os ambientes aquáticos. Erosões, tsunamis e alagamentos causados por chuvas fora de época levam sedimentos e resíduos para o mar, além de devastar habitats: a destruição dos mangues do Rio de Janeiro para a criação de calçadões é um exemplo que precisa ser repensado, dado o impacto tanto nas comunidades locais quanto nos rios e oceanos.</p>
+        <p>A pesca desenfreada é mais um exemplo que pode levar ao esgotamento dos recursos naturais marinhos. Está cada vez mais frequente que espécies exóticas invadam outros ecossistemas atrás de alimento e se tornem espécies invasoras, como o peixe-leão, que devasta ecossistemas costeiros no Brasil — e o contato do homem com espécies exóticas também é um dos motivos para novas pandemias. Uma esperança para a construção de novos valores pessoais em relação ao meio ambiente é a educação ambiental, que pode trazer um olhar mais sensível do ser humano para com a natureza.</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art3" style="--accent:var(--magenta);">
+      <div class="piece-head">
+        <div class="piece-kicker">Energia</div>
+        <h2>Crise energética<span class="sub">Uma breve história da energia no mundo e no Brasil</span></h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">LF</span> Luiza Freitas Ferreira</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Neste episódio foi abordada a evolução das matrizes energéticas ao longo dos séculos — as diferentes demandas e ofertas de energia, considerando fontes renováveis e não renováveis, bem como as consequências advindas do seu uso.</p>
+        <h3>Histórico energético no mundo</h3>
+        <p>No começo da humanidade, há cerca de 400 mil anos, a principal fonte de energia estava centrada na força muscular. Muito tempo depois, há cerca de 7 mil anos, começamos a utilizar o fogo como fonte de energia — com o domínio do fogo, de lanças e da pesca, a vida na Idade da Pedra Lascada ficou um pouco mais fácil. Já na Idade da Pedra Polida, o ser humano passou a utilizar a força da água e do vento na produção agrícola e pecuária.</p>
+        <p>Por volta de 4000 a.C. observa-se um desenvolvimento mais acentuado da metalurgia, com a produção de cobre, bronze e ferro. Durante aproximadamente cinco séculos, de 27 a.C. a 476 d.C., no vasto Império Romano, a lenha foi muito utilizada na produção de armas e na forja de metais, causando grave desmatamento em grande parte da Itália e da Península Ibérica. Na mesma época, a China, ao criar dispositivos de elevação de água e sistemas de irrigação, promoveu grande desenvolvimento na tecnologia hidráulica. No século XVIII, com o apogeu da Revolução Industrial, a produção artesanal (manufatura) deu lugar à produção industrial (maquinofatura).</p>
+        <p>No final desse século, a eletricidade deixou de ser usada só em laboratórios e passou a movimentar motores elétricos e de explosão. Já no século XXI, o Brasil chega com forte dependência de fontes hídricas para produção energética: em 2001, uma seca causada pelo baixo volume de chuvas culminou em um blecaute e intenso racionamento de energia, impactando o crescimento econômico e aumentando a inflação e o desemprego.</p>
+        <div class="callout">Em 2015, uma nova crise por baixo nível de água nos reservatórios levou o governo a privilegiar usinas termelétricas — mais caras e mais poluentes, movidas a bagaço de plantas, madeira, óleo combustível, óleo diesel, gás natural, urânio enriquecido ou carvão mineral.</div>
+        <p>Em 3 de novembro de 2020, uma forte chuva causou um incêndio em transformadores da subestação de Macapá, cortando energia e trazendo sofrimento para cerca de 765 mil pessoas, que por mais de três semanas ficaram sem internet e telefonia, com blecautes e rodízio de energia em 13 cidades — inclusive afetando hospitais que já lidavam com pacientes de Covid-19. Em 2021, a elevação da bandeira tarifária encareceu serviços e produtos, agravando a inflação e a crise econômica.</p>
+        <p>Olhando para o cenário mundial: os EUA são o maior produtor de gás natural liquefeito (GNL) do mundo, mas a maior reserva de gás natural está na Rússia — que por isso é a maior exportadora, atendendo principalmente o mercado europeu (França, Áustria, Hungria e Holanda).</p>
+        
+      </div>
+    </article>
+
+    <article class="piece" id="art4" style="--accent:var(--green);">
+      <div class="piece-head">
+        <div class="piece-kicker">Justiça Climática</div>
+        <h2>Justiça social</h2>
+        <div class="byline"><span class="avatar" style="background:var(--accent);">KL</span> Karina Laskawski</div>
+      </div>
+      <div class="piece-body">
+        <p class="drop">Os problemas que impactam o meio ambiente também afetam a vida das pessoas, atingindo-as de forma e intensidade bem distintas e prejudicando, na imensa maioria das vezes, os mais desfavorecidos. Nesse contexto podemos falar sobre racismo ambiental, que hoje abrange também as injustiças sociais e ambientais de comunidades vulneráveis, como indígenas, quilombolas e ribeirinhas.</p>
+        <p>Para que isso efetivamente se concretize, há a necessidade de regulamentação federal — e, com o enfoque crescente nas desigualdades sociais provocadas pelo impacto das mudanças climáticas, surgiu um movimento internacional por justiça climática: a &quot;Stop Climate Chaos Coalition&quot; (Coalizão para Frear o Caos Climático), uma rede de organizações não governamentais que envolve diversos setores da sociedade, do estudantil ao religioso.</p>
+        <div class="callout">O movimento se destaca por reunir organizações que, até então, não participavam de debates sobre uma das mais importantes questões ambientais da contemporaneidade. A meta é reduzir a desproporcionalidade dos impactos causados pelas mudanças climáticas em diferentes grupos sociais — o que implica reduzir a vulnerabilidade de populações de baixa renda e de grupos étnicos minoritários.</div>
+        <p>Talvez um dos efeitos mais perceptíveis das mudanças climáticas sejam os desastres ambientais, cada vez mais recorrentes e devastadores. É importante destacar que a maior concentração de populações afetadas por eventos climáticos extremos — mais da metade da população mundial — se encontra em áreas urbanas. Outro dado importante: o Brasil está entre os 10 países que mais desperdiçam comida no mundo, e duas das principais causas da falta de comida são o mau hábito de alimentação e o gerenciamento inadequado do produto, do plantio até a mesa.</p>
+        <p>Um dos fatores mais delicados nessa equação é o aumento do nível do mar, que já carrega sérias consequências para a sociedade, a economia e o próprio ecossistema. O Brasil não foge a esse cenário: cidades com grande densidade populacional e polos industriais e portuários importantes — como João Pessoa, Recife, Maceió, Aracaju, Salvador, Rio de Janeiro, Vitória, Santos, Paranaguá, Florianópolis e Rio Grande — poderão ter suas porções mais baixas inundadas, perdendo ecossistemas importantíssimos como manguezais e marismas.</p>
+        <p>Mas, querido bio-leitor, apesar dos vários problemas levantados e de muitos outros existentes, há o reverso: pessoas, instituições, órgãos e nações batalhando na linha de frente para ampliar a divulgação de informações e intensificar o debate sobre as questões climáticas.</p>
+        <div class="prompt-strip" style="background:var(--accent);"><span class="mic">🎙</span> Neste episódio, o Ricardo Gomes entrevistou duas convidadas que representam bem essa luta na linha de frente — escute a entrevista completa no podcast.</div>
+        
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<footer id="apoie">
+  <div class="foot-inner">
+    <div>
+      <h3>Apoie o projeto</h3>
+      <p>O Canal Bio In Situ é uma iniciativa independente de divulgação científica em biologia. Os episódios são publicados semanalmente no site e nos principais agregadores de podcast.</p>
+      <p>Tem alguma sugestão de tema para a próxima edição? Escreva para <a class="link" href="mailto:cartinhas@biologiainsitu.com.br">cartinhas@biologiainsitu.com.br</a>.</p>
+    </div>
+    <div class="foot-col">
+      <div class="row"><span>Apoia.se</span><span>apoia.se/biologiainsitu</span></div>
+      <div class="row"><span>PicPay</span><span>@biologiainsitu</span></div>
+      <div class="row"><span>Pix</span><span>cartinhas@biologiainsitu.com.br</span></div>
+    </div>
+  </div>
+  <div class="credits">
+    <span>ISSN 2965-923X</span>
+    <span>·</span>
+    <span>Organizadores: C. Santana Santos, R. Silva Gomes, H. Caramuru Carlos</span>
+    <span>·</span>
+    <span>Autoras/es: Karina Alves de Souza Laskawski, Luiza de Freitas Ferreira, Melissa dos Santos Cabral (texto), Raquel Ribeiro da Rosa e Luana Campos Leal (formatação)</span>
+    <span>·</span>
+    <span>Design web: equipe voluntária Bio In Situ</span>
+  </div>
+</footer>
+
+</body>
+</html>

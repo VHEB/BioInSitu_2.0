@@ -1,0 +1,98 @@
+[
+  {
+    "numero": 1,
+    "titulo": "Mudanças Climáticas",
+    "resumo": "Clima x tempo, o relatório do IPCC, agropecuária, perda de biodiversidade, crise energética e justiça climática.",
+    "data": "2024-03-19",
+    "slug": "edicao-01-mudancas-climaticas",
+    "pronta": true
+  },
+  {
+    "numero": 2,
+    "titulo": "Microrganismos",
+    "resumo": "Bioarte, a ciência por trás dos zumbis, extremófilos, permafrost e a história do microscópio.",
+    "data": "2024-03-19",
+    "slug": "edicao-02-microrganismos",
+    "pronta": true
+  },
+  {
+    "numero": 3,
+    "titulo": "Eventos Climáticos Extremos",
+    "resumo": "Poluição atmosférica, as 5 extinções em massa, planos de desastre no Brasil, agricultura, ondas de calor e saúde pública.",
+    "data": "2024-06-18",
+    "slug": "edicao-03-eventos-extremos",
+    "pronta": true
+  },
+  {
+    "numero": 4,
+    "titulo": "Privatização das Praias",
+    "resumo": "Racismo ambiental, ocupação turística da orla, regulação, manguezais, panorama internacional e uma oficina prática de divulgação científica.",
+    "data": "2024-09-03",
+    "slug": "edicao-04-privatizacao-das-praias",
+    "pronta": true
+  },
+  {
+    "numero": 5,
+    "titulo": "Etnobotânica — Conhecimento em Expansão",
+    "resumo": "Em produção.",
+    "data": "2024-12-11",
+    "slug": "edicao-05-etnobotanica",
+    "pronta": true
+  },
+  {
+    "numero": 6,
+    "titulo": "Brasil em Chamas",
+    "resumo": "Em produção.",
+    "data": "2024-12-11",
+    "slug": "edicao-06-brasil-em-chamas",
+    "pronta": true
+  },
+  {
+    "numero": 7,
+    "titulo": "Etnobotânica II",
+    "resumo": "Em produção.",
+    "data": "2025-04-30",
+    "slug": "edicao-07-etnobotanica-ii",
+    "pronta": true
+  },
+  {
+    "numero": 8,
+    "titulo": "A Ciência por Trás da Ficção — O Mundo Geek e a Biologia",
+    "resumo": "Em produção.",
+    "data": "2025-07-27",
+    "slug": "edicao-08-mundo-geek",
+    "pronta": false
+  },
+  {
+    "numero": 9,
+    "titulo": "Filo Annelida — Minhocas, Sanguessugas e Poliquetas",
+    "resumo": "Em produção.",
+    "data": "2025-11-19",
+    "slug": "edicao-09-filo-annelida",
+    "pronta": false
+  },
+  {
+    "numero": 10,
+    "titulo": "O Mundo dos Insetos",
+    "resumo": "Em produção.",
+    "data": "2026-03-09",
+    "slug": "edicao-10-mundo-dos-insetos",
+    "pronta": false
+  },
+  {
+    "numero": 11,
+    "titulo": "Impactos da Inteligência Artificial",
+    "resumo": "Ética, IA generativa e o futuro da divulgação científica.",
+    "data": "2026-05-29",
+    "slug": "edicao-11-impactos-da-ia",
+    "pronta": true
+  },
+  {
+    "numero": 12,
+    "titulo": "Comunicação e Divulgação Científica",
+    "resumo": "Em produção.",
+    "data": "2026-07-23",
+    "slug": "edicao-12-comunicacao-cientifica",
+    "pronta": false
+  }
+]
